@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\nego.communs\nego.communs.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -6,4 +6,10 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\nego.business\nego.business.csproj" />
+    <ProjectReference Include="..\nego.communs\nego.communs.csproj" />
+    <ProjectReference Include="..\nego.services\nego.services.csproj" />
+  </ItemGroup>
+
 </Project>
