@@ -1,5 +1,7 @@
 ﻿using nego.business;
 using nego.communs.Model;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace nego.services
 {
@@ -11,7 +13,8 @@ namespace nego.services
         {
             Clients = new List<Client>
             {
-                new Client(1, "OK", "ko", DateTime.Now, "ok@ko.OKko")
+                new Client(1, "OK", "ko", DateTime.Now, "ok@ko.OKko", true),
+                new Client(2, "lo", "PI", DateTime.Now, "lo@PI.loPI", true),
             };
         }
 

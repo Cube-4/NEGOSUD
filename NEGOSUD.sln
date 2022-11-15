@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32922.545
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NEGOSUD", "NEGOSUD\NEGOSUD.csproj", "{F02A103D-7383-457F-9356-07F75C81FEB7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "nego.services", "nego.services\nego.services.csproj", "{329A79D6-E04B-4546-BEF2-A78F83FAC5E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nego.services", "nego.services\nego.services.csproj", "{329A79D6-E04B-4546-BEF2-A78F83FAC5E9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "nego.communs", "nego.communs\nego.communs.csproj", "{98E23F05-0C9A-402D-9BCF-429675568E3A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nego.communs", "nego.communs\nego.communs.csproj", "{98E23F05-0C9A-402D-9BCF-429675568E3A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "nego.business", "nego.business\nego.business.csproj", "{B6DBDBC0-F3E0-45A5-B2E9-62195E6EC78F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nego.business", "nego.business\nego.business.csproj", "{B6DBDBC0-F3E0-45A5-B2E9-62195E6EC78F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "nego.DataAccess", "nego.DataAccess\nego.DataAccess.csproj", "{33EC0DF3-3D93-4A16-9128-59B74BA412A9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nego.api", "negosud.api\nego.api.csproj", "{8AFBE904-9C5D-42D5-9EF1-D138C7A13B1D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +19,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{F02A103D-7383-457F-9356-07F75C81FEB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F02A103D-7383-457F-9356-07F75C81FEB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F02A103D-7383-457F-9356-07F75C81FEB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F02A103D-7383-457F-9356-07F75C81FEB7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{329A79D6-E04B-4546-BEF2-A78F83FAC5E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{329A79D6-E04B-4546-BEF2-A78F83FAC5E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{329A79D6-E04B-4546-BEF2-A78F83FAC5E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -33,6 +31,14 @@ Global
 		{B6DBDBC0-F3E0-45A5-B2E9-62195E6EC78F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B6DBDBC0-F3E0-45A5-B2E9-62195E6EC78F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B6DBDBC0-F3E0-45A5-B2E9-62195E6EC78F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33EC0DF3-3D93-4A16-9128-59B74BA412A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33EC0DF3-3D93-4A16-9128-59B74BA412A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33EC0DF3-3D93-4A16-9128-59B74BA412A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33EC0DF3-3D93-4A16-9128-59B74BA412A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8AFBE904-9C5D-42D5-9EF1-D138C7A13B1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8AFBE904-9C5D-42D5-9EF1-D138C7A13B1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8AFBE904-9C5D-42D5-9EF1-D138C7A13B1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8AFBE904-9C5D-42D5-9EF1-D138C7A13B1D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
