@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace nego.DataAccess.unitOfWork.Repository
 {
-    public interface IClientRepository
+    public interface IUserRepository
     {
-        Client GetOne(int id);
-        List<Client> GetAll();
-        void Add(Client user);
-        void Update(Client user);
-        void Delete(Client user);
+        User GetOne(int id);
+        List<User> GetAll();
+        void Add(User user);
+        void Update(User user);
+        void Delete(User user);
     }
 }

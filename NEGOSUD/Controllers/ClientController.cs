@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+// ClientController uses nego.business IUserService interface
 using nego.business;
 
 namespace NEGOSUD.Controllers
@@ -7,9 +8,9 @@ namespace NEGOSUD.Controllers
     [Route("myapp.Api/user/")]
     public class ClientController : Controller
     {
-        private readonly IClientService _clientService;
+        private readonly IUserService _clientService;
 
-        public ClientController(IClientService clientService)
+        public ClientController(IUserService clientService)
         {
             _clientService = clientService;
         }
@@ -21,4 +22,4 @@ namespace NEGOSUD.Controllers
             return Ok(response);
         }
     }
-}
+} 

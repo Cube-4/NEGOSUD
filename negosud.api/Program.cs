@@ -13,9 +13,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 
-builder.Services.AddScoped<IClientService, ClientService>();
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-builder.Services.AddScoped<IClientRepository, ClientRepository>(); 
+builder.Services.AddScoped<IUserRepository, UserRepository>(); 
 builder.Services.AddScoped<NegoSudDbContext>();
 builder.Services.AddDbContext<NegoSudDbContext>(option =>
 {
@@ -29,7 +29,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddMvc();
 builder.Services.AddCors();
-builder.Services.AddAutoMapper(typeof(ClientMapping));
+builder.Services.AddAutoMapper(typeof(UserMapping));
 
 
 

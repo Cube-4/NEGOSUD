@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 
 namespace nego.DataAccess.EntityConfiguration
 {
-    public class UserEntityConfiguration : IEntityTypeConfiguration<Client>
+    public class UserEntityConfiguration : IEntityTypeConfiguration<User>
 
     {
-        public void Configure(EntityTypeBuilder<Client> builder)
+        public void Configure(EntityTypeBuilder<User> builder)
         {
             builder.HasKey(x => x.Id);
             builder.ToTable("Clients");

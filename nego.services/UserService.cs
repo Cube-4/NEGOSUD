@@ -9,12 +9,12 @@ using System.Linq;
 
 namespace nego.services
 {
-    public class ClientService : IClientService
+    public class UserService : IUserService
     {
-        private readonly IClientRepository _clientRepository;
+        private readonly IUserRepository _clientRepository;
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
-        public ClientService(IClientRepository clientRepository, IMapper mapper, IUnitOfWork unitOfWork)
+        public UserService(IUserRepository clientRepository, IMapper mapper, IUnitOfWork unitOfWork)
         {
             _clientRepository = clientRepository;
             _mapper = mapper;
@@ -22,19 +22,19 @@ namespace nego.services
         }
 
 
-        public Task<List<ClientRessource>> GetAll()
+        public Task<List<UserRessource>> GetAll()
         {
             var clients = _clientRepository.GetAll();
-            var clientsRessource = _mapper.Map<List<ClientRessource>>(clients);
+            var clientsRessource = _mapper.Map<List<UserRessource>>(clients);
             return Task.FromResult(clientsRessource);
         }
 
-        public Task<ClientRessource> GetById(int id)
+        public Task<UserRessource> GetById(int id)
         {
-            var client = _clientRepository.GetOne(id);
-            if (client != null)
+            var user = _clientRepository.GetOne(id);
+            if (user != null)
             {
-                var clientRessource = _mapper.Map<ClientRessource>(client);
+                var clientRessource = _mapper.Map<UserRessource>(user);
                 return Task.FromResult(clientRessource);
             }
             return null;
@@ -42,10 +42,10 @@ namespace nego.services
 
         public async Task<bool> DeleteById(int id)
         {
-            var client = _clientRepository.GetOne(id);
-            if (client != null)
+            var user = _clientRepository.GetOne(id);
+            if (user != null)
             {
-                _clientRepository.Delete(client);
+                _clientRepository.Delete(user);
                 await _unitOfWork.SaveIntoDbContextAsync();
                 return true;
             }
@@ -53,13 +53,13 @@ namespace nego.services
             
         }
 
-        public async Task<bool> Create(ClientRessource data)
+        public async Task<bool> Create(UserRessource data)
         {
-            //check if the client already exist by email
+            //check if the user already exist by email
             if (data.Email != null)
             {
                 //map from dto to model
-                var newClient = _mapper.Map<Client>(data);
+                var newClient = _mapper.Map<User>(data);
                 _clientRepository.Add(newClient);
                 await _unitOfWork.SaveIntoDbContextAsync();
                 return true;
@@ -67,20 +67,20 @@ namespace nego.services
             return false;
         }
     
-        public async Task<bool> Update(ClientRessource data)
+        public async Task<bool> Update(UserRessource data)
         {
             //get user
-            var client = _clientRepository.GetOne(data.Id);
+            var user = _clientRepository.GetOne(data.Id);
             //check if user exist
-            if (client != null)
+            if (user != null)
             {
-                var entity = _mapper.Map(data, client);
+                var entity = _mapper.Map(data, user);
                 //add to db
                 _clientRepository.Update(entity);
                 //save changes to db
                 await _unitOfWork.SaveIntoDbContextAsync();
                 //return dto updated user
-                var userMapped = _mapper.Map<ClientRessource>(entity);
+                var userMapped = _mapper.Map<UserRessource>(entity);
                 return true;
             }
             return false;

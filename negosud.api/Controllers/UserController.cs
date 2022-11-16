@@ -5,14 +5,14 @@ using nego.communs.Resource;
 namespace nego.api.Controllers
 {
     [Produces("application/json")]
-    [Route("api/Client")]
-    public class ClientController : Controller
+    [Route("api/User")]
+    public class UserController : Controller
     {
 
-        private readonly IClientService _clientService;
+        private readonly IUserService _clientService;
 
 
-        public ClientController(IClientService clientService)
+        public UserController(IUserService clientService)
         {
             _clientService = clientService;
         }
@@ -27,39 +27,39 @@ namespace nego.api.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var client = await _clientService.GetById(id);
-            return Ok(client);
+            var user = await _clientService.GetById(id);
+            return Ok(user);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteById(int id)
         {
-            var client = await _clientService.DeleteById(id);
-            if (client == true)
+            var user = await _clientService.DeleteById(id);
+            if (user == true)
             {
-                return Ok("Successfully deleted client");
+                return Ok("Successfully deleted user");
             }
             return BadRequest("Something wrong happened Deletion");
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] ClientRessource data)
+        public async Task<IActionResult> Create([FromBody] UserRessource data)
         {
-            var client = await _clientService.Create(data);
-            if (client == true)
+            var user = await _clientService.Create(data);
+            if (user == true)
             {
-                return Ok("Successfully Created client");
+                return Ok("Successfully Created user");
             }
             return BadRequest("Something wrong happened with Creation");
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update([FromBody] ClientRessource data)
+        public async Task<IActionResult> Update([FromBody] UserRessource data)
         {
-            var client = await _clientService.Update(data);
-            if (client == true)
+            var user = await _clientService.Update(data);
+            if (user == true)
             {
-                return Ok("Successfully updated client");
+                return Ok("Successfully updated user");
             }
             return BadRequest("Something wrong happened with Update");
         }

@@ -22,7 +22,7 @@ namespace nego.DataAccess.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("nego.communs.Model.Client", b =>
+            modelBuilder.Entity("nego.communs.Model.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()

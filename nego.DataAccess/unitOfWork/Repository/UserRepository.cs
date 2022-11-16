@@ -9,38 +9,38 @@ using System.Threading.Tasks;
 
 namespace nego.DataAccess.unitOfWork.Repository
 {
-    public class ClientRepository : IClientRepository
+    public class UserRepository : IUserRepository
 
     {
         private readonly NegoSudDbContext _negoSudDbContext;
         
-        public ClientRepository(NegoSudDbContext negoSudDbContext)
+        public UserRepository(NegoSudDbContext negoSudDbContext)
         {
             _negoSudDbContext = negoSudDbContext;
         }
-        public void Add(Client client)
+        public void Add(User user)
         {
-            _negoSudDbContext.Clients.Add(client);
+            _negoSudDbContext.Clients.Add(user);
         }
 
-        public void Delete(Client client)
+        public void Delete(User user)
         {
-            _negoSudDbContext.Clients.Remove(client);
+            _negoSudDbContext.Clients.Remove(user);
         }
 
-        public List<Client> GetAll()
+        public List<User> GetAll()
         {
             return _negoSudDbContext.Clients.ToList();
         }
 
-        public Client GetOne(int id)
+        public User GetOne(int id)
         {
-            return _negoSudDbContext.Clients.FirstOrDefault(Client => Client.Id == id);
+            return _negoSudDbContext.Clients.FirstOrDefault(User => User.Id == id);
         }
 
-        public void Update(Client client)
+        public void Update(User user)
         {
-            _negoSudDbContext.Clients.Update(client);
+            _negoSudDbContext.Clients.Update(user);
         }
     }
 }
