@@ -16,6 +16,7 @@ namespace nego.DataAccess.EntityConfiguration
         {
             builder.HasKey(x => x.Id);
             builder.ToTable("Clients");
+            builder.Property(x => x.Id).ValueGeneratedOnAdd();
 
         }
     }

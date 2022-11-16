@@ -18,14 +18,14 @@ namespace nego.DataAccess.unitOfWork.Repository
         {
             _negoSudDbContext = negoSudDbContext;
         }
-        public void Add(Client user)
+        public void Add(Client client)
         {
-            _negoSudDbContext.Clients.Add(user);
+            _negoSudDbContext.Clients.Add(client);
         }
 
-        public void Delete(Client user)
+        public void Delete(Client client)
         {
-            //_negoSudDbContext.Clients.ExecuteDelete(user);
+            _negoSudDbContext.Clients.Remove(client);
         }
 
         public List<Client> GetAll()
@@ -38,9 +38,9 @@ namespace nego.DataAccess.unitOfWork.Repository
             return _negoSudDbContext.Clients.FirstOrDefault(Client => Client.Id == id);
         }
 
-        public void Update(Client user)
+        public void Update(Client client)
         {
-            throw new NotImplementedException();
+            _negoSudDbContext.Clients.Update(client);
         }
     }
 }

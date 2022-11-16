@@ -2,7 +2,7 @@ using nego.communs.Model;
 
 namespace nego.business
 {
-    public interface ISupplier : IAction<Supplier>
+    public interface ISupplier
     {        
 
     }

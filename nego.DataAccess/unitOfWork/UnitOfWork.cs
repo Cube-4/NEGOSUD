@@ -9,16 +9,16 @@ namespace nego.DataAccess.unitOfWork
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly IDFactory _dbFactory;
+        private readonly NegoSudDbContext _db;
 
-        public UnitOfWork(IDFactory dbFactory)
+        public UnitOfWork(NegoSudDbContext db)
         {
-            _dbFactory = dbFactory;
+            _db = db;
         }
 
         public async Task SaveIntoDbContextAsync()
         {
-            await _dbFactory.NegodSudDbContext.SaveChangesAsync();
+            await _db.SaveChangesAsync();
         }
     }
 }

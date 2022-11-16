@@ -9,9 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "nego.communs", "nego.commun
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "nego.business", "nego.business\nego.business.csproj", "{B6DBDBC0-F3E0-45A5-B2E9-62195E6EC78F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "nego.DataAccess", "nego.DataAccess\nego.DataAccess.csproj", "{33EC0DF3-3D93-4A16-9128-59B74BA412A9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "nego.dataAccess", "nego.DataAccess\nego.dataAccess.csproj", "{33EC0DF3-3D93-4A16-9128-59B74BA412A9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nego.api", "negosud.api\nego.api.csproj", "{8AFBE904-9C5D-42D5-9EF1-D138C7A13B1D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "nego.api", "negosud.api\nego.api.csproj", "{8AFBE904-9C5D-42D5-9EF1-D138C7A13B1D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

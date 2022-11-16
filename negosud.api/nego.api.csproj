@@ -6,19 +6,23 @@
   </PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.0">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+		<PackageReference Include="AutoMapper" Version="12.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <ProjectReference Include="..\nego.business\nego.business.csproj" />
 	  <ProjectReference Include="..\nego.communs\nego.communs.csproj" />
-	  <ProjectReference Include="..\nego.DataAccess\nego.DataAccess.csproj" />
+	  <ProjectReference Include="..\nego.DataAccess\nego.dataAccess.csproj" />
 	  <ProjectReference Include="..\nego.services\nego.services.csproj" />
 	</ItemGroup>
+
+	<ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
 	
 </Project>
