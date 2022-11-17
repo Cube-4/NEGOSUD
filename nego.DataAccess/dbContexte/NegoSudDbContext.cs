@@ -11,7 +11,10 @@ namespace nego.DataAccess.dbContexte
 {
     public class NegoSudDbContext : DbContext
     {
-        public DbSet<User> Clients { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<Article> Articles { get; set; }
+        public DbSet<Role> Roles { get; set; }
 
         public NegoSudDbContext(DbContextOptions<NegoSudDbContext> options):base(options)
         {

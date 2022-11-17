@@ -9,12 +9,12 @@ namespace nego.communs.Model
 {
     public class Role : Entity
     {
-        public Role(int id, string name)
-        {
-            Id = id;
-            Name = name;
-        }
-
         public string Name { get; set; }
+        public List<UserRole> Users { get; set; }
+        
+        public Role()
+        {
+            Users = new List<UserRole>();
+        }
     }
 }

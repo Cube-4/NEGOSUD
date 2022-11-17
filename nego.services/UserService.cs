@@ -1,91 +1,92 @@
 ﻿using AutoMapper;
 using nego.business;
+using nego.communs.Global;
 using nego.communs.Model;
 using nego.communs.Resource;
+using nego.dataAccess.unitOfWork.Repository;
+using nego.DataAccess.dbContexte;
 using nego.DataAccess.unitOfWork;
-using nego.DataAccess.unitOfWork.Repository;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace nego.services
 {
     public class UserService : IUserService
     {
-        private readonly IUserRepository _clientRepository;
+        private readonly IRepository<NegoSudDbContext> _repository;
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
-        public UserService(IUserRepository clientRepository, IMapper mapper, IUnitOfWork unitOfWork)
+        public UserService(IMapper mapper, IUnitOfWork unitOfWork, IRepository<NegoSudDbContext> repository)
         {
-            _clientRepository = clientRepository;
             _mapper = mapper;
             _unitOfWork = unitOfWork;
+            _repository = repository;
         }
 
 
         public Task<List<UserRessource>> GetAll()
         {
-            var clients = _clientRepository.GetAll();
-            var clientsRessource = _mapper.Map<List<UserRessource>>(clients);
-            return Task.FromResult(clientsRessource);
+
+            var users = _repository.GetAll<User>().ToList();
+            var usersRessource = _mapper.Map<List<UserRessource>>(users);
+            return Task.FromResult(usersRessource);
         }
 
         public Task<UserRessource> GetById(int id)
         {
-            var user = _clientRepository.GetOne(id);
+            var user = _repository.GetOne<User>(User => User.Id == id);
             if (user != null)
             {
-                var clientRessource = _mapper.Map<UserRessource>(user);
-                return Task.FromResult(clientRessource);
+                var userRessource = _mapper.Map<UserRessource>(user);
+                return Task.FromResult(userRessource);
             }
             return null;
         }
 
         public async Task<bool> DeleteById(int id)
         {
-            var user = _clientRepository.GetOne(id);
+            var user = _repository.GetOne<User>(User => User.Id == id);
             if (user != null)
             {
-                _clientRepository.Delete(user);
+                _repository.Remove(user);
                 await _unitOfWork.SaveIntoDbContextAsync();
                 return true;
             }
             return false;
             
         }
-
-        public async Task<bool> Create(UserRessource data)
+        
+        public async Task<UserRessource> Add(EntityRessource data)
         {
+            var userResource = (UserRessource)data;
             //check if the user already exist by email
-            if (data.Email != null)
+            if (userResource.Email != null)
             {
                 //map from dto to model
-                var newClient = _mapper.Map<User>(data);
-                _clientRepository.Add(newClient);
+                var newUser = _mapper.Map<User>(userResource);
+                _repository.Add(newUser);
                 await _unitOfWork.SaveIntoDbContextAsync();
-                return true;
+                return userResource;
             }
-            return false;
-        }
+            return null;
+        } 
     
-        public async Task<bool> Update(UserRessource data)
+        public async Task<UserRessource> Update(EntityRessource data)
         {
+            var userResource = (UserRessource)data;
             //get user
-            var user = _clientRepository.GetOne(data.Id);
+            var user = _repository.GetOne<User>(User => User.Id == userResource.Id);
             //check if user exist
             if (user != null)
             {
-                var entity = _mapper.Map(data, user);
+                var entity = _mapper.Map(userResource, user);
                 //add to db
-                _clientRepository.Update(entity);
+                _repository.Update(entity);
                 //save changes to db
                 await _unitOfWork.SaveIntoDbContextAsync();
                 //return dto updated user
                 var userMapped = _mapper.Map<UserRessource>(entity);
-                return true;
+                return userMapped;
             }
-            return false;
-            //map from dto to model
-            
+            return null;
         }
     }
 }

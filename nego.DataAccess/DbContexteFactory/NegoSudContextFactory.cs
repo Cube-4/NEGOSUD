@@ -16,7 +16,7 @@ namespace nego.DataAccess.DbContextFactory
         public NegoSudDbContext CreateDbContext(string[] args)
         {
             var builder = new DbContextOptionsBuilder<NegoSudDbContext>();
-            builder.UseSqlServer(_configuration.GetConnectionString("negoSudDb"), b => b.MigrationsAssembly("nego.DataAccess"));
+            builder.UseSqlServer(_configuration.GetConnectionString("negoSudDb"), b => b.MigrationsAssembly("nego.dataAccess"));
 
             return new NegoSudDbContext(builder.Options);
         }

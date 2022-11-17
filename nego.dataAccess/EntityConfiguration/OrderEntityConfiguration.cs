@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace nego.DataAccess.EntityConfiguration
 {
-    public class UserEntityConfiguration : IEntityTypeConfiguration<User>
+    public class OrderEntityConfiguration : IEntityTypeConfiguration<Order>
 
     {
-        public void Configure(EntityTypeBuilder<User> builder)
+        public void Configure(EntityTypeBuilder<Order> builder)
         {
             builder.HasKey(x => x.Id);
-            builder.ToTable("User");
+            builder.ToTable("Order");
             builder.Property(x => x.Id).ValueGeneratedOnAdd();
 
         }

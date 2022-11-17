@@ -1,14 +1,11 @@
 ﻿// The interface need UserRessource from nego.communs
+using nego.communs.Model;
 using nego.communs.Resource;
 
 namespace nego.business
 {
-    public interface IUserService
+    public interface IUserService : IActionService<UserRessource>
     {
-        Task<List<UserRessource>> GetAll();
-        Task<UserRessource> GetById(int id);
-        Task<bool> DeleteById(int id);
-        Task<bool> Create(UserRessource data);
-        Task<bool> Update(UserRessource data);
+        
     }
 }

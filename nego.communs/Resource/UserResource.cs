@@ -1,15 +1,10 @@
 ﻿using nego.communs.Global;
 using nego.communs.Model;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace nego.communs.Resource
 {
-    public class UserRessource : Entity
+    public class UserRessource : EntityRessource
     {
         [Required]
         public string FirstName { get; set; }

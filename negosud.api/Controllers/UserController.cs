@@ -5,7 +5,7 @@ using nego.communs.Resource;
 namespace nego.api.Controllers
 {
     [Produces("application/json")]
-    [Route("api/User")]
+    [Route("api/user")]
     public class UserController : Controller
     {
 
@@ -20,8 +20,8 @@ namespace nego.api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var clients = await _clientService.GetAll();
-            return Ok(clients);
+            var users = await _clientService.GetAll();
+            return Ok(users);
         }
 
         [HttpGet("{id}")]
@@ -45,8 +45,8 @@ namespace nego.api.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] UserRessource data)
         {
-            var user = await _clientService.Create(data);
-            if (user == true)
+            var user = await _clientService.Add(data);
+            if (user != null)
             {
                 return Ok("Successfully Created user");
             }
@@ -57,7 +57,7 @@ namespace nego.api.Controllers
         public async Task<IActionResult> Update([FromBody] UserRessource data)
         {
             var user = await _clientService.Update(data);
-            if (user == true)
+            if (user != null)
             {
                 return Ok("Successfully updated user");
             }

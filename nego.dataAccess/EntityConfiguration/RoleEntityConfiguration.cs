@@ -9,15 +9,15 @@ using System.Threading.Tasks;
 
 namespace nego.DataAccess.EntityConfiguration
 {
-    public class UserEntityConfiguration : IEntityTypeConfiguration<User>
+    public class RoleEntityConfiguration : IEntityTypeConfiguration<Role>
 
     {
-        public void Configure(EntityTypeBuilder<User> builder)
+        public void Configure(EntityTypeBuilder<Role> builder)
         {
             builder.HasKey(x => x.Id);
-            builder.ToTable("User");
+            builder.ToTable("Role");
             builder.Property(x => x.Id).ValueGeneratedOnAdd();
-
+            
         }
     }
 }
