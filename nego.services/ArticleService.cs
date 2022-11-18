@@ -1,4 +1,4 @@
-using AutoMapper;
+﻿using AutoMapper;
 using Azure.Core;
 using nego.business;
 using nego.communs.Global;
@@ -11,12 +11,12 @@ using nego.DataAccess.unitOfWork;
 
 namespace nego.services
 {
-    public class OrderService : IOrderService
+    public class ArticleService : IArticleService
     {
         private readonly IRepository<NegoSudDbContext> _repository;
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
-        public OrderService(IMapper mapper, IUnitOfWork unitOfWork, IRepository<NegoSudDbContext> repository)
+        public ArticleService(IMapper mapper, IUnitOfWork unitOfWork, IRepository<NegoSudDbContext> repository)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
@@ -24,28 +24,28 @@ namespace nego.services
         }
 
 
-        public Task<List<OrderRessource>> GetAll()
+        public Task<List<ArticleRessource>> GetAll()
         {
 
-            var orders = _repository.GetAll<Order>().ToList();
-            var ordersRessource = _mapper.Map<List<OrderRessource>>(orders);
-            return Task.FromResult(ordersRessource);
+            var articles = _repository.GetAll<Article>().ToList();
+            var articlesRessource = _mapper.Map<List<ArticleRessource>>(articles);
+            return Task.FromResult(articlesRessource);
         }
 
-        public Task<OrderRessource> GetById(int id)
+        public Task<ArticleRessource> GetById(int id)
         {
-            var order = _repository.GetOne<Order>(User => User.Id == id);
-            if (order != null)
+            var articles = _repository.GetOne<Article>(User => User.Id == id);
+            if (articles != null)
             {
-                var clientRessource = _mapper.Map<OrderRessource>(order);
-                return Task.FromResult(clientRessource);
+                var articlesRessource = _mapper.Map<ArticleRessource>(articles);
+                return Task.FromResult(articlesRessource);
             }
             return null;
         }
 
         public async Task<bool> DeleteById(int id)
         {
-            var user = _repository.GetOne<Order>(User => User.Id == id);
+            var user = _repository.GetOne<Article>(User => User.Id == id);
             if (user != null)
             {
                 _repository.Remove(user);
@@ -53,46 +53,46 @@ namespace nego.services
                 return true;
             }
             return false;
-            
+
         }
 
-        public async Task<OrderRessource> Add(EntityRessource data)
+        public async Task<ArticleRessource> Add(EntityRessource data)
         {
-            var orderResource = (OrderRessource)data;
+            var articlesResource = (ArticleRessource)data;
 
             //check if the user already exist by email
-            if (orderResource.ReferenceName != null)
+            if (articlesResource.Id != null)
             {
                 //map from dto to model
-                var newOrder = _mapper.Map<Order>(orderResource);
-                _repository.Add(newOrder);
+                var newArticle = _mapper.Map<Article>(articlesResource);
+                _repository.Add(newArticle);
                 await _unitOfWork.SaveIntoDbContextAsync();
-                return orderResource;
+                return articlesResource;
             }
             return null;
         }
-    
-        public async Task<OrderRessource> Update(EntityRessource data)
+
+        public async Task<ArticleRessource> Update(EntityRessource data)
         {
-            var orderResource = (OrderRessource)data;
+            var articlesResource = (ArticleRessource)data;
 
             //get user
-            var user = _repository.GetOne<Order>(User => User.Id == orderResource.Id);
+            var user = _repository.GetOne<Article>(User => User.Id == articlesResource.Id);
             //check if user exist
             if (user != null)
             {
-                var entity = _mapper.Map(orderResource, user);
+                var entity = _mapper.Map(articlesResource, user);
                 //add to db
                 _repository.Update(entity);
                 //save changes to db
                 await _unitOfWork.SaveIntoDbContextAsync();
                 //return dto updated user
-                var orderMapped = _mapper.Map<OrderRessource>(entity);
-                return orderMapped;
+                var articlesMapped = _mapper.Map<ArticleRessource>(entity);
+                return articlesMapped;
             }
             return null;
             //map from dto to model
-            
+
         }
     }
 }
