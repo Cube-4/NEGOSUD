@@ -1,11 +1,10 @@
 ﻿using AutoMapper;
 using nego.business;
-using nego.communs.Global;
-using nego.communs.Resource;
-using nego.DataAccess.dbContexte;
-using nego.dataAccess.unitOfWork.Repository;
-using nego.DataAccess.unitOfWork;
 using nego.communs.Model;
+using nego.communs.Resource;
+using nego.dataAccess.unitOfWork.Repository;
+using nego.DataAccess.dbContexte;
+using nego.DataAccess.unitOfWork;
 
 namespace nego.services
 {
@@ -23,7 +22,7 @@ namespace nego.services
 
         public async Task<bool> DeleteById(int id)
         {
-            var role = _repository.GetOne<User>(Role => Role.Id == id);
+            var role = _repository.GetOne<Role>(Role => Role.Id == id);
             if (role != null)
             {
                 _repository.Remove(role);
@@ -42,13 +41,13 @@ namespace nego.services
 
         public Task<RoleRessource> GetById(int id)
         {
-            var role = _repository.GetOne<User>(Role => Role.Id == id);
+            var role = _repository.GetOne<Role>(Role => Role.Id == id);
             if (role != null)
             {
                 var roleRessource = _mapper.Map<RoleRessource>(role);
                 return Task.FromResult(roleRessource);
             }
-            return null;
+            return Task.FromResult<RoleRessource>(null);
         }
 
         public async Task<RoleRessource> Add(EntityRessource data)
@@ -57,12 +56,12 @@ namespace nego.services
             if (roleRessource.Name != null)
             {
                 //map from dto to model
-                var newRole = _mapper.Map<User>(roleRessource);
+                var newRole = _mapper.Map<Role>(roleRessource);
                 _repository.Add(newRole);
                 await _unitOfWork.SaveIntoDbContextAsync();
                 return roleRessource;
             }
-            return null;
+            return await Task.FromResult<RoleRessource>(null);
         }
 
         public async Task<RoleRessource> Update(EntityRessource data)
@@ -81,7 +80,7 @@ namespace nego.services
                 var roleMapped = _mapper.Map<RoleRessource>(entity);
                 return roleMapped;
             }
-            return null;
+            return await Task.FromResult<RoleRessource>(null);
         }
     }
 }

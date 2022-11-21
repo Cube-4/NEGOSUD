@@ -41,7 +41,7 @@ namespace nego.api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] RoleRessource data)
+        public async Task<IActionResult> Create(RoleRessource data)
         {
             var role = await _roleService.Add(data);
             if (role != null)
@@ -52,7 +52,7 @@ namespace nego.api.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update([FromBody] RoleRessource data)
+        public async Task<IActionResult> Update(RoleRessource data)
         {
             var role = await _roleService.Update(data);
             if (role != null)

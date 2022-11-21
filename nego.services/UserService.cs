@@ -38,7 +38,7 @@ namespace nego.services
                 var userRessource = _mapper.Map<UserRessource>(user);
                 return Task.FromResult(userRessource);
             }
-            return null;
+            return Task.FromResult<UserRessource>(null);
         }
 
         public async Task<bool> DeleteById(int id)
@@ -66,9 +66,9 @@ namespace nego.services
                 await _unitOfWork.SaveIntoDbContextAsync();
                 return userResource;
             }
-            return null;
-        } 
-    
+            return await Task.FromResult<UserRessource>(null);
+        }
+
         public async Task<UserRessource> Update(EntityRessource data)
         {
             var userResource = (UserRessource)data;
@@ -86,7 +86,7 @@ namespace nego.services
                 var userMapped = _mapper.Map<UserRessource>(entity);
                 return userMapped;
             }
-            return null;
+            return await Task.FromResult<UserRessource>(null);
         }
     }
 }
