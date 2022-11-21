@@ -3,6 +3,7 @@ using Azure.Core;
 using nego.business;
 using nego.communs.Global;
 using nego.communs.Model;
+using nego.communs.resource;
 using nego.communs.Resource;
 using nego.dataAccess.unitOfWork.Repository;
 using nego.DataAccess.dbContexte;

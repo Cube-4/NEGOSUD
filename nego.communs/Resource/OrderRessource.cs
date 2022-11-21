@@ -1,9 +1,10 @@
 using nego.communs.Global;
+using nego.communs.Model;
 using nego.communs.Resource;
 using System.Data;
 
 
-namespace nego.communs.Model
+namespace nego.communs.resource
 {
     public class OrderRessource : EntityRessource
     {

@@ -17,6 +17,8 @@ builder.Services.AddScoped<IRepository<NegoSudDbContext>, Repository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IRoleService, RoleService>();
+builder.Services.AddScoped<IArticleService, ArticleService>();
+
 //builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<NegoSudDbContext>();

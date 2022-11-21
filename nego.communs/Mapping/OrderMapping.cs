@@ -1,5 +1,6 @@
 using AutoMapper;
 using nego.communs.Model;
+using nego.communs.resource;
 
 namespace nego.communs.Mapping
 {
