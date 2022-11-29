@@ -43,7 +43,7 @@ namespace nego.api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] OrderRessource data)
+        public async Task<IActionResult> Create(OrderRessource data)
         {
             var order = await _orderService.Add(data);
             if (order != null)
@@ -54,7 +54,7 @@ namespace nego.api.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update([FromBody] OrderRessource data)
+        public async Task<IActionResult> Update(OrderRessource data)
         {
             var order = await _orderService.Update(data);
             if (order != null)
