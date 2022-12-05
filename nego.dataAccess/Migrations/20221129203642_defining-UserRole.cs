@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace nego.dataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class definingUserRole : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -104,14 +104,13 @@ namespace nego.dataAccess.Migrations
                 name: "UserRole",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<int>(type: "int", nullable: false),
-                    RoleId = table.Column<int>(type: "int", nullable: false)
+                    RoleId = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserRole", x => x.Id);
+                    table.PrimaryKey("PK_UserRole", x => new { x.UserId, x.RoleId });
                     table.ForeignKey(
                         name: "FK_UserRole_Roles_RoleId",
                         column: x => x.RoleId,
@@ -140,11 +139,6 @@ namespace nego.dataAccess.Migrations
                 name: "IX_UserRole_RoleId",
                 table: "UserRole",
                 column: "RoleId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UserRole_UserId",
-                table: "UserRole",
-                column: "UserId");
         }
 
         /// <inheritdoc />

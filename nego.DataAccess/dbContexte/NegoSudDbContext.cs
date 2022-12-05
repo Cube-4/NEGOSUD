@@ -25,6 +25,8 @@ namespace nego.DataAccess.dbContexte
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfiguration(new UserEntityConfiguration());
+
+            modelBuilder.Entity<UserRole>().HasKey(ur => new { ur.UserId, ur.RoleId });
         }
     }
 }

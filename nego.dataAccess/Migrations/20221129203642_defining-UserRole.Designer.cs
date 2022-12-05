@@ -12,8 +12,8 @@ using nego.DataAccess.dbContexte;
 namespace nego.dataAccess.Migrations
 {
     [DbContext(typeof(NegoSudDbContext))]
-    [Migration("20221116141716_Initial")]
-    partial class Initial
+    [Migration("20221129203642_defining-UserRole")]
+    partial class definingUserRole
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -147,23 +147,18 @@ namespace nego.dataAccess.Migrations
 
             modelBuilder.Entity("nego.communs.Model.UserRole", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
+                    b.Property<int>("Id")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("UserId", "RoleId");
 
                     b.HasIndex("RoleId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("UserRole");
                 });
