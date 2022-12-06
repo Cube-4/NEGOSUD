@@ -10,11 +10,11 @@ namespace nego.communs.Model
     public class Role : Entity
     {
         public string Name { get; set; }
-        public List<UserRole> Users { get; set; }
+        public virtual ICollection<User> Users { get; set; }
         
         public Role()
         {
-            Users = new List<UserRole>();
+            this.Users = new HashSet<User>();
         }
     }
 }
