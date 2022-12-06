@@ -6,10 +6,9 @@ namespace nego.communs.Resource
     {
         [Required]
         public string Name { get; set; }
-        public string Family { get; set; }
+        public string Reference { get; set; }
         [Required]
         public DateTime Date { get; set; }
-        [Required]
         public string Origin { get; set; }
         public int Quantity { get; set; }
     }
