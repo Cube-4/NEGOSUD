@@ -63,5 +63,18 @@ namespace nego.api.Controllers
             }
             return BadRequest("Something wrong happened with Update");
         }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> ChangeQuantity(int id, int quantity, string type)
+        {
+            var article = await _articleService.ChangeQuantity(id, quantity, type);
+            if (article == true)
+            {
+                return Ok("Successfully Updated article quantity " + quantity);
+
+
+            }
+            return BadRequest("Something wrong happened with the article quantity update");
+        }
     }
 }

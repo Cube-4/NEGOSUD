@@ -94,5 +94,26 @@ namespace nego.services
             //map from dto to model
 
         }
+
+        public Task<bool> ChangeQuantity(int id, int quantity, string type)
+        {
+            var articles = _repository.GetOne<Article>(User => User.Id == id);
+            if (articles != null)
+            {
+                if (type == "add")
+                {
+                    articles.Stock += quantity;
+                }
+                else if (type == "substract")
+                {
+                    articles.Stock -= quantity;
+                }
+                _repository.Update(articles);
+                _unitOfWork.SaveIntoDbContextAsync();
+                return Task.FromResult(true);
+            }
+            return Task.FromResult(false);
+        }
+
     }
 }

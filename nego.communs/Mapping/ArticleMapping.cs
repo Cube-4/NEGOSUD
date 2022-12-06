@@ -11,7 +11,9 @@ namespace nego.communs.Mapping
             CreateMap<Article, ArticleRessource>()
                 .ForMember(articleRessources => articleRessources.Id, opt => opt.MapFrom(article => article.Id));
 
-            CreateMap<ArticleRessource, Article>();
+            CreateMap<ArticleRessource, Article>()
+                .ForMember(article => article.Stock, opt => opt.MapFrom(articleRessource => articleRessource.Quantity));
+
         }
     }
 }
