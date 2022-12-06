@@ -5,7 +5,7 @@ namespace nego.communs.Model
     public class Article : Entity
     {
         public string Name { get; set; }
-        public string Family { get; set; }
+        public string Reference { get; set; }
         public DateTime Date { get; set; }
         public string Origin { get; set; }
         public int Stock { get; set; }
