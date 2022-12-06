@@ -1,11 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using nego.communs.Model;
 using nego.DataAccess.EntityConfiguration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace nego.DataAccess.dbContexte
 {
@@ -26,7 +21,7 @@ namespace nego.DataAccess.dbContexte
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfiguration(new UserEntityConfiguration());
 
-            modelBuilder.Entity<UserRole>().HasKey(ur => new { ur.UserId, ur.RoleId });
+            modelBuilder.Entity<OrderArticle>().HasKey(i => new { i.OrderId, i.ArticleId });
         }
     }
 }
