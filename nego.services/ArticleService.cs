@@ -97,7 +97,7 @@ namespace nego.services
 
         public Task<bool> ChangeQuantity(int id, int quantity, string type)
         {
-            var articles = _repository.GetOne<Article>(User => User.Id == id);
+            var articles = _repository.GetOne<Article>(Article => Article.Id == id);
             if (articles != null)
             {
                 if (type == "add")
