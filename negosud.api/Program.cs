@@ -45,6 +45,21 @@ builder.Services.AddDbContext<NegoSudDbContext>(option =>
 {
     option.UseSqlServer(builder.Configuration.GetConnectionString("negoSudDb"));
 });
+
+
+builder.Services.AddMvc();
+builder.Services.AddCors(option =>
+{
+    option.AddDefaultPolicy(
+        policy =>
+        {
+            policy.AllowAnyHeader()
+                  .AllowAnyMethod()
+                  .AllowCredentials();
+        });
+});
+builder.Services.AddAutoMapper(typeof(UserMapping));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -56,6 +71,8 @@ if (app.Environment.IsDevelopment())
 app.UseCors("Cors");
 app.UseHttpsRedirection();
 app.UseAuthorization();
+
+app.UseCors();
 
 app.MapControllers();
 
