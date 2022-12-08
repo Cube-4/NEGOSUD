@@ -35,7 +35,16 @@ builder.Services.AddSwaggerGen();
 
 
 builder.Services.AddMvc();
-builder.Services.AddCors();
+builder.Services.AddCors(option =>
+{
+    option.AddDefaultPolicy(
+        policy =>
+        {
+            policy.AllowAnyHeader()
+                  .AllowAnyMethod()
+                  .AllowCredentials();
+        });
+});
 builder.Services.AddAutoMapper(typeof(UserMapping));
 
 var app = builder.Build();
@@ -50,6 +59,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseCors();
 
 app.MapControllers();
 
