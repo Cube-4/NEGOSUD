@@ -29,7 +29,7 @@ export default function Login() {
         <Box w="60%" position={"relative"}>
           <Image
             src={loginImage}
-            layout={"fill"}
+            fill
             alt="Picture of a man working"
             // blurDataURL="data:..." automatically provided
             // placeholder="blur" // Optional blur-up while loading

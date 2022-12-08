@@ -15,11 +15,10 @@ import {
   FlexProps,
 } from "@chakra-ui/react";
 import {
-  FiHome,
-  FiTrendingUp,
   FiCompass,
-  FiStar,
-  FiSettings,
+  FiTruck,
+  FiUsers,
+  FiArchive,
   FiMenu,
 } from "react-icons/fi";
 import { IconType } from "react-icons";
@@ -30,19 +29,17 @@ interface LinkItemProps {
   icon: IconType;
 }
 const LinkItems: Array<LinkItemProps> = [
-  { name: "Home", icon: FiHome },
-  { name: "Trending", icon: FiTrendingUp },
-  { name: "Explore", icon: FiCompass },
-  { name: "Favourites", icon: FiStar },
-  { name: "Settings", icon: FiSettings },
+  { name: "Stock", icon: FiArchive },
+  { name: "Liste de clients", icon: FiUsers },
+  { name: "Commandes", icon: FiTruck },
 ];
 
 export default function SimpleSidebar() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
-    <Box h="100vh" w="100%" overflow="hidden" mr={20} >
+    <Box h="100vh" w="100%" overflow="hidden" mr={20}>
       <SidebarContent
-      bgColor="primary.700"
+        bgColor="primary.700"
         onClose={() => onClose}
         display={{ base: "none", md: "block" }}
       />
@@ -80,16 +77,25 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       {...rest}
     >
       <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
-        <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
-          Logo
+        <Text
+          fontSize="2xl"
+          fontFamily="monospace"
+          fontWeight="bold"
+          color="white"
+        >
+          NegoSud
         </Text>
         <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       </Flex>
-      {LinkItems.map((link) => (
-        <NavItem key={link.name} icon={link.icon}>
-          {link.name}
-        </NavItem>
-      ))}
+      <Flex direction="column" gap="5vh">
+        {LinkItems.map((link) => (
+          <Box>
+            <NavItem key={link.name} icon={link.icon}>
+              {link.name}
+            </NavItem>
+          </Box>
+        ))}
+      </Flex>
     </Box>
   );
 };
@@ -112,8 +118,9 @@ const NavItem = ({ icon, children, ...rest }: NavItemProps) => {
         borderRadius="lg"
         role="group"
         cursor="pointer"
+        color="white"
         _hover={{
-          bg: "cyan.400",
+          bg: "primary.500",
           color: "white",
         }}
         {...rest}
@@ -122,6 +129,7 @@ const NavItem = ({ icon, children, ...rest }: NavItemProps) => {
           <Icon
             mr="4"
             fontSize="16"
+            color="white"
             _groupHover={{
               color: "white",
             }}
@@ -157,8 +165,14 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
         icon={<FiMenu />}
       />
 
-      <Text fontSize="2xl" ml="8" fontFamily="monospace" fontWeight="bold">
-        Logo
+      <Text
+        fontSize="2xl"
+        ml="8"
+        fontFamily="monospace"
+        fontWeight="bold"
+        color="white"
+      >
+        NegoSud
       </Text>
     </Flex>
   );
