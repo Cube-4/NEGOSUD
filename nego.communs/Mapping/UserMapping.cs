@@ -15,8 +15,26 @@ namespace nego.communs.Mapping
         {
             CreateMap<User, UserRessource>()
                 .ForMember(clientRessources => clientRessources.Id, opt => opt.MapFrom(user => user.Id));
-            
-            CreateMap<UserRessource, User>();
+ 
+    
+            CreateMap<UserRessource, User>()
+                .ForMember(x => x.Roles, opt => opt.Ignore())
+                .AfterMap((userRessource, user) =>
+                {
+                    var removedRoles = user.Roles
+                        .Where(ur => !userRessource.Roles.Contains(ur.Id));
+                        foreach (var item in removedRoles)
+                        {
+                            user.Roles.Remove(item);
+                        }
+                    var addedRole = userRessource.Roles
+                        .Where(roleId => user.Roles.All(ur => ur.RoleId != roleId))
+                        .Select(id => new RoleUser { RoleId = id }).ToList();
+                        foreach (var item in addedRole)
+                        {
+                            user.Roles.Add(item);
+                        }
+                });
         }
     }
 }

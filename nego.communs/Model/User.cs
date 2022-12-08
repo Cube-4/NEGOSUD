@@ -8,11 +8,11 @@ namespace nego.communs.Model
         public string LastName { get; set; }
         public DateTime DateOfBirth { get; set; }
         public string Email { get; set; }
-        public virtual ICollection<Role> Roles { get; set; }
+        public virtual List<RoleUser> Roles { get; set; }
 
         public User()
         {
-            this.Roles = new HashSet<Role>();
+            Roles = new List<RoleUser>();
         }
     }
 

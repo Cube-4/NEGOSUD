@@ -12,10 +12,10 @@ namespace nego.communs.resource
         public DateTime OrderDate { get; set; }
         public string ReferenceName { get; set; }
         public string SupplierName { get; set; }
-        public List<OrderArticle> Articles { get; set; }
+        public List<int> Articles { get; set; }
         public OrderRessource()
         {
-            Articles = new List<OrderArticle>();
+            Articles = new List<int>();
         }  
     }
 }

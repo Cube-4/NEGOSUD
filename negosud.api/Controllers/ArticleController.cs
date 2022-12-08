@@ -54,7 +54,7 @@ namespace nego.api.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update(ArticleRessource data)
+        public async Task<IActionResult> Update( ArticleRessource data)
         {
             var article = await _articleService.Update(data);
             if (article != null)

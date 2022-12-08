@@ -43,7 +43,7 @@ namespace nego.api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(UserRessource data)
+        public async Task<IActionResult> Create([FromBody] UserRessource data)
         {
             var user = await _clientService.Add(data);
             if (user != null)
