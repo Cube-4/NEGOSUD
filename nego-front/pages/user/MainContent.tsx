@@ -1,12 +1,18 @@
 import React from "react";
 import { Box, Text } from "@chakra-ui/react";
-export default function MainContent() {
+import DataGrid from "./DataGrid";
+export default function MainContent({ articles }: any) {
   return (
     <>
       <Box w="100%">
-        <Text color="white" fontSize="2xl">
-          Liste du stock
-        </Text>
+        <Box mb="5vh">
+          <Text color="white" fontSize="2xl">
+            Liste du stock
+          </Text>
+        </Box>
+        <Box w="60%">
+          <DataGrid articles={articles}/>
+        </Box>
       </Box>
     </>
   );
