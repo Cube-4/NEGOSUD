@@ -14,14 +14,8 @@ namespace nego.communs.Resource
         public int Quantity { get; set; }
         [Required]
         public float Price { get; set; }
-
-        public List<int> Orders { get; set; }
+        [Required]
         public int UserId { get; set; }
-
-        public ArticleRessource()
-        {
-            Orders = new List<int>();
-        }
     }
 
 }

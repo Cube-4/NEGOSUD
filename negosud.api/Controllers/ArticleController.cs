@@ -43,7 +43,7 @@ namespace nego.api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(ArticleRessource data)
+        public async Task<IActionResult> Create([FromBody] ArticleRessource data)
         {
             var article = await _articleService.Add(data);
             if (article != null)
@@ -54,7 +54,7 @@ namespace nego.api.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update( ArticleRessource data)
+        public async Task<IActionResult> Update([FromBody] ArticleRessource data)
         {
             var article = await _articleService.Update(data);
             if (article != null)

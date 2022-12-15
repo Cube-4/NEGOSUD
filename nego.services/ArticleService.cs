@@ -45,10 +45,10 @@ namespace nego.services
 
         public async Task<bool> DeleteById(int id)
         {
-            var user = _repository.GetOne<Article>(User => User.Id == id);
-            if (user != null)
+            var article = _repository.GetOne<Article>(article => article.Id == id);
+            if (article != null)
             {
-                _repository.Remove(user);
+                _repository.Remove(article);
                 await _unitOfWork.SaveIntoDbContextAsync();
                 return true;
             }
@@ -63,9 +63,12 @@ namespace nego.services
             //check if the user already exist by email
             if (articlesResource.Id != null)
             {
+                var articleUser = _repository.GetOne<User>(User => User.Id == articlesResource.UserId);
                 //map from dto to model
                 var newArticle = _mapper.Map<Article>(articlesResource);
+                newArticle.User = articleUser;
                 _repository.Add(newArticle);
+
                 await _unitOfWork.SaveIntoDbContextAsync();
                 return articlesResource;
             }
@@ -77,11 +80,11 @@ namespace nego.services
             var articlesResource = (ArticleRessource)data;
 
             //get user
-            var user = _repository.GetOne<Article>(User => User.Id == articlesResource.Id);
+            var article = _repository.GetOne<Article>(Article => Article.Id == articlesResource.Id);
             //check if user exist
-            if (user != null)
+            if (article != null)
             {
-                var entity = _mapper.Map(articlesResource, user);
+                var entity = _mapper.Map(articlesResource, article);
                 //add to db
                 _repository.Update(entity);
                 //save changes to db

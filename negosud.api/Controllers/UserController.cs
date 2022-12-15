@@ -54,7 +54,7 @@ namespace nego.api.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update(UserRessource data)
+        public async Task<IActionResult> Update([FromBody] UserRessource data)
         {
             var user = await _clientService.Update(data);
             if (user != null)
