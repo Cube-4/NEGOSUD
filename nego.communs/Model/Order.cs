@@ -11,9 +11,11 @@ namespace nego.communs.Model
         public string ReferenceName { get; set; }
         public string SupplierName { get; set; }
         public List<OrderArticle> Articles { get; set; }
+        public List<UserOrder> Users { get; set; }
         public Order()
         {
             Articles = new List<OrderArticle>();
+            Users = new List<UserOrder>();
         }  
     }
 }

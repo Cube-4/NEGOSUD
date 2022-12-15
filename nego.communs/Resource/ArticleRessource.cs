@@ -12,7 +12,11 @@ namespace nego.communs.Resource
         public DateTime Date { get; set; }
         public string Origin { get; set; }
         public int Quantity { get; set; }
+        [Required]
+        public float Price { get; set; }
+
         public List<int> Orders { get; set; }
+        public int UserId { get; set; }
 
         public ArticleRessource()
         {

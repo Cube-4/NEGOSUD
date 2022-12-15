@@ -13,9 +13,12 @@ namespace nego.communs.resource
         public string ReferenceName { get; set; }
         public string SupplierName { get; set; }
         public List<int> Articles { get; set; }
+        public List<int> Users { get; set; }
+
         public OrderRessource()
         {
             Articles = new List<int>();
+            Users = new List<int>();
         }  
     }
 }
