@@ -72,7 +72,6 @@ namespace nego.api.Controllers
             {
                 return Ok("Successfully Updated article quantity " + quantity);
 
-
             }
             return BadRequest("Something wrong happened with the article quantity update");
         }
