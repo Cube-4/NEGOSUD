@@ -8,7 +8,6 @@ import DateFilter from "@inovua/reactdatagrid-community/DateFilter";
 export default function DataGrid({ articles }: any) {
   const gridStyle = { minHeight: 600 };
 
-
   const columns = [
     {
       name: "id",
@@ -39,14 +38,6 @@ export default function DataGrid({ articles }: any) {
       header: "Quantité",
       defaultFlex: 1,
     },
-  ];
-  const dataSource = [
-    { id: 1, name: "chardonnais", type: "vin" , date: "2021-01-01", origin: "France", quantity: 10 },
-    { id: 2, name: "saint émilion", type: "vin" , date: "2021-01-01", origin: "France", quantity: 27 },
-    { id: 3, name: "sancerre", type: "vin" , date: "2021-01-01", origin: "France", quantity: 15 },
-    { id: 4, name: "chablis", type: "vin" , date: "2021-01-01", origin: "France", quantity: 12 },
-    
-    
   ];
 
   return (

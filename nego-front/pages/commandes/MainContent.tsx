@@ -10,8 +10,8 @@ export default function MainContent({ order }: any) {
             Liste du stock
           </Text>
         </Box>
-        <Box w="60%">
-          <DataGrid order={order}/>
+        <Box w="90%">
+          <DataGrid order={order} />
         </Box>
       </Box>
     </>
