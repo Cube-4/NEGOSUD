@@ -1,8 +1,19 @@
 import React from "react";
 import { Button, Flex, Input, Text } from "@chakra-ui/react";
 import { useFormik } from "formik";
+import axios from "axios";
 
 function Client() {
+  async function onSubmit(data: any) {
+    axios
+      .post("http://localhost:44312/api/user", data)
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
   const formik = useFormik({
     initialValues: {
       firstName: "",
@@ -11,7 +22,7 @@ function Client() {
       email: "",
     },
     onSubmit: (values) => {
-      console.log(values);
+      onSubmit(values);
     },
   });
   return (
@@ -57,7 +68,7 @@ function Client() {
             />
           </Flex>
           <Flex direction={"column"}>
-            <Text>Hello</Text>
+            <Text>E-mail</Text>
             <Input
               bgColor={"#7B849A"}
               borderColor={"#7B849A"}
@@ -68,7 +79,7 @@ function Client() {
               value={formik.values.email}
             />
           </Flex>
-          <Button type="submit">Submit</Button>
+          <Button type="submit">Ajouter un nouveau client</Button>
         </Flex>
       </Flex>
     </form>
