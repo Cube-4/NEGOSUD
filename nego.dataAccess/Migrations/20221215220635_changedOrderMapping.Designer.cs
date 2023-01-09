@@ -12,8 +12,8 @@ using nego.DataAccess.dbContexte;
 namespace nego.dataAccess.Migrations
 {
     [DbContext(typeof(NegoSudDbContext))]
-    [Migration("20221206094421_ManyToManyWId")]
-    partial class ManyToManyWId
+    [Migration("20221215220635_changedOrderMapping")]
+    partial class changedOrderMapping
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,19 +36,27 @@ namespace nego.dataAccess.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Family")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Origin")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<float>("Price")
+                        .HasColumnType("real");
+
+                    b.Property<string>("Reference")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("Stock")
                         .HasColumnType("int");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Articles");
                 });
@@ -67,10 +75,10 @@ namespace nego.dataAccess.Migrations
                     b.Property<string>("OrderName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ReferenceName")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
 
-                    b.Property<string>("SupplierName")
+                    b.Property<string>("ReferenceName")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -80,21 +88,26 @@ namespace nego.dataAccess.Migrations
 
             modelBuilder.Entity("nego.communs.Model.OrderArticle", b =>
                 {
-                    b.Property<int>("OrderId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("ArticleId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Id")
+                    b.Property<int>("OrderId")
                         .HasColumnType("int");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.HasKey("OrderId", "ArticleId");
+                    b.HasKey("Id");
 
                     b.HasIndex("ArticleId");
+
+                    b.HasIndex("OrderId");
 
                     b.ToTable("OrderArticle");
                 });
@@ -115,6 +128,29 @@ namespace nego.dataAccess.Migrations
                     b.ToTable("Roles");
                 });
 
+            modelBuilder.Entity("nego.communs.Model.RoleUser", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("RoleUsers");
+                });
+
             modelBuilder.Entity("nego.communs.Model.User", b =>
                 {
                     b.Property<int>("Id")
@@ -122,6 +158,9 @@ namespace nego.dataAccess.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ArticlesQuantity")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime2");
@@ -140,22 +179,38 @@ namespace nego.dataAccess.Migrations
                     b.ToTable("User", (string)null);
                 });
 
-            modelBuilder.Entity("nego.communs.Model.UserRole", b =>
+            modelBuilder.Entity("nego.communs.Model.UserOrder", b =>
                 {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
+                    b.HasKey("Id");
 
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
+                    b.HasIndex("OrderId");
 
-                    b.HasKey("UserId", "RoleId");
+                    b.HasIndex("UserId");
 
-                    b.HasIndex("RoleId");
+                    b.ToTable("UserOrder");
+                });
 
-                    b.ToTable("UserRole");
+            modelBuilder.Entity("nego.communs.Model.Article", b =>
+                {
+                    b.HasOne("nego.communs.Model.User", "User")
+                        .WithMany("Articles")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("nego.communs.Model.OrderArticle", b =>
@@ -177,7 +232,7 @@ namespace nego.dataAccess.Migrations
                     b.Navigation("Order");
                 });
 
-            modelBuilder.Entity("nego.communs.Model.UserRole", b =>
+            modelBuilder.Entity("nego.communs.Model.RoleUser", b =>
                 {
                     b.HasOne("nego.communs.Model.Role", "Role")
                         .WithMany("Users")
@@ -196,6 +251,25 @@ namespace nego.dataAccess.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("nego.communs.Model.UserOrder", b =>
+                {
+                    b.HasOne("nego.communs.Model.Order", "Order")
+                        .WithMany("Users")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("nego.communs.Model.User", "User")
+                        .WithMany("Orders")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("nego.communs.Model.Article", b =>
                 {
                     b.Navigation("Orders");
@@ -204,6 +278,8 @@ namespace nego.dataAccess.Migrations
             modelBuilder.Entity("nego.communs.Model.Order", b =>
                 {
                     b.Navigation("Articles");
+
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("nego.communs.Model.Role", b =>
@@ -213,6 +289,10 @@ namespace nego.dataAccess.Migrations
 
             modelBuilder.Entity("nego.communs.Model.User", b =>
                 {
+                    b.Navigation("Articles");
+
+                    b.Navigation("Orders");
+
                     b.Navigation("Roles");
                 });
 #pragma warning restore 612, 618

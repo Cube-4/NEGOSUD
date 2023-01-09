@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using nego.business;
+using nego.communs.Global;
 using nego.communs.Model;
 using nego.communs.Resource;
 using nego.dataAccess.unitOfWork.Repository;

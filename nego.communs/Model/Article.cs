@@ -9,8 +9,12 @@ namespace nego.communs.Model
         public DateTime Date { get; set; }
         public string Origin { get; set; }
         public int Stock { get; set; }
-        public List<OrderArticle> Orders { get; set; }
+        public float Price { get; set; }
         
+        public virtual List<OrderArticle> Orders { get; set; } 
+        public int UserId { get; set; }
+        public virtual User User { get; set; }
+
         public Article()
         {
             Orders = new List<OrderArticle>();

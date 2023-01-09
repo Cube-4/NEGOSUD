@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using nego.communs.Global;
+using nego.communs.Model;
+using System.ComponentModel.DataAnnotations;
 
 namespace nego.communs.Resource
 {
@@ -10,6 +12,10 @@ namespace nego.communs.Resource
         public DateTime Date { get; set; }
         public string Origin { get; set; }
         public int Quantity { get; set; }
+        [Required]
+        public float Price { get; set; }
+        [Required]
+        public int UserId { get; set; }
     }
 
 }
