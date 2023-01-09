@@ -12,7 +12,7 @@ export default function UserPage() {
     const https = require("https");
     const agent = new https.Agent({ rejectUnauthorized: false });
     //Call the article API
-    const response = await fetch("https://localhost:7201/api/user", {
+    const response = await fetch("http://localhost:44312/api/user", {
       agent,
       method: "GET",
     } as any);
@@ -26,16 +26,9 @@ export default function UserPage() {
   }
   return (
     user && (
-      <>
-        <Flex gap="0px" rowGap="0px">
-          <Box>
-            <SimpleSidebar />
-          </Box>
-          <Box pl={10} pt={5} bgColor="primary.700" w="100%">
-            <MainContent user={user} />
-          </Box>
-        </Flex>
-      </>
+      <Box pl={10} pt={5} bgColor="primary.700" w="100%" h="100%">
+        <MainContent user={user} />
+      </Box>
     )
   );
 }
