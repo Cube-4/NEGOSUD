@@ -36,7 +36,7 @@ const LinkItems: Array<LinkItemProps> = [
 export default function SimpleSidebar() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
-    <Box h="100vh" w="100%" overflow="hidden" mr={20}>
+    <Box h="100%" w="100%" overflow="hidden" mr={20}>
       <SidebarContent
         bgColor="primary.700"
         onClose={() => onClose}

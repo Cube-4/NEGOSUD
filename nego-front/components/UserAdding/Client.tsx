@@ -23,6 +23,7 @@ function Client() {
     },
     onSubmit: (values) => {
       onSubmit(values);
+      window.location.reload();
     },
   });
   return (
@@ -56,18 +57,6 @@ function Client() {
         </Flex>
         <Flex gap="2vw">
           <Flex direction={"column"}>
-            <Text>Date de naissance</Text>
-            <Input
-              bgColor={"#7B849A"}
-              borderColor={"#7B849A"}
-              id="birthDate"
-              name="birthDate"
-              type="text"
-              onChange={formik.handleChange}
-              value={formik.values.birthDate}
-            />
-          </Flex>
-          <Flex direction={"column"}>
             <Text>E-mail</Text>
             <Input
               bgColor={"#7B849A"}
@@ -79,7 +68,7 @@ function Client() {
               value={formik.values.email}
             />
           </Flex>
-          <Button type="submit">Ajouter un nouveau client</Button>
+          <Button type="submit" mt="3vh">Ajouter un nouveau client</Button>
         </Flex>
       </Flex>
     </form>
