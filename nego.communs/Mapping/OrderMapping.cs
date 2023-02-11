@@ -32,16 +32,16 @@ namespace nego.communs.Mapping
 
                 .AfterMap((orderRessource, order) =>
                 {
-                    var removedUsers = order.Users
+                    var removedArticles = order.Users
                         .Where(ur => !orderRessource.Users.Contains(ur.Id));
-                    foreach (var item in removedUsers)
+                    foreach (var item in removedArticles)
                     {
                         order.Users.Remove(item);
                     }
-                    var addedUsers = orderRessource.Users
+                    var addedArticles = orderRessource.Users
                         .Where(userId => order.Users.All(ur => ur.UserId != userId))
                         .Select(id => new UserOrder { UserId = id }).ToList();
-                    foreach (var item in addedUsers)
+                    foreach (var item in addedArticles)
                     {
                         order.Users.Add(item);
                     }
