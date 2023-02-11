@@ -12,8 +12,8 @@ using nego.DataAccess.dbContexte;
 namespace nego.dataAccess.Migrations
 {
     [DbContext(typeof(NegoSudDbContext))]
-    [Migration("20221215220549_FinalizedModel")]
-    partial class FinalizedModel
+    [Migration("20230110090016_Role")]
+    partial class Role
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace nego.dataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class FinalizedModel : Migration
+    public partial class Role : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

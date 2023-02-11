@@ -9,6 +9,7 @@ namespace nego.communs.Global
 {
     public class Entity
     {
+        [Key]
         public int Id { get; set; }   
     }
 

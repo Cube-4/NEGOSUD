@@ -55,7 +55,7 @@ namespace nego.dataAccess.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Articles", (string)null);
+                    b.ToTable("Articles");
                 });
 
             modelBuilder.Entity("nego.communs.Model.Order", b =>
@@ -80,7 +80,7 @@ namespace nego.dataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Orders", (string)null);
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("nego.communs.Model.OrderArticle", b =>
@@ -106,7 +106,7 @@ namespace nego.dataAccess.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("OrderArticle", (string)null);
+                    b.ToTable("OrderArticle");
                 });
 
             modelBuilder.Entity("nego.communs.Model.Role", b =>
@@ -122,7 +122,7 @@ namespace nego.dataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Roles", (string)null);
+                    b.ToTable("Roles");
                 });
 
             modelBuilder.Entity("nego.communs.Model.RoleUser", b =>
@@ -145,7 +145,7 @@ namespace nego.dataAccess.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("RoleUsers", (string)null);
+                    b.ToTable("RoleUsers");
                 });
 
             modelBuilder.Entity("nego.communs.Model.User", b =>
@@ -196,7 +196,7 @@ namespace nego.dataAccess.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserOrder", (string)null);
+                    b.ToTable("UserOrder");
                 });
 
             modelBuilder.Entity("nego.communs.Model.Article", b =>
