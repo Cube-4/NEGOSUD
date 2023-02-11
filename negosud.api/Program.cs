@@ -56,6 +56,7 @@ builder.Services.AddCors(option =>
             policy.AllowAnyHeader()
                   .AllowAnyMethod()
                   .AllowCredentials();
+
         });
 });
 builder.Services.AddAutoMapper(typeof(UserMapping));

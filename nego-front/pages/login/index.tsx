@@ -67,7 +67,7 @@ export default function Login() {
                     <PasswordInput />
                   </GridItem>
                   <GridItem>
-                    <Link href="/user">
+                    <Link href="/stocks">
                       <Button
                         bgColor="#5378FA"
                         _hover={{
