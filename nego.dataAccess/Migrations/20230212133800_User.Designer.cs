@@ -12,8 +12,8 @@ using nego.DataAccess.dbContexte;
 namespace nego.dataAccess.Migrations
 {
     [DbContext(typeof(NegoSudDbContext))]
-    [Migration("20230211153807_added_Password")]
-    partial class addedPassword
+    [Migration("20230212133800_User")]
+    partial class User
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

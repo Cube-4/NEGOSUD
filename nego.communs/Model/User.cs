@@ -1,4 +1,5 @@
 ﻿using nego.communs.Global;
+using System.Text.Json.Serialization;
 
 namespace nego.communs.Model
 {
@@ -6,9 +7,11 @@ namespace nego.communs.Model
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string Email { get; set; }
+
+        [JsonIgnore]
         public string Password { get; set; }
         public DateTime DateOfBirth { get; set; }
-        public string Email { get; set; }
         public virtual List<RoleUser> Roles { get; set; }
         public virtual List<UserOrder> Orders { get; set; }
         public virtual List<Article> Articles { get; set; }

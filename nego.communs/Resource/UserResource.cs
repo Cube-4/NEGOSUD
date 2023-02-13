@@ -6,15 +6,20 @@ namespace nego.communs.Resource
 {
     public class UserRessource : EntityRessource
     {
-        [Required]
         public string FirstName { get; set; }
-        [Required]
+        
         public string LastName { get; set; }
-        [Required]
-        public string Password { get; set; }
-        public DateTime DateOfBirth { get; set; }
+
         [Required]
         public string Email { get; set; }
+
+        [Required]
+        public string Password { get; set; }
+        
+        public DateTime DateOfBirth { get; set; }
+
+        public string Token { get; set; }
+
         public List<int> Roles { get; set; }
 
         public UserRessource()

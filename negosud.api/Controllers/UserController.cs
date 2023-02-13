@@ -1,22 +1,30 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using nego.business;
 using nego.communs.Resource;
+using nego.services;
+using nego.services.Authorization.Helper;
 
 namespace nego.api.Controllers
 {
+    [Authorize]
     [Produces("application/json")]
     [Route("api/user")]
     public class UserController : Controller
     {
 
         private readonly IUserService _clientService;
+        private readonly AppSettings _appSettings;
 
 
-        public UserController(IUserService clientService)
+        public UserController(IUserService clientService, IOptions<AppSettings> appSettings)
         {
             _clientService = clientService;
+            _appSettings = appSettings.Value;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -42,6 +50,7 @@ namespace nego.api.Controllers
             return BadRequest("Something wrong happened Deletion");
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] UserRessource data)
         {
@@ -52,6 +61,15 @@ namespace nego.api.Controllers
             }
             return BadRequest("Something wrong happened with Creation");
         }
+
+        [AllowAnonymous]
+        [HttpPost("authenticate")]
+        public async Task<IActionResult> Authenticate([FromBody] AuthenticateRequest model)
+        {
+            var response = _clientService.Authenticate(model);
+            return Ok(response);
+        }
+
 
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] UserRessource data)

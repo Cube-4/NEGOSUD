@@ -1,11 +1,12 @@
 ﻿using AutoMapper;
 using nego.business;
-using nego.communs.Global;
 using nego.communs.Model;
 using nego.communs.Resource;
 using nego.dataAccess.unitOfWork.Repository;
 using nego.DataAccess.dbContexte;
 using nego.DataAccess.unitOfWork;
+using nego.services.Authorization.Helper;
+using BCrypt.Net;
 
 namespace nego.services
 {
@@ -14,11 +15,14 @@ namespace nego.services
         private readonly IRepository<NegoSudDbContext> _repository;
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
-        public UserService(IMapper mapper, IUnitOfWork unitOfWork, IRepository<NegoSudDbContext> repository)
+        private IJwtUtils _jwtUtils;
+
+        public UserService(IMapper mapper, IUnitOfWork unitOfWork, IRepository<NegoSudDbContext> repository, IJwtUtils jwtUtils)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
             _repository = repository;
+            _jwtUtils = jwtUtils;
         }
 
 
@@ -62,6 +66,7 @@ namespace nego.services
             {
                 //map from dto to model
                 var newUser = _mapper.Map<User>(userResource);
+                newUser.Password = BCrypt.Net.BCrypt.HashPassword(userResource.Password);
                 _repository.Add(newUser);
                 await _unitOfWork.SaveIntoDbContextAsync();
                 return userResource;
@@ -87,6 +92,20 @@ namespace nego.services
                 return userMapped;
             }
             return await Task.FromResult<UserRessource>(null);
+        }
+
+        public async Task<UserRessource> Authenticate(AuthenticateRequest userRequest)
+        {            
+            var user = _repository.GetOne<User>(x => x.Email == userRequest.Email);
+
+            // validate
+            if (user == null || !BCrypt.Net.BCrypt.Verify(userRequest.Password, user.Password))
+                throw new AppException("Username or password is incorrect");
+
+            // authentication successful
+            var response = _mapper.Map<UserRessource>(user);
+            response.Token = _jwtUtils.GenerateToken(user);
+            return response;
         }
     }
 }
