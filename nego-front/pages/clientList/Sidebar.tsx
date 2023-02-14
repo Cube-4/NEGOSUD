@@ -13,14 +13,8 @@ import {
   useDisclosure,
   BoxProps,
   FlexProps,
-} from "@chakra-ui/react";
-import {
-  FiCompass,
-  FiTruck,
-  FiUsers,
-  FiArchive,
-  FiMenu,
-} from "react-icons/fi";
+} from "@mantine/core";
+import { FiCompass, FiTruck, FiUsers, FiArchive, FiMenu } from "react-icons/fi";
 import { IconType } from "react-icons";
 import { ReactText } from "react";
 

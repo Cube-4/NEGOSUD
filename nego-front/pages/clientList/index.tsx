@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Flex } from "@mantine/core";
 // Import components
 import SimpleSidebar from "./Sidebar";
 import MainContent from "./MainContent";
