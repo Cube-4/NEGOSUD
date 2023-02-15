@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Flex, Input, Text } from "@chakra-ui/react";
+import { Button, Flex, Input, Text } from "@mantine/core";
 import { useFormik } from "formik";
 
 function Client() {

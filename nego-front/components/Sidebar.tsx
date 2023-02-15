@@ -1,173 +1,127 @@
-import React, { ReactNode } from "react";
+import { useState } from "react";
 import {
-  IconButton,
-  Box,
-  CloseButton,
-  Flex,
-  Icon,
-  useColorModeValue,
-  Drawer,
-  DrawerContent,
-  Text,
-  useDisclosure,
-  BoxProps,
-  FlexProps,
-} from "@chakra-ui/react";
-import Link from "next/link";
-import { FiCompass, FiTruck, FiUsers, FiArchive, FiMenu } from "react-icons/fi";
-import { IconType } from "react-icons";
-import { ReactText } from "react";
+  Navbar,
+  Center,
+  Tooltip,
+  UnstyledButton,
+  createStyles,
+  Stack,
+} from "@mantine/core";
+import {
+  IconHome2,
+  IconGauge,
+  IconDeviceDesktopAnalytics,
+  IconFingerprint,
+  IconCalendarStats,
+  IconUser,
+  IconSettings,
+  IconLogout,
+  IconSwitchHorizontal,
+} from "@tabler/icons";
+import { MantineLogo } from "@mantine/ds";
 
-interface LinkItemProps {
-  name: string;
-  icon: IconType;
-  link: string;
-}
-const LinkItems: Array<LinkItemProps> = [
-  { name: "Stock", icon: FiArchive, link: "http://localhost:3000/stocks" },
-  {
-    name: "Liste de clients",
-    icon: FiUsers,
-    link: "http://localhost:3000/clientList",
+const useStyles = createStyles((theme) => ({
+  link: {
+    width: 50,
+    height: 50,
+    borderRadius: theme.radius.md,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    color: theme.white,
+    opacity: 0.85,
+
+    "&:hover": {
+      opacity: 1,
+      backgroundColor: theme.fn.lighten(
+        theme.fn.variant({ variant: "filled", color: theme.primaryColor })
+          .background!,
+        0.1
+      ),
+    },
   },
-  { name: "Commandes", icon: FiTruck, link: "http://localhost:3000/commandes" },
+
+  active: {
+    opacity: 1,
+    "&, &:hover": {
+      backgroundColor: theme.fn.lighten(
+        theme.fn.variant({ variant: "filled", color: theme.primaryColor })
+          .background!,
+        0.15
+      ),
+    },
+  },
+}));
+
+interface NavbarLinkProps {
+  icon: any;
+  label: string;
+  active?: boolean;
+  onClick?(): void;
+}
+
+function NavbarLink({ icon: Icon, label, active, onClick }: NavbarLinkProps) {
+  const { classes, cx } = useStyles();
+  return (
+    <Tooltip label={label} position="right" transitionDuration={0}>
+      <UnstyledButton
+        onClick={onClick}
+        className={cx(classes.link, { [classes.active]: active })}
+      >
+        <Icon stroke={1.5} />
+      </UnstyledButton>
+    </Tooltip>
+  );
+}
+
+const mockdata = [
+  { icon: IconHome2, label: "Home" },
+  { icon: IconGauge, label: "Dashboard" },
+  { icon: IconDeviceDesktopAnalytics, label: "Analytics" },
+  { icon: IconCalendarStats, label: "Releases" },
+  { icon: IconUser, label: "Account" },
+  { icon: IconFingerprint, label: "Security" },
+  { icon: IconSettings, label: "Settings" },
 ];
 
-export default function SimpleSidebar() {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  return (
-    <Box h="100vh" w="100%" overflow="hidden" mr={20}>
-      <SidebarContent
-        bgColor="primary.700"
-        onClose={() => onClose}
-        display={{ base: "none", md: "block" }}
-      />
-      <Drawer
-        autoFocus={false}
-        isOpen={isOpen}
-        placement="left"
-        onClose={onClose}
-        returnFocusOnClose={false}
-        onOverlayClick={onClose}
-        size="full"
-      >
-        <DrawerContent>
-          <SidebarContent onClose={onClose} />
-        </DrawerContent>
-      </Drawer>
-      {/* mobilenav */}
-      <MobileNav display={{ base: "flex", md: "none" }} onOpen={onOpen} />
-    </Box>
-  );
-}
+export function Sidebar() {
+  const [active, setActive] = useState(2);
 
-interface SidebarProps extends BoxProps {
-  onClose: () => void;
-}
+  const links = mockdata.map((link, index) => (
+    <NavbarLink
+      {...link}
+      key={link.label}
+      active={index === active}
+      onClick={() => setActive(index)}
+    />
+  ));
 
-const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
   return (
-    <Box
-      bg={useColorModeValue("white", "gray.900")}
-      borderRight="1px"
-      borderRightColor={useColorModeValue("gray.200", "gray.700")}
-      w={{ base: "full" }}
-      h="full"
-      {...rest}
+    <Navbar
+      height={750}
+      width={{ base: 80 }}
+      p="md"
+      sx={(theme) => ({
+        backgroundColor: theme.fn.variant({
+          variant: "filled",
+          color: theme.primaryColor,
+        }).background,
+      })}
     >
-      <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
-        <Text
-          fontSize="2xl"
-          fontFamily="monospace"
-          fontWeight="bold"
-          color="white"
-        >
-          NegoSud
-        </Text>
-        <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
-      </Flex>
-      <Flex direction="column" gap="5vh">
-        {LinkItems.map((link) => (
-          <NavItem key={link.name} icon={link.icon} link={link.link}>
-            {link.name}
-          </NavItem>
-        ))}
-      </Flex>
-    </Box>
+      <Center>
+        <MantineLogo type="mark" inverted size={30} />
+      </Center>
+      <Navbar.Section grow mt={50}>
+        <Stack justify="center" spacing={0}>
+          {links}
+        </Stack>
+      </Navbar.Section>
+      <Navbar.Section>
+        <Stack justify="center" spacing={0}>
+          <NavbarLink icon={IconSwitchHorizontal} label="Change account" />
+          <NavbarLink icon={IconLogout} label="Logout" />
+        </Stack>
+      </Navbar.Section>
+    </Navbar>
   );
-};
-
-interface NavItemProps extends FlexProps {
-  icon: IconType;
-  children: ReactText;
-  link: string;
 }
-const NavItem = ({ link, icon, children, ...rest }: NavItemProps) => {
-  return (
-    <Link href={link} style={{ textDecoration: "none" }}>
-      <Flex
-        align="center"
-        p="4"
-        mx="4"
-        borderRadius="lg"
-        role="group"
-        cursor="pointer"
-        color="white"
-        _hover={{
-          bg: "primary.500",
-          color: "white",
-        }}
-        {...rest}
-      >
-        {icon && (
-          <Icon
-            mr="4"
-            fontSize="16"
-            color="white"
-            _groupHover={{
-              color: "white",
-            }}
-            as={icon}
-          />
-        )}
-        {children}
-      </Flex>
-    </Link>
-  );
-};
-
-interface MobileProps extends FlexProps {
-  onOpen: () => void;
-}
-const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
-  return (
-    <Flex
-      ml={{ base: 0, md: 60 }}
-      px={{ base: 4, md: 24 }}
-      height="20"
-      alignItems="center"
-      bg={useColorModeValue("white", "gray.900")}
-      borderBottomWidth="1px"
-      borderBottomColor={useColorModeValue("gray.200", "gray.700")}
-      justifyContent="flex-start"
-      {...rest}
-    >
-      <IconButton
-        variant="outline"
-        onClick={onOpen}
-        aria-label="open menu"
-        icon={<FiMenu />}
-      />
-
-      <Text
-        fontSize="2xl"
-        ml="8"
-        fontFamily="monospace"
-        fontWeight="bold"
-        color="white"
-      >
-        NegoSud
-      </Text>
-    </Flex>
-  );
-};

@@ -1,4 +1,4 @@
-import { Input, InputGroup, InputRightElement, Icon } from "@chakra-ui/react";
+import { Input, InputGroup, InputRightElement, Icon } from "@mantine/core";
 import React from "react";
 import { useState } from "react";
 import { BsFillEyeFill } from "react-icons/bs";

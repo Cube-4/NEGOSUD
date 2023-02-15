@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Text } from "@mantine/core";
 import DataGrid from "./DataGrid";
 import { UserAdding } from "../../components";
 export default function MainContent({ user }: any) {
@@ -8,7 +8,7 @@ export default function MainContent({ user }: any) {
       <Box w="100%">
         <UserAdding />
         <Box mb="5vh">
-          <Text color="white" fontSize="2xl">
+          <Text color="white" fz="2xl">
             Liste des clients
           </Text>
         </Box>
