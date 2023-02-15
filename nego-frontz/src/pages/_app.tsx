@@ -14,7 +14,11 @@ export default function App(props: AppProps) {
   const queryClient = new QueryClient();
   // Create context for auth
   const { isAuth, setIsAuth } = useAuth();
-  const value = useMemo(() => ({ isAuth, setIsAuth }), [isAuth, setIsAuth]);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const value = useMemo(
+    () => ({ isAuth, setIsAuth, setIsAdmin, isAdmin }),
+    [isAuth, setIsAuth, isAdmin, setIsAdmin]
+  );
 
   return (
     <>

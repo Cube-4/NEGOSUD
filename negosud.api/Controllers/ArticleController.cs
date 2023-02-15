@@ -3,6 +3,7 @@ using nego.business;
 using nego.communs.Model;
 using nego.communs.resource;
 using nego.communs.Resource;
+using nego.services.Authorization;
 
 namespace nego.api.Controllers
 {
@@ -16,7 +17,6 @@ namespace nego.api.Controllers
         {
             _articleService = articleService;
         }
-
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
