@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
 using nego.communs.Model;
 using nego.communs.Resource;
+using nego.dataAccess.unitOfWork.Repository;
+using nego.DataAccess.dbContexte;
+using static Microsoft.AspNetCore.Hosting.Internal.HostingApplication;
 
 namespace nego.communs.Mapping
 {
@@ -10,8 +13,12 @@ namespace nego.communs.Mapping
         {
             CreateMap<User, UserRessource>()
                 .ForMember(clientRessources => clientRessources.Id, opt => opt.MapFrom(user => user.Id))
-                .ForMember(clientRessources => clientRessources.Password, opt => opt.Ignore());
-            
+                .ForMember(clientRessources => clientRessources.Password, opt => opt.Ignore())
+                .ForMember(dest => dest.Roles, opt => opt.MapFrom(src => src.Roles
+                    .Where(ru => ru.UserId == src.Id)
+                    .Select(ru => ru.RoleId)
+                ));
+
             CreateMap<UserRessource, User>()
                 .ForMember(x => x.Roles, opt => opt.Ignore())
                 .AfterMap((userRessource, user) =>

@@ -33,6 +33,7 @@ namespace nego.api.Controllers
             return Ok(users);
         }
 
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
@@ -40,6 +41,7 @@ namespace nego.api.Controllers
             return Ok(user);
         }
 
+        [Authorize(1)]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteById(int id)
         {

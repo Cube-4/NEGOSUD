@@ -6,6 +6,7 @@ using nego.dataAccess.unitOfWork.Repository;
 using nego.DataAccess.dbContexte;
 using nego.DataAccess.unitOfWork;
 using nego.services.Authorization.Helper;
+using Microsoft.EntityFrameworkCore;
 using BCrypt.Net;
 
 namespace nego.services
@@ -29,14 +30,14 @@ namespace nego.services
         public Task<List<UserRessource>> GetAll()
         {
 
-            var users = _repository.GetAll<User>().ToList();
+            var users = _repository.GetAll<User>().Include(c => c.Roles).ThenInclude(x => x.Role).ToList();
             var usersRessource = _mapper.Map<List<UserRessource>>(users);
             return Task.FromResult(usersRessource);
         }
 
         public Task<UserRessource> GetById(int id)
         {
-            var user = _repository.GetOne<User>(User => User.Id == id);
+            var user = _repository.GetAll<User>().Include(u => u.Roles).ThenInclude(r => r.Role).FirstOrDefault(u => u.Id == id);
             if (user != null)
             {
                 var userRessource = _mapper.Map<UserRessource>(user);
