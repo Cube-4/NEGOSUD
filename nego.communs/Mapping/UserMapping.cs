@@ -9,8 +9,9 @@ namespace nego.communs.Mapping
         public UserMapping()
         {
             CreateMap<User, UserRessource>()
-                .ForMember(clientRessources => clientRessources.Id, opt => opt.MapFrom(user => user.Id));
-
+                .ForMember(clientRessources => clientRessources.Id, opt => opt.MapFrom(user => user.Id))
+                .ForMember(clientRessources => clientRessources.Password, opt => opt.Ignore());
+            
             CreateMap<UserRessource, User>()
                 .ForMember(x => x.Roles, opt => opt.Ignore())
                 .AfterMap((userRessource, user) =>

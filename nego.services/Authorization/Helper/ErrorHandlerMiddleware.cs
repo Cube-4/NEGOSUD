@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using System.Security.Authentication;
 using System.Text.Json;
 
 namespace nego.services.Authorization.Helper
@@ -33,6 +35,10 @@ namespace nego.services.Authorization.Helper
                     case KeyNotFoundException e:
                         // not found error
                         response.StatusCode = (int)HttpStatusCode.NotFound;
+                        break;
+                    case AuthenticationException e:
+                        //Unauthorized
+                        response.StatusCode = (int)HttpStatusCode.Unauthorized;
                         break;
                     default:
                         // unhandled error
