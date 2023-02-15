@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using nego.business;
+using nego.communs.Model;
 using nego.communs.Resource;
 using nego.services;
+using nego.services.Authorization;
 using nego.services.Authorization.Helper;
 
 namespace nego.api.Controllers
@@ -24,7 +25,7 @@ namespace nego.api.Controllers
             _appSettings = appSettings.Value;
         }
 
-        [AllowAnonymous]
+        [Authorize(1)]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
