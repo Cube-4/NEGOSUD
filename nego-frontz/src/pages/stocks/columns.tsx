@@ -34,7 +34,7 @@ export const columns = [
   },
   {
     name: "price",
-    header: "Quantité",
+    header: "Prix (€)",
     defaultFlex: 1,
   },
 ];

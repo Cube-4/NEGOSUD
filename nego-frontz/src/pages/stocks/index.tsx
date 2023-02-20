@@ -21,17 +21,12 @@ const DynamicDataGrid = dynamic(
 
 export default function Page({ data }: any) {
   const { isAdmin } = useContext(UserContext);
-  console.log(data);
 
   return (
     <div>
       <h1>Liste des articles</h1>
 
-      {!isAdmin && (
-        <Flex gap="1vw" wrap={"wrap"} justify={"space-around"}>
-          <UserStocks products={data} />
-        </Flex>
-      )}
+      {!isAdmin && <UserStocks products={data} />}
       {isAdmin && (
         <DynamicDataGrid
           idProperty="id"

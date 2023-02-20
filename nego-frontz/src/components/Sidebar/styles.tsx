@@ -93,11 +93,10 @@ export const authenticatedDataAdmin = [
 
 export const authenticatedDataUser = [
   { link: "/stocks", label: "Stocks", icon: IconBox },
-  { link: "/clients", label: "Liste de clients", icon: IconUsers },
-  { link: "/orders", label: "Commandes ", icon: IconReceipt2 },
   { link: "/cart", label: "Mon panier ", icon: IconShoppingCartDiscount },
+  { link: "/orders", label: "Mes commandes ", icon: IconReceipt2 },
 ];
 
 export const noAuthData = [
-  { link: "", label: "Identifiez-vous", icon: IconUser },
+  { link: "/", label: "Identifiez-vous", icon: IconUser },
 ];

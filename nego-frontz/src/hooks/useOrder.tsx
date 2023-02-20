@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useMutation } from "react-query";
 import axios from "axios";
-import authHeader from "@/helpers/auth-headers"
+import authHeader from "@/helpers/auth-headers";
 
 export default function useLogin() {
   const router = useRouter();
@@ -19,15 +19,14 @@ export default function useLogin() {
     };
     console.log(data);
     try {
-
       const response = await axios.post(
         "http://localhost:44312/api/order",
         data,
-       {
-        headers: authHeader()
-       }
+        {
+          headers: authHeader(),
+        }
       );
-      console.log(response);
+      console.log("Hello IS " + response.data);
     } catch (error: any) {
       alert(error);
     }

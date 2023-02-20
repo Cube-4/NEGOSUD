@@ -39,7 +39,7 @@ namespace nego.services.Authorization
                 return null;
 
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
+            var key = Encoding.UTF8.GetBytes(_appSettings.Secret);
             try
             {
                 tokenHandler.ValidateToken(token, new TokenValidationParameters

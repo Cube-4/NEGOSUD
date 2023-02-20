@@ -4,7 +4,7 @@ import axios from "axios";
 import "@inovua/reactdatagrid-community/index.css";
 import { columns } from "./columns";
 import type TypeDataGridProps from "@inovua/reactdatagrid-community/types/TypeDataGridProps";
-import authHeader from "@/helpers/auth-headers"
+import authHeader from "@/helpers/auth-headers";
 
 //---- import component as dynamic with un poco de bricolaje --
 const DynamicDataGrid = dynamic(
@@ -18,8 +18,6 @@ const DynamicDataGrid = dynamic(
 
 //---- Create your page using the dynamic component ------------
 export default function Page({ data }: any) {
-  console.log(data);
-
   return (
     <div>
       <h1>Liste de clients</h1>
@@ -34,14 +32,11 @@ export default function Page({ data }: any) {
   );
 }
 
-
 //---- Bonus: Make your request serverSide ---------------------
 export async function getServerSideProps() {
-  const products = await axios.get("http://localhost:44312/api/user", 
-    {
-      headers: authHeader()
-    }
-  )
+  const products = await fetch("http://localhost:44312/api/user").then((res) =>
+    res.json()
+  );
 
   return {
     props: { data: products },

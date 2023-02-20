@@ -6,7 +6,7 @@ export default function useLogout() {
   const { setIsAuth, setIsAdmin } = useContext(UserContext);
   const router = useRouter();
   function logout() {
-    localStorage.removeItem("loggedUser");
+    localStorage.removeItem("token");
     localStorage.removeItem("isAdmin");
     setIsAuth(false);
     setIsAdmin(false);

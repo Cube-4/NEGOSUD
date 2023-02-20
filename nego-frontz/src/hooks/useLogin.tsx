@@ -23,7 +23,7 @@ export default function useLogin() {
         "http://localhost:44312/api/user/authenticate",
         data
       );
-      localStorage.setItem("loggedUser", JSON.stringify(response.data.result));
+      localStorage.setItem("token", JSON.stringify(response.data.result.token));
       if (response.data.result.email === "rafael@yalink.fr") {
         localStorage.setItem("isAdmin", "true");
         setIsAdmin(true);

@@ -8,33 +8,15 @@ export const columns = [
     defaultWidth: 80,
     type: "number",
   },
-  { name: "name", header: "Nom", defaultFlex: 1 },
+  { name: "email", header: "Email", defaultFlex: 1 },
   {
-    name: "reference",
-    header: "Référence",
-    defaultFlex: 1,
-    type: "number",
-    filterEditor: NumberFilter,
-  },
-  {
-    name: "date",
-    header: "Date d'ajout",
-    defaultFlex: 1,
-    type: "date",
-  },
-  {
-    name: "origin",
-    header: "Origine du stock",
+    name: "firstName",
+    header: "Prénom",
     defaultFlex: 1,
   },
   {
-    name: "quantity",
-    header: "Quantité",
-    defaultFlex: 1,
-  },
-  {
-    name: "price",
-    header: "Quantité",
+    name: "lastName",
+    header: "Nom",
     defaultFlex: 1,
   },
 ];

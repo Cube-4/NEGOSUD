@@ -8,6 +8,7 @@ import {
   Button,
   Flex,
   Box,
+  NumberInput,
 } from "@mantine/core";
 import { QuantityInput } from "./quantityInput";
 import { useStyles } from "./styles";
@@ -56,11 +57,12 @@ export default function ({ products }: any) {
   ));
 
   // Form handling
-  const [value, setValue] = useState<number | undefined>(1);
 
   const { handleSubmit } = useForm();
 
   function Cards() {
+    const [value, setValue] = useState(0);
+
     let cards = products.map((product: any) => {
       async function onSubmit() {
         if (localStorage.getItem("cart") !== null) {
@@ -69,6 +71,7 @@ export default function ({ products }: any) {
           cart.push({
             product: product.name,
             quantity: value,
+            price: product.price,
           });
           localStorage.setItem("cart", JSON.stringify(cart));
         } else {
@@ -82,7 +85,7 @@ export default function ({ products }: any) {
       }
 
       return (
-        <Card withBorder radius="md" p="md" className={classes.card} w="25%">
+        <Card withBorder radius="md" p="md" className={classes.card} w="40%">
           <form onSubmit={handleSubmit(onSubmit)}>
             <Card.Section>
               <Image src={mockData.image} alt={product.name} height={180} />
@@ -95,9 +98,6 @@ export default function ({ products }: any) {
                 </Text>
                 <Badge size="sm">{product.origin}</Badge>
               </Group>
-              {/* <Text size="sm" mt="xs">
-            {product.description}
-          </Text> */}
             </Card.Section>
             <Card.Section className={classes.section} mt="md">
               <Text
@@ -134,14 +134,19 @@ export default function ({ products }: any) {
                   Quantité souhaitée :{" "}
                 </Text>
                 <Box w="40%">
-                  <QuantityInput
-                    max={product.quantity}
+                  <NumberInput
                     value={value}
-                    setValue={setValue}
+                    onChange={(val: number) => setValue(val)}
+                    max={product.quantity}
                   />
                 </Box>
               </Flex>
-              <Button radius="md" style={{ flex: 1 }} type="submit">
+              <Button
+                radius="md"
+                style={{ flex: 1 }}
+                type="submit"
+                disabled={value === 0}
+              >
                 Ajouter au panier
               </Button>
             </Group>
