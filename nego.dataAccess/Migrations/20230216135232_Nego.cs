@@ -6,27 +6,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace nego.dataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class User : Migration
+    public partial class Nego : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "Orders",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    OrderName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    OrderDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ReferenceName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Quantity = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Orders", x => x.Id);
-                });
-
             migrationBuilder.CreateTable(
                 name: "Roles",
                 columns: table => new
@@ -84,6 +68,28 @@ namespace nego.dataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Orders",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    OrderName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    OrderDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ReferenceName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Orders", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Orders_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "RoleUsers",
                 columns: table => new
                 {
@@ -110,33 +116,7 @@ namespace nego.dataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserOrder",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    OrderId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserOrder", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_UserOrder_Orders_OrderId",
-                        column: x => x.OrderId,
-                        principalTable: "Orders",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_UserOrder_User_UserId",
-                        column: x => x.UserId,
-                        principalTable: "User",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "OrderArticle",
+                name: "ArticleOrder",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -147,20 +127,31 @@ namespace nego.dataAccess.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OrderArticle", x => x.Id);
+                    table.PrimaryKey("PK_ArticleOrder", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_OrderArticle_Articles_ArticleId",
+                        name: "FK_ArticleOrder_Articles_ArticleId",
                         column: x => x.ArticleId,
                         principalTable: "Articles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_OrderArticle_Orders_OrderId",
+                        name: "FK_ArticleOrder_Orders_OrderId",
                         column: x => x.OrderId,
                         principalTable: "Orders",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction, // Modify the onDelete action
+                        onUpdate: ReferentialAction.NoAction);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ArticleOrder_ArticleId",
+                table: "ArticleOrder",
+                column: "ArticleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ArticleOrder_OrderId",
+                table: "ArticleOrder",
+                column: "OrderId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Articles_UserId",
@@ -168,14 +159,9 @@ namespace nego.dataAccess.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrderArticle_ArticleId",
-                table: "OrderArticle",
-                column: "ArticleId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_OrderArticle_OrderId",
-                table: "OrderArticle",
-                column: "OrderId");
+                name: "IX_Orders_UserId",
+                table: "Orders",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RoleUsers_RoleId",
@@ -186,38 +172,25 @@ namespace nego.dataAccess.Migrations
                 name: "IX_RoleUsers_UserId",
                 table: "RoleUsers",
                 column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UserOrder_OrderId",
-                table: "UserOrder",
-                column: "OrderId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UserOrder_UserId",
-                table: "UserOrder",
-                column: "UserId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "OrderArticle");
+                name: "ArticleOrder");
 
             migrationBuilder.DropTable(
                 name: "RoleUsers");
 
             migrationBuilder.DropTable(
-                name: "UserOrder");
-
-            migrationBuilder.DropTable(
                 name: "Articles");
 
             migrationBuilder.DropTable(
-                name: "Roles");
+                name: "Orders");
 
             migrationBuilder.DropTable(
-                name: "Orders");
+                name: "Roles");
 
             migrationBuilder.DropTable(
                 name: "User");

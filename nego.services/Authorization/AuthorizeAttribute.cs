@@ -25,7 +25,7 @@ namespace nego.services.Authorization
 
             // authorization
             var user = (User)context.HttpContext.Items["User"];
-            if (user == null || !_roleIds.Any(roleId => user.Roles.Any(ru => ru.RoleId == roleId)))
+            if (user == null || !_roleIds.Any(roleId => user.Roles.Where(ru => ru.UserId == user.Id).Any(ru => ru.RoleId == roleId)))
             {
                 // not logged in or role not authorized
                 context.Result = new JsonResult(new { message = "Unauthorized" }) { StatusCode = StatusCodes.Status401Unauthorized };

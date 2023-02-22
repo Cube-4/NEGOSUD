@@ -11,13 +11,13 @@ namespace nego.communs.Model
         public int Stock { get; set; }
         public float Price { get; set; }
         
-        public virtual List<OrderArticle> Orders { get; set; } 
+        public virtual List<ArticleOrder> Orders { get; set; } 
         public int UserId { get; set; }
         public virtual User User { get; set; }
 
         public Article()
         {
-            Orders = new List<OrderArticle>();
+            Orders = new List<ArticleOrder>();
         }
     }
 }

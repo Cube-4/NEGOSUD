@@ -30,14 +30,20 @@ namespace nego.services
         public Task<List<UserRessource>> GetAll()
         {
 
-            var users = _repository.GetAll<User>().Include(c => c.Roles).ThenInclude(x => x.Role).ToList();
+            var users = _repository.GetAll<User>()
+                .Include(c => c.Roles).ThenInclude(x => x.Role)
+                .Include(c => c.Articles)
+                .ToList();
             var usersRessource = _mapper.Map<List<UserRessource>>(users);
             return Task.FromResult(usersRessource);
         }
 
         public Task<UserRessource> GetById(int id)
         {
-            var user = _repository.GetAll<User>().Include(u => u.Roles).ThenInclude(r => r.Role).FirstOrDefault(u => u.Id == id);
+            var user = _repository.GetAll<User>()
+                .Include(u => u.Roles).ThenInclude(r => r.Role)
+                .Include(c => c.Articles)
+                .FirstOrDefault(u => u.Id == id);
             if (user != null)
             {
                 var userRessource = _mapper.Map<UserRessource>(user);
@@ -51,6 +57,11 @@ namespace nego.services
             var user = _repository.GetOne<User>(User => User.Id == id);
             if (user != null)
             {
+                var userArticle = _repository.GetOne<Article>(article => article.UserId == user.Id);
+                if (userArticle != null)
+                {
+                    user.Articles.Remove(userArticle);
+                }
                 _repository.Remove(user);
                 await _unitOfWork.SaveIntoDbContextAsync();
                 return true;
@@ -97,7 +108,7 @@ namespace nego.services
 
         public async Task<UserRessource> Authenticate(AuthenticateRequest userRequest)
         {            
-            var user = _repository.GetOne<User>(x => x.Email == userRequest.Email);
+            var user = _repository.GetAll<User>().Include(u => u.Roles).ThenInclude(r => r.Role).FirstOrDefault(x => x.Email == userRequest.Email);
 
             // validate
             if (user == null || !BCrypt.Net.BCrypt.Verify(userRequest.Password, user.Password))

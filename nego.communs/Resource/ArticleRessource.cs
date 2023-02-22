@@ -11,7 +11,8 @@ namespace nego.communs.Resource
         public string Reference { get; set; }
         public DateTime Date { get; set; }
         public string Origin { get; set; }
-        public int Quantity { get; set; }
+        public int Stock { get; set; }
+        
         [Required]
         public float Price { get; set; }
         [Required]

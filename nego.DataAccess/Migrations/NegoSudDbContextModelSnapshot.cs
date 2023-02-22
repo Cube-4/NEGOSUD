@@ -58,32 +58,7 @@ namespace nego.dataAccess.Migrations
                     b.ToTable("Articles");
                 });
 
-            modelBuilder.Entity("nego.communs.Model.Order", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("OrderDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("OrderName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ReferenceName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Orders");
-                });
-
-            modelBuilder.Entity("nego.communs.Model.OrderArticle", b =>
+            modelBuilder.Entity("nego.communs.Model.ArticleOrder", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -106,7 +81,34 @@ namespace nego.dataAccess.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("OrderArticle");
+                    b.ToTable("ArticleOrder");
+                });
+
+            modelBuilder.Entity("nego.communs.Model.Order", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("OrderDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("OrderName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReferenceName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("nego.communs.Model.Role", b =>
@@ -179,29 +181,6 @@ namespace nego.dataAccess.Migrations
                     b.ToTable("User", (string)null);
                 });
 
-            modelBuilder.Entity("nego.communs.Model.UserOrder", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserOrder");
-                });
-
             modelBuilder.Entity("nego.communs.Model.Article", b =>
                 {
                     b.HasOne("nego.communs.Model.User", "User")
@@ -213,7 +192,7 @@ namespace nego.dataAccess.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("nego.communs.Model.OrderArticle", b =>
+            modelBuilder.Entity("nego.communs.Model.ArticleOrder", b =>
                 {
                     b.HasOne("nego.communs.Model.Article", "Article")
                         .WithMany("Orders")
@@ -230,6 +209,17 @@ namespace nego.dataAccess.Migrations
                     b.Navigation("Article");
 
                     b.Navigation("Order");
+                });
+
+            modelBuilder.Entity("nego.communs.Model.Order", b =>
+                {
+                    b.HasOne("nego.communs.Model.User", "User")
+                        .WithMany("Orders")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("nego.communs.Model.RoleUser", b =>
@@ -251,25 +241,6 @@ namespace nego.dataAccess.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("nego.communs.Model.UserOrder", b =>
-                {
-                    b.HasOne("nego.communs.Model.Order", "Order")
-                        .WithMany("Users")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("nego.communs.Model.User", "User")
-                        .WithMany("Orders")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Order");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("nego.communs.Model.Article", b =>
                 {
                     b.Navigation("Orders");
@@ -278,8 +249,6 @@ namespace nego.dataAccess.Migrations
             modelBuilder.Entity("nego.communs.Model.Order", b =>
                 {
                     b.Navigation("Articles");
-
-                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("nego.communs.Model.Role", b =>

@@ -1,13 +1,12 @@
 ﻿using AutoMapper;
-using Azure.Core;
+using Microsoft.EntityFrameworkCore;
 using nego.business;
-using nego.communs.Global;
 using nego.communs.Model;
-using nego.communs.resource;
 using nego.communs.Resource;
 using nego.dataAccess.unitOfWork.Repository;
 using nego.DataAccess.dbContexte;
 using nego.DataAccess.unitOfWork;
+
 
 namespace nego.services
 {
@@ -27,14 +26,16 @@ namespace nego.services
         public Task<List<ArticleRessource>> GetAll()
         {
 
-            var articles = _repository.GetAll<Article>().ToList();
+            var articles = _repository.GetAll<Article>()
+                .Include(c => c.User)
+                .ToList();
             var articlesRessource = _mapper.Map<List<ArticleRessource>>(articles);
             return Task.FromResult(articlesRessource);
         }
 
         public Task<ArticleRessource> GetById(int id)
         {
-            var articles = _repository.GetOne<Article>(User => User.Id == id);
+            var articles = _repository.GetOne<Article>(article => article.Id == id, article => article.User);
             if (articles != null)
             {
                 var articlesRessource = _mapper.Map<ArticleRessource>(articles);
@@ -46,10 +47,17 @@ namespace nego.services
         public async Task<bool> DeleteById(int id)
         {
             var article = _repository.GetOne<Article>(article => article.Id == id);
+
+            var articleUser = _repository.GetOne<User>(User => User.Id == article.UserId);
+
             if (article != null)
             {
+                articleUser.Articles.Remove(article);
+
                 _repository.Remove(article);
+
                 await _unitOfWork.SaveIntoDbContextAsync();
+
                 return true;
             }
             return false;
@@ -67,6 +75,7 @@ namespace nego.services
                 //map from dto to model
                 var newArticle = _mapper.Map<Article>(articlesResource);
                 newArticle.User = articleUser;
+                articleUser.Articles.Add(newArticle);
                 _repository.Add(newArticle);
 
                 await _unitOfWork.SaveIntoDbContextAsync();

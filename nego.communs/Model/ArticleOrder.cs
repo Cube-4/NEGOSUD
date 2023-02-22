@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace nego.communs.Model
 {
-    public class OrderArticle : Entity
+    public class ArticleOrder : Entity
     {
         public int OrderId { get; set; }
         public Order Order { get; set; }

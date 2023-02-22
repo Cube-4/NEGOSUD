@@ -9,14 +9,11 @@ namespace nego.communs.Mapping
         public ArticleMapping()
         {
             CreateMap<Article, ArticleRessource>()
-                .ForMember(articleRessources => articleRessources.Id, opt => opt.MapFrom(article => article.Id))
-                .ForMember(articleRessources => articleRessources.Quantity, opt => opt.MapFrom(article => article.Stock));  
+                .ForMember(ressource => ressource.Id, opt => opt.MapFrom(src => src.Id))
+                .ForMember(ressource => ressource.UserId, opt => opt.MapFrom(src => src.UserId));
 
-
-            
             CreateMap<ArticleRessource, Article>()
-                .ForMember(article => article.Stock, opt => opt.MapFrom(articleRessource => articleRessource.Quantity));
-
+                .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.UserId));
         }
     }
 }

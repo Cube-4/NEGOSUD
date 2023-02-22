@@ -11,7 +11,7 @@ namespace nego.dataAccess.unitOfWork.Repository
     public interface IRepository<u>
     {
         u context { get; }
-        T GetOne<T>(Expression<Func<T, bool>> filter) where T : class;
+        T GetOne<T>(Expression<Func<T, bool>> filter, params Expression<Func<T, object>>[] includes) where T : class;
         IQueryable<T> GetAll<T>() where T : class;
         void Add<T>(T data) where T : class;
         void Update<T>(T data) where T : class;

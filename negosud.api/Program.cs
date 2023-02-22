@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
+
 using nego.business;
 using nego.communs.Mapping;
 using nego.dataAccess.unitOfWork.Repository;
