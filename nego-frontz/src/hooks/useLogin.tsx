@@ -5,7 +5,7 @@ import axios from "axios";
 import { UserContext } from "@/context/UserContext";
 
 export default function useLogin() {
-  const { setIsAuth } = useContext(UserContext);
+  const { setIsAuth, setIsAdmin } = useContext(UserContext);
   const router = useRouter();
 
   interface LoginData {
@@ -23,7 +23,14 @@ export default function useLogin() {
         "http://localhost:44312/api/user/authenticate",
         data
       );
-      localStorage.setItem("token", response.data.result.token);
+      localStorage.setItem("token", JSON.stringify(response.data.result.token));
+      if (response.data.result.email === "rafael@yalink.fr") {
+        localStorage.setItem("isAdmin", "true");
+        setIsAdmin(true);
+      } else {
+        localStorage.setItem("isAdmin", "false");
+        setIsAdmin(false);
+      }
       setIsAuth(true);
       router.push("/stocks");
     } catch (error: any) {

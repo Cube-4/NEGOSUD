@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   TextInput,
   PasswordInput,
@@ -6,33 +5,28 @@ import {
   Anchor,
   Paper,
   Title,
-  Alert,
   Container,
   Group,
   Button,
 } from "@mantine/core";
-import { IconAlertCircle } from "@tabler/icons-react";
 import { useForm } from "react-hook-form";
 // Hooks
 import useLogin from "@/hooks/useLogin";
 import { showNotification } from "@mantine/notifications";
+// Loader
+import { Loader } from "@/components/Loader";
 
 export default function () {
-  const { mutate: login, isLoading, isError } = useLogin();
-  const { register, handleSubmit, reset } = useForm();
+  const { mutate: login, isLoading } = useLogin();
+  const { register, handleSubmit } = useForm();
 
   async function onSubmit(data: any) {
     login({ email: data.email, password: data.password });
-    if (isError) {
-      showNotification({
-        color: "red",
-        title: "Erreur de connexion",
-        message: "Veuillez vérifier vos identifiants",
-      });
-    }
   }
 
-  return (
+  return isLoading ? (
+    <Loader />
+  ) : (
     <Container size="xs" my={40}>
       <Title
         align="center"

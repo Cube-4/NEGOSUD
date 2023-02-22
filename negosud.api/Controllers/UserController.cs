@@ -25,13 +25,16 @@ namespace nego.api.Controllers
             _appSettings = appSettings.Value;
         }
 
-        [Authorize(1)]
+        //[Authorize(1)]
+        [AllowAnonymous]
+
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
             var users = await _clientService.GetAll();
             return Ok(users);
         }
+        [AllowAnonymous]
 
         [AllowAnonymous]
         [HttpGet("{id}")]
@@ -40,6 +43,7 @@ namespace nego.api.Controllers
             var user = await _clientService.GetById(id);
             return Ok(user);
         }
+        [AllowAnonymous]
 
         [Authorize(1)]
         [HttpDelete("{id}")]

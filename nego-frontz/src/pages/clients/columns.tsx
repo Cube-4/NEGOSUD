@@ -8,21 +8,15 @@ export const columns = [
     defaultWidth: 80,
     type: "number",
   },
+  { name: "email", header: "Email", defaultFlex: 1 },
   {
-    name: "orderName",
-    header: "Nom de la commande",
-    defaultFlex: 1,
-    type: "number",
-  },
-  {
-    name: "referenceName",
-    header: "Référence de la commande",
+    name: "firstName",
+    header: "Prénom",
     defaultFlex: 1,
   },
   {
-    name: "quantity",
-    header: "Quantité de l'article",
+    name: "lastName",
+    header: "Nom",
     defaultFlex: 1,
-    filterEditor: NumberFilter,
   },
 ];

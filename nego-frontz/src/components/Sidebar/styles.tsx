@@ -1,6 +1,6 @@
 import { createStyles } from "@mantine/core";
 import {
-  IconBellRinging,
+  IconShoppingCartDiscount,
   IconReceipt2,
   IconUser,
   IconBox,
@@ -85,13 +85,18 @@ export const useStyles = createStyles((theme, _params, getRef) => {
 });
 
 // data for sidebar
-export const authenticatedData = [
+export const authenticatedDataAdmin = [
   { link: "/stocks", label: "Stocks", icon: IconBox },
   { link: "/clients", label: "Liste de clients", icon: IconUsers },
-  { link: "/notifications", label: "Notifications", icon: IconBellRinging },
-  { link: "/orders", label: "Commandes", icon: IconReceipt2 },
+  { link: "/orders", label: "Commandes ", icon: IconReceipt2 },
+];
+
+export const authenticatedDataUser = [
+  { link: "/stocks", label: "Stocks", icon: IconBox },
+  { link: "/cart", label: "Mon panier ", icon: IconShoppingCartDiscount },
+  { link: "/orders", label: "Mes commandes ", icon: IconReceipt2 },
 ];
 
 export const noAuthData = [
-  { link: "", label: "Identifiez-vous", icon: IconUser },
+  { link: "/", label: "Identifiez-vous", icon: IconUser },
 ];

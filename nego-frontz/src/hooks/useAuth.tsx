@@ -1,12 +1,14 @@
-import React, { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function useAuth() {
-  const [isAuth, setIsAuth] = React.useState(false);
+  const [isAuth, setIsAuth] = useState(false);
   let token;
   useEffect(() => {
     token = localStorage.getItem("token");
     if (token) {
       setIsAuth(true);
+    } else {
+      setIsAuth(false);
     }
   }, []);
 
