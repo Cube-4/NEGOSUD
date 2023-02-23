@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import React, { useState, useEffect } from "react";
 import dynamic, { type DynamicOptions } from "next/dynamic";
 import axios from "axios";
 import "@inovua/reactdatagrid-community/index.css";
@@ -37,7 +36,6 @@ export default function Page() {
       <DynamicDataGrid
         idProperty="id"
         columns={columns}
-        dataSource={clients}
         dataSource={clients}
         defaultLimit={10}
         style={{ minHeight: 400 }}
