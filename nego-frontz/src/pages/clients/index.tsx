@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import dynamic, { type DynamicOptions } from "next/dynamic";
 import axios from "axios";
 import "@inovua/reactdatagrid-community/index.css";
@@ -17,28 +17,29 @@ const DynamicDataGrid = dynamic(
 );
 
 //---- Create your page using the dynamic component ------------
-export default function Page({ data }: any) {
+export default function Page() {
+  const [clients, setClients] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await axios.get("http://localhost:44312/api/user", {
+        headers: authHeader(),
+      });
+      setClients(response.data);
+    };
+    fetchData();
+  }, []);
+
   return (
     <div>
       <h1>Liste de clients</h1>
       <DynamicDataGrid
         idProperty="id"
         columns={columns}
-        dataSource={data}
+        dataSource={clients}
         defaultLimit={10}
         style={{ minHeight: 400 }}
       />
     </div>
   );
-}
-
-//---- Bonus: Make your request serverSide ---------------------
-export async function getServerSideProps() {
-  const products = await fetch("http://localhost:44312/api/user").then((res) =>
-    res.json()
-  );
-
-  return {
-    props: { data: products },
-  };
 }
