@@ -24,7 +24,7 @@ export default function useLogin() {
         data
       );
       localStorage.setItem("token", JSON.stringify(response.data.result.token));
-      if (response.data.result.email === "rafael@yalink.fr") {
+      if (response.data.result.roles[0] === 1) {
         localStorage.setItem("isAdmin", "true");
         setIsAdmin(true);
       } else {

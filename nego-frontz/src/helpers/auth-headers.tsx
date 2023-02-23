@@ -1,12 +1,14 @@
-export default function authHeader() {
-  // return authorization header with jwt token
-  let token;
-  if (typeof window !== "undefined") {
-    token = localStorage.getItem("token");
-  }
-  if (token !== null) {
+import { useEffect } from "react";
+
+function authHeader() {
+  // -- Return authorization header with jwt token --//
+  let token = localStorage.getItem("token");
+  console.log("OK", token);
+  if (token !== null && token !== undefined) {
     return { Authorization: "Bearer " + token };
   } else {
-    return {};
+    return { Authorization: "No token found" };
   }
 }
+
+export default authHeader;
