@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using nego.business;
 using nego.communs.Model;
@@ -14,7 +15,7 @@ namespace nego.api.Controllers
     [Route("api/user")]
     public class UserController : Controller
     {
-
+        private readonly IMapper _mapper;
         private readonly IUserService _clientService;
         private readonly AppSettings _appSettings;
 
@@ -25,16 +26,15 @@ namespace nego.api.Controllers
             _appSettings = appSettings.Value;
         }
 
-        //[Authorize(1)]
-        [AllowAnonymous]
+        [Authorize(1)]
 
+        /*[AllowAnonymous]*/
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
             var users = await _clientService.GetAll();
             return Ok(users);
         }
-        [AllowAnonymous]
 
         [AllowAnonymous]
         [HttpGet("{id}")]

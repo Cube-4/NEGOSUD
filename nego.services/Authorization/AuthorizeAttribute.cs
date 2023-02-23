@@ -2,6 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using nego.communs.Model;
 using Microsoft.AspNetCore.Http;
+using nego.communs.Resource;
+using AutoMapper;
+using System.Diagnostics;
 
 namespace nego.services.Authorization
 {
@@ -16,7 +19,7 @@ namespace nego.services.Authorization
             _roleIds = roleIds ?? new int[] { };
         }
 
-        public void OnAuthorization(AuthorizationFilterContext context)
+        public async void OnAuthorization(AuthorizationFilterContext context)
         {
             // skip authorization if action is decorated with [AllowAnonymous] attribute
             var allowAnonymous = context.ActionDescriptor.EndpointMetadata.OfType<AllowAnonymousAttribute>().Any();
@@ -24,8 +27,10 @@ namespace nego.services.Authorization
                 return;
 
             // authorization
-            var user = (User)context.HttpContext.Items["User"];
-            if (user == null || !_roleIds.Any(roleId => user.Roles.Where(ru => ru.UserId == user.Id).Any(ru => ru.RoleId == roleId)))
+            /*var user = (User)context.HttpContext.Items["User"];*/
+
+            var user = await (Task<UserRessource>)context.HttpContext.Items["User"];
+            if (user == null || (_roleIds.Any() && !user.Roles.Intersect(_roleIds).Any()))
             {
                 // not logged in or role not authorized
                 context.Result = new JsonResult(new { message = "Unauthorized" }) { StatusCode = StatusCodes.Status401Unauthorized };
