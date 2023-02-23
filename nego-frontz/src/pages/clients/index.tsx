@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import dynamic, { type DynamicOptions } from "next/dynamic";
 import axios from "axios";
 import "@inovua/reactdatagrid-community/index.css";
 import { columns } from "./columns";
 import type TypeDataGridProps from "@inovua/reactdatagrid-community/types/TypeDataGridProps";
-import authHeader from "@/helpers/auth-headers";
+import authHeader from "../../helpers/auth-headers";
 
 //---- import component as dynamic with un poco de bricolaje --
 const DynamicDataGrid = dynamic(
@@ -36,6 +37,7 @@ export default function Page() {
       <DynamicDataGrid
         idProperty="id"
         columns={columns}
+        dataSource={clients}
         dataSource={clients}
         defaultLimit={10}
         style={{ minHeight: 400 }}
