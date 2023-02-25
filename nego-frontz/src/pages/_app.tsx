@@ -7,17 +7,33 @@ import { AppShell, Navbar } from "@mantine/core";
 import { Sidebar } from "@/components/Sidebar";
 import { QueryClientProvider, QueryClient } from "react-query";
 import { UserContext } from "@/context/UserContext";
-// Hooks
 import useAuth from "@/hooks/useAuth";
+
 export default function App(props: AppProps) {
   const { Component, pageProps } = props;
   const queryClient = new QueryClient();
-  // Create context for auth
+  const [isAuthenticated, setIsAuthenticated] = useState(false); // New state variable
+
   const { isAuth, setIsAuth } = useAuth();
   const [isAdmin, setIsAdmin] = useState(false);
+
   const value = useMemo(
-    () => ({ isAuth, setIsAuth, setIsAdmin, isAdmin }),
-    [isAuth, setIsAuth, isAdmin, setIsAdmin]
+    () => ({
+      isAuthenticated,
+      setIsAuthenticated,
+      isAuth,
+      setIsAuth,
+      isAdmin,
+      setIsAdmin,
+    }), // Add isAuthenticated and setIsAuthenticated to the value object
+    [
+      isAuthenticated,
+      setIsAuthenticated,
+      isAuth,
+      setIsAuth,
+      isAdmin,
+      setIsAdmin,
+    ]
   );
 
   return (
@@ -35,7 +51,6 @@ export default function App(props: AppProps) {
           withGlobalStyles
           withNormalizeCSS
           theme={{
-            /** Put your mantine theme override here */
             colorScheme: "light",
           }}
         >
