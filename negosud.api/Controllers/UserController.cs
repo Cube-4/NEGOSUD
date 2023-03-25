@@ -26,9 +26,9 @@ namespace nego.api.Controllers
             _appSettings = appSettings.Value;
         }
 
-        [Authorize(1)]
-
-        /*[AllowAnonymous]*/
+        /*        [Authorize(1)]
+        */
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {

@@ -39,7 +39,7 @@ namespace nego.api.Controllers
             {
                 return Ok("Successfully deleted article");
             }
-            return BadRequest("Something wrong happened Deletion");
+            return BadRequest("Something wrong happened with Deletion");
         }
 
         [HttpPost]

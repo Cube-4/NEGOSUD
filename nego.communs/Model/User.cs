@@ -16,7 +16,6 @@ namespace nego.communs.Model
         public virtual List<RoleUser> Roles { get; set; }
         public virtual List<Order> Orders { get; set; }
         public virtual List<Article> Articles { get; set; }
-        public int ArticlesQuantity { get; set; }
         
         public User()
         {
