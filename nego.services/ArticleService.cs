@@ -28,6 +28,7 @@ namespace nego.services
 
             var articles = _repository.GetAll<Article>()
                 .Include(c => c.User)
+                .Include(c => c.Orders).ThenInclude(x => x.Order)
                 .ToList();
             var articlesRessource = _mapper.Map<List<ArticleRessource>>(articles);
             return Task.FromResult(articlesRessource);
@@ -35,7 +36,10 @@ namespace nego.services
 
         public Task<ArticleRessource> GetById(int id)
         {
-            var articles = _repository.GetOne<Article>(article => article.Id == id, article => article.User);
+            var articles = _repository.GetAll<Article>()
+                .Include(c => c.User)
+                .Include(c => c.Orders).ThenInclude(x => x.Order)
+                .FirstOrDefault(u => u.Id == id); 
             if (articles != null)
             {
                 var articlesRessource = _mapper.Map<ArticleRessource>(articles);
@@ -46,18 +50,14 @@ namespace nego.services
 
         public async Task<bool> DeleteById(int id)
         {
-            var article = _repository.GetOne<Article>(article => article.Id == id);
-
-            var articleUser = _repository.GetOne<User>(User => User.Id == article.UserId);
+            var article = _repository.GetOne<Article>(src => src.Id == id);
+            var articleUser = _repository.GetOne<User>(src => src.Id == article.UserId);
 
             if (article != null)
             {
                 articleUser.Articles.Remove(article);
-
                 _repository.Remove(article);
-
                 await _unitOfWork.SaveIntoDbContextAsync();
-
                 return true;
             }
             return false;

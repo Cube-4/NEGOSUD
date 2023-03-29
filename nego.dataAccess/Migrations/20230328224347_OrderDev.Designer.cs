@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using nego.DataAccess.dbContexte;
 
@@ -11,9 +12,11 @@ using nego.DataAccess.dbContexte;
 namespace nego.dataAccess.Migrations
 {
     [DbContext(typeof(NegoSudDbContext))]
-    partial class NegoSudDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230328224347_OrderDev")]
+    partial class OrderDev
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

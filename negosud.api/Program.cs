@@ -67,7 +67,7 @@ builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
     options.Cookie.Name = "CartSession";
-    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.IdleTimeout = TimeSpan.FromMinutes(60);
     options.Cookie.IsEssential = true;
 });
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();

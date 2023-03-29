@@ -1,5 +1,4 @@
-﻿using nego.communs.Global;
-using nego.communs.Model;
+﻿using nego.communs.resource;
 using System.ComponentModel.DataAnnotations;
 
 namespace nego.communs.Resource
@@ -17,6 +16,11 @@ namespace nego.communs.Resource
         public float Price { get; set; }
         [Required]
         public int UserId { get; set; }
+
+        public List<OrderRessource> Orders { get; set; }
+        public int OrderQuantity { get; set; }
+
+
     }
 
 }

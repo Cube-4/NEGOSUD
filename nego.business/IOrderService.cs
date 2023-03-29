@@ -6,6 +6,5 @@ namespace nego.business
 {
     public interface IOrderService : IActionService<OrderRessource>
     {
-
     }
 }

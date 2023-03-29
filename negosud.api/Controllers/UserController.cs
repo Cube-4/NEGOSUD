@@ -43,7 +43,6 @@ namespace nego.api.Controllers
             var user = await _clientService.GetById(id);
             return Ok(user);
         }
-        [AllowAnonymous]
 
         [Authorize(1)]
         [HttpDelete("{id}")]

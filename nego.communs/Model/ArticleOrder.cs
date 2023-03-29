@@ -14,5 +14,6 @@ namespace nego.communs.Model
         public int ArticleId { get; set; }
         public Article Article { get; set; }
         public int Quantity { get; set; }
+        public float TotalPrice { get; set; }
     }
 }

@@ -1,5 +1,5 @@
 using nego.communs.Resource;
-
+using System.ComponentModel.DataAnnotations;
 
 namespace nego.communs.resource
 {
@@ -8,14 +8,16 @@ namespace nego.communs.resource
         public string OrderName { get; set; }
         public DateTime OrderDate { get; set; }
         public string ReferenceName { get; set; }
-        public List<int> Articles { get; set; }
-        public int Quantity { get; set; }
-        public List<int> Users { get; set; }
+        public double OrderTotal { get; set; }
+        public string OrderStatus { get; set; }
+
+        [Required]
+        public int UserId { get; set; }
+        public List<ArticleRessource> Articles { get; set; }
 
         public OrderRessource()
         {
-            Articles = new List<int>();
-            Users = new List<int>();
+            Articles = new List<ArticleRessource>();
         }  
     }
 }

@@ -1,5 +1,6 @@
 using AutoMapper;
 using Azure.Core;
+using Microsoft.EntityFrameworkCore;
 using nego.business;
 using nego.communs.Global;
 using nego.communs.Model;
@@ -8,6 +9,7 @@ using nego.communs.Resource;
 using nego.dataAccess.unitOfWork.Repository;
 using nego.DataAccess.dbContexte;
 using nego.DataAccess.unitOfWork;
+using System.Security.Claims;
 
 namespace nego.services
 {
@@ -16,25 +18,31 @@ namespace nego.services
         private readonly IRepository<NegoSudDbContext> _repository;
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
-        public OrderService(IMapper mapper, IUnitOfWork unitOfWork, IRepository<NegoSudDbContext> repository)
+        private readonly ICartService _cartService;
+        public OrderService(IMapper mapper, IUnitOfWork unitOfWork, IRepository<NegoSudDbContext> repository, ICartService cartService)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
             _repository = repository;
+            _cartService = cartService;
         }
 
-
+        
         public Task<List<OrderRessource>> GetAll()
         {
 
-            var orders = _repository.GetAll<Order>().ToList();
+            var orders = _repository.GetAll<Order>()
+                .Include(c => c.Articles).ThenInclude(x => x.Article)
+                .ToList();
             var ordersRessource = _mapper.Map<List<OrderRessource>>(orders);
             return Task.FromResult(ordersRessource);
         }
 
         public Task<OrderRessource> GetById(int id)
         {
-            var order = _repository.GetOne<Order>(User => User.Id == id);
+            var order = _repository.GetAll<Order>()
+                .Include(x => x.Articles).ThenInclude(x => x.Article)
+                .FirstOrDefault(u => u.Id == id);
             if (order != null)
             {
                 var clientRessource = _mapper.Map<OrderRessource>(order);
@@ -45,10 +53,16 @@ namespace nego.services
 
         public async Task<bool> DeleteById(int id)
         {
-            var user = _repository.GetOne<Order>(User => User.Id == id);
-            if (user != null)
+            var order = _repository.GetAll<Order>()
+                .Include(x => x.Articles).ThenInclude(x => x.Article)
+                .FirstOrDefault(u => u.Id == id);
+            var orderUser = _repository.GetOne<User>(src => src.Id == order.UserId);
+
+            if (order != null)
             {
-                _repository.Remove(user);
+                orderUser.Orders.Remove(order);
+                _repository.Remove(order.Articles);
+                _repository.Remove(order);
                 await _unitOfWork.SaveIntoDbContextAsync();
                 return true;
             }
@@ -58,18 +72,54 @@ namespace nego.services
 
         public async Task<OrderRessource> Add(EntityRessource data)
         {
-            var orderResource = (OrderRessource)data;
-
-            //check if the user already exist by email
-            if (orderResource.ReferenceName != null)
+            try
             {
-                //map from dto to model
-                var newOrder = _mapper.Map<Order>(orderResource);
-                _repository.Add(newOrder);
+                var orderData = (OrderRessource)data;
+
+                var cart = _cartService.GetCart();
+                var order = new Order
+                {
+                    OrderName = orderData.OrderName,
+                    ReferenceName = orderData.ReferenceName,
+                    UserId = orderData.UserId,
+                    OrderDate = DateTime.Now,
+                    OrderTotal = cart.TotalPrice,
+                    OrderStatus = "Pending"
+                };
+                _repository.Add(order);
                 await _unitOfWork.SaveIntoDbContextAsync();
-                return orderResource;
+
+
+                foreach (var item in cart.Articles)
+                {
+                    var articleOrder = new ArticleOrder
+                    {
+                        OrderId = order.Id,
+                        ArticleId = item.Article.Id,
+                        Quantity = item.Quantity
+                    };
+
+                    _repository.Add(articleOrder);
+                }
+                var orderUser = _repository.GetOne<User>(src => src.Id == orderData.UserId);
+                orderUser.Orders.Add(order);
+
+                await _unitOfWork.SaveIntoDbContextAsync();
+                return orderData;
             }
-            return await Task.FromResult<OrderRessource>(null);
+            catch
+            {
+                //check if the user already exist by email
+                /*if (orderResource.ReferenceName != null)
+                {
+                    //map from dto to model
+                    var newOrder = _mapper.Map<Order>(orderResource);
+                    _repository.Add(newOrder);
+                    await _unitOfWork.SaveIntoDbContextAsync();
+                    return orderResource;
+                }*/
+                return await Task.FromResult<OrderRessource>(null);
+            }
         }
 
         public async Task<OrderRessource> Update(EntityRessource data)
@@ -90,7 +140,7 @@ namespace nego.services
                 var orderMapped = _mapper.Map<OrderRessource>(entity);
                 return orderMapped;
             }
-            return await Task.FromResult<OrderRessource?>(null);
+            return await Task.FromResult<OrderRessource>(null);
             //map from dto to model
 
         }

@@ -1,9 +1,6 @@
 ﻿using AutoMapper;
 using nego.communs.Model;
 using nego.communs.Resource;
-using nego.dataAccess.unitOfWork.Repository;
-using nego.DataAccess.dbContexte;
-using static Microsoft.AspNetCore.Hosting.Internal.HostingApplication;
 
 namespace nego.communs.Mapping
 {

@@ -33,6 +33,7 @@ namespace nego.services
             var users = _repository.GetAll<User>()
                 .Include(c => c.Roles).ThenInclude(x => x.Role)
                 .Include(c => c.Articles)
+                .Include(c => c.Orders)
                 .ToList();
             var usersRessource = _mapper.Map<List<UserRessource>>(users);
             return Task.FromResult(usersRessource);
