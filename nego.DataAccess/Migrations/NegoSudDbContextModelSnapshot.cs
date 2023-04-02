@@ -84,7 +84,7 @@ namespace nego.dataAccess.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("ArticleOrder");
+                    b.ToTable("ArticleOrders");
                 });
 
             modelBuilder.Entity("nego.communs.Model.Cart", b =>
@@ -151,6 +151,9 @@ namespace nego.dataAccess.Migrations
 
                     b.Property<double>("OrderTotal")
                         .HasColumnType("float");
+
+                    b.Property<string>("OrderType")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ReferenceName")
                         .HasColumnType("nvarchar(max)");
@@ -248,7 +251,7 @@ namespace nego.dataAccess.Migrations
                     b.HasOne("nego.communs.Model.Article", "Article")
                         .WithMany("Orders")
                         .HasForeignKey("ArticleId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("nego.communs.Model.Order", "Order")

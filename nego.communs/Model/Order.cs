@@ -9,6 +9,7 @@ namespace nego.communs.Model
         public string OrderName { get; set; }
         public DateTime OrderDate { get; set; }
         public string ReferenceName { get; set; }
+        public string OrderType { get; set; }
         public double OrderTotal { get; set; }
         public string OrderStatus { get; set; }
 

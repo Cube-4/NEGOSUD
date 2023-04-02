@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace nego.communs.Resource
+namespace nego.communs.Resource.Other
 {
     public class CartRequest
     {

@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using nego.business;
 using nego.communs.Model;
-using nego.communs.Resource;
+using nego.communs.Resource.Other;
 
 namespace nego.api.Controllers
 {

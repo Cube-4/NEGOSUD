@@ -6,11 +6,24 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace nego.dataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class Nego : Migration
+    public partial class A : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Cart",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TotalPrice = table.Column<float>(type: "real", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Cart", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Roles",
                 columns: table => new
@@ -34,8 +47,7 @@ namespace nego.dataAccess.Migrations
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ArticlesQuantity = table.Column<int>(type: "int", nullable: false)
+                    DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -76,6 +88,8 @@ namespace nego.dataAccess.Migrations
                     OrderName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     OrderDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ReferenceName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    OrderTotal = table.Column<double>(type: "float", nullable: false),
+                    OrderStatus = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -116,47 +130,85 @@ namespace nego.dataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ArticleOrder",
+                name: "CartArticle",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ArticleId = table.Column<int>(type: "int", nullable: false),
+                    CartId = table.Column<int>(type: "int", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    TotalPrice = table.Column<float>(type: "real", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CartArticle", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CartArticle_Articles_ArticleId",
+                        column: x => x.ArticleId,
+                        principalTable: "Articles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CartArticle_Cart_CartId",
+                        column: x => x.CartId,
+                        principalTable: "Cart",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ArticleOrders",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     OrderId = table.Column<int>(type: "int", nullable: false),
                     ArticleId = table.Column<int>(type: "int", nullable: false),
-                    Quantity = table.Column<int>(type: "int", nullable: false)
+                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    TotalPrice = table.Column<float>(type: "real", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ArticleOrder", x => x.Id);
+                    table.PrimaryKey("PK_ArticleOrders", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ArticleOrder_Articles_ArticleId",
+                        name: "FK_ArticleOrders_Articles_ArticleId",
                         column: x => x.ArticleId,
                         principalTable: "Articles",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_ArticleOrder_Orders_OrderId",
+                        name: "FK_ArticleOrders_Orders_OrderId",
                         column: x => x.OrderId,
                         principalTable: "Orders",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction, // Modify the onDelete action
-                        onUpdate: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ArticleOrder_ArticleId",
-                table: "ArticleOrder",
+                name: "IX_ArticleOrders_ArticleId",
+                table: "ArticleOrders",
                 column: "ArticleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ArticleOrder_OrderId",
-                table: "ArticleOrder",
+                name: "IX_ArticleOrders_OrderId",
+                table: "ArticleOrders",
                 column: "OrderId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Articles_UserId",
                 table: "Articles",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CartArticle_ArticleId",
+                table: "CartArticle",
+                column: "ArticleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CartArticle_CartId",
+                table: "CartArticle",
+                column: "CartId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Orders_UserId",
@@ -178,16 +230,22 @@ namespace nego.dataAccess.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ArticleOrder");
+                name: "ArticleOrders");
+
+            migrationBuilder.DropTable(
+                name: "CartArticle");
 
             migrationBuilder.DropTable(
                 name: "RoleUsers");
 
             migrationBuilder.DropTable(
+                name: "Orders");
+
+            migrationBuilder.DropTable(
                 name: "Articles");
 
             migrationBuilder.DropTable(
-                name: "Orders");
+                name: "Cart");
 
             migrationBuilder.DropTable(
                 name: "Roles");

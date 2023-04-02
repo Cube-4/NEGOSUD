@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using nego.communs.Model;
 using nego.communs.Resource;
+using nego.communs.Resource.Other;
 
 namespace nego.communs.Mapping
 {
@@ -17,6 +18,25 @@ namespace nego.communs.Mapping
                 ));
 
             CreateMap<UserRessource, User>()
+                .ForMember(x => x.Roles, opt => opt.Ignore())
+                .AfterMap((userRessource, user) =>
+                {
+                    var removedRoles = user.Roles
+                        .Where(ur => !userRessource.Roles.Contains(ur.Id));
+                    foreach (var item in removedRoles)
+                    {
+                        user.Roles.Remove(item);
+                    }
+                    var addedRole = userRessource.Roles
+                        .Where(roleId => user.Roles.All(ur => ur.RoleId != roleId))
+                        .Select(id => new RoleUser { RoleId = id }).ToList();
+                    foreach (var item in addedRole)
+                    {
+                        user.Roles.Add(item);
+                    }
+                });
+
+            CreateMap<UserCreationDTO, User>()
                 .ForMember(x => x.Roles, opt => opt.Ignore())
                 .AfterMap((userRessource, user) =>
                 {

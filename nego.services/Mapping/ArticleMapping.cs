@@ -2,6 +2,7 @@
 using nego.communs.Model;
 using nego.communs.resource;
 using nego.communs.Resource;
+using nego.communs.Resource.Other;
 
 namespace nego.communs.Mapping
 {
@@ -25,6 +26,8 @@ namespace nego.communs.Mapping
                 })));
 
             CreateMap<ArticleRessource, Article>()
+                .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.UserId));
+            CreateMap<ArticleCreationDTO, Article>()
                 .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.UserId));
         }
     }

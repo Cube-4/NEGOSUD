@@ -1,5 +1,5 @@
 ﻿using nego.communs.Model;
-using nego.communs.Resource;
+using nego.communs.Resource.Other;
 
 namespace nego.business
 {

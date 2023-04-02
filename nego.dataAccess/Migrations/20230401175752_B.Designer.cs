@@ -12,8 +12,8 @@ using nego.DataAccess.dbContexte;
 namespace nego.dataAccess.Migrations
 {
     [DbContext(typeof(NegoSudDbContext))]
-    [Migration("20230328224347_OrderDev")]
-    partial class OrderDev
+    [Migration("20230401175752_B")]
+    partial class B
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -87,7 +87,7 @@ namespace nego.dataAccess.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("ArticleOrder");
+                    b.ToTable("ArticleOrders");
                 });
 
             modelBuilder.Entity("nego.communs.Model.Cart", b =>
@@ -154,6 +154,9 @@ namespace nego.dataAccess.Migrations
 
                     b.Property<double>("OrderTotal")
                         .HasColumnType("float");
+
+                    b.Property<string>("OrderType")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ReferenceName")
                         .HasColumnType("nvarchar(max)");
@@ -251,7 +254,7 @@ namespace nego.dataAccess.Migrations
                     b.HasOne("nego.communs.Model.Article", "Article")
                         .WithMany("Orders")
                         .HasForeignKey("ArticleId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("nego.communs.Model.Order", "Order")

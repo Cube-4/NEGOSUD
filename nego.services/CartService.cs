@@ -7,7 +7,7 @@ using System.Text;
 using nego.communs.Model;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
-using nego.communs.Resource;
+using nego.communs.Resource.Other;
 
 namespace nego.services
 {

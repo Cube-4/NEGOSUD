@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 using nego.business;
 using nego.communs.Model;
 using nego.communs.Resource;
+using nego.communs.Resource.Other;
 using nego.services;
 using nego.services.Authorization;
 using nego.services.Authorization.Helper;
@@ -58,10 +59,10 @@ namespace nego.api.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] UserRessource data)
+        public async Task<IActionResult> Create([FromBody] UserCreationDTO data)
         {
-            var user = await _clientService.Add(data);
-            if (user != null)
+            var response = await _clientService.Add(data);
+            if (response == true)
             {
                 return Ok("Successfully Created user");
             }

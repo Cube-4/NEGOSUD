@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using nego.business;
 using nego.communs.Model;
 using nego.communs.Resource;
+using nego.communs.Resource.Other;
 using nego.dataAccess.unitOfWork.Repository;
 using nego.DataAccess.dbContexte;
 using nego.DataAccess.unitOfWork;
@@ -64,9 +65,9 @@ namespace nego.services
 
         }
 
-        public async Task<ArticleRessource> Add(EntityRessource data)
+        public async Task<bool> Add(EntityRessource data)
         {
-            var articlesResource = (ArticleRessource)data;
+            var articlesResource = (ArticleCreationDTO)data;
 
             //check if the user already exist by email
             if (articlesResource.Id != null)
@@ -79,9 +80,9 @@ namespace nego.services
                 _repository.Add(newArticle);
 
                 await _unitOfWork.SaveIntoDbContextAsync();
-                return articlesResource;
+                return await Task.FromResult(true);
             }
-            return null;
+            return await Task.FromResult(false);
         }
 
         public async Task<ArticleRessource> Update(EntityRessource data)
@@ -107,24 +108,24 @@ namespace nego.services
 
         }
 
-        public Task<bool> ChangeQuantity(int id, int quantity, string type)
+        public async Task<bool> ChangeQuantity(ChangeQuantityRequest data)
         {
-            var articles = _repository.GetOne<Article>(Article => Article.Id == id);
+            var articles = _repository.GetOne<Article>(Article => Article.Id == data.Id);
             if (articles != null)
             {
-                if (type == "add")
+                if (data.Type == "add")
                 {
-                    articles.Stock += quantity;
+                    articles.Stock += data.Quantity;
                 }
-                else if (type == "substract")
+                else if (data.Type == "substract")
                 {
-                    articles.Stock -= quantity;
+                    articles.Stock -= data.Quantity;
                 }
                 _repository.Update(articles);
-                _unitOfWork.SaveIntoDbContextAsync();
-                return Task.FromResult(true);
+                await _unitOfWork.SaveIntoDbContextAsync();
+                return await Task.FromResult(true);
             }
-            return Task.FromResult(false);
+            return await Task.FromResult(false);
         }
 
     }

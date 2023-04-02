@@ -8,7 +8,7 @@ namespace nego.business
         Task<List<T>> GetAll();
         Task<T> GetById(int id);
         Task<bool> DeleteById(int id);
-        Task<T> Add(EntityRessource data);
+        Task<bool> Add(EntityRessource data);
         Task<T> Update(EntityRessource data);
     }
 }
