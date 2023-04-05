@@ -1,4 +1,7 @@
 import React, { useContext } from "react";
+
+
+import Notification from "@/components/Notifications/Notifications";
 import dynamic, { type DynamicOptions } from "next/dynamic";
 import "@inovua/reactdatagrid-community/index.css";
 import { columns } from "./columns";
@@ -25,7 +28,7 @@ export default function Page({ data }: any) {
   return (
     <div>
       <h1>Liste des articles</h1>
-
+      {/* <Notification /> */}
       {!isAdmin && <UserStocks products={data} />}
       {isAdmin && (
         <DynamicDataGrid
