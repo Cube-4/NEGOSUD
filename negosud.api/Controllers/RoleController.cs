@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Azure;
+using Microsoft.AspNetCore.Mvc;
 using nego.business;
 using nego.communs.Resource;
 using nego.services.Authorization;
@@ -47,8 +48,8 @@ namespace nego.api.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] RoleRessource data)
         {
-            var role = await _roleService.Add(data);
-            if (role != null)
+            var response = await _roleService.Add(data);
+            if (response == true)
             {
                 return Ok("Successfully Created role");
             }

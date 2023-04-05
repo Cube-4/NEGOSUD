@@ -1,9 +1,9 @@
 ﻿using nego.communs.resource;
 using System.ComponentModel.DataAnnotations;
 
-namespace nego.communs.Resource
+namespace nego.communs.Resource.Other
 {
-    public class ArticleRessource : EntityRessource
+    public class ArticleCreationDTO : EntityRessource
     {
         [Required]
         public string Name { get; set; }
@@ -11,20 +11,11 @@ namespace nego.communs.Resource
         public DateTime Date { get; set; }
         public string Origin { get; set; }
         public int Stock { get; set; }
-        
+
         [Required]
         public float Price { get; set; }
         [Required]
         public int UserId { get; set; }
-
-        public List<OrderRessource> Orders { get; set; }
-        public int OrderQuantity { get; set; }
-
-        public ArticleRessource()
-        {
-            Orders = new List<OrderRessource>();
-        }
-
     }
 
 }

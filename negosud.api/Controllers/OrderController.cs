@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Azure;
+using Microsoft.AspNetCore.Mvc;
 using nego.business;
 using nego.communs.Model;
 using nego.communs.resource;
 using nego.communs.Resource;
+using nego.communs.Resource.Other;
 
 namespace nego.api.Controllers
 {
@@ -43,14 +45,25 @@ namespace nego.api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] OrderRessource data)
+        public async Task<IActionResult> Create([FromBody] OrderCreationDTO data)
         {
-            var order = await _orderService.Add(data);
-            if (order != null)
+            var response = await _orderService.Add(data);
+            if (response == true)
             {
                 return Ok("Successfully Created order");
             }
             return BadRequest("Something wrong happened with Creation");
+        }
+
+        [HttpPost("confirmOrder")]
+        public async Task<IActionResult> ConfirmOrder(int id)
+        {
+            var response = await _orderService.ConfirmOrder(id);
+            if (response == true )
+            {
+                return Ok("Order has been confirmed succesfully, changes has been saved to the database");
+            }
+            return BadRequest("OrderType can only be declared as 'addStock' or as 'removeStock'");
         }
 
         [HttpPut]

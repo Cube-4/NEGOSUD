@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace nego.communs.Resource
+namespace nego.communs.Resource.Other
 {
     public class AuthenticateRequest
     {

@@ -8,6 +8,7 @@ using nego.DataAccess.unitOfWork;
 using nego.services.Authorization.Helper;
 using Microsoft.EntityFrameworkCore;
 using BCrypt.Net;
+using nego.communs.Resource.Other;
 
 namespace nego.services
 {
@@ -33,6 +34,7 @@ namespace nego.services
             var users = _repository.GetAll<User>()
                 .Include(c => c.Roles).ThenInclude(x => x.Role)
                 .Include(c => c.Articles)
+                .Include(c => c.Orders)
                 .ToList();
             var usersRessource = _mapper.Map<List<UserRessource>>(users);
             return Task.FromResult(usersRessource);
@@ -70,9 +72,9 @@ namespace nego.services
             
         }
         
-        public async Task<UserRessource> Add(EntityRessource data)
+        public async Task<bool> Add(EntityRessource data)
         {
-            var userResource = (UserRessource)data;
+            var userResource = (UserCreationDTO)data;
             //check if the user already exist by email
             if (userResource.Email != null)
             {
@@ -81,9 +83,9 @@ namespace nego.services
                 newUser.Password = BCrypt.Net.BCrypt.HashPassword(userResource.Password);
                 _repository.Add(newUser);
                 await _unitOfWork.SaveIntoDbContextAsync();
-                return userResource;
+                return await Task.FromResult(true);
             }
-            return await Task.FromResult<UserRessource>(null);
+            return await Task.FromResult(false);
         }
 
         public async Task<UserRessource> Update(EntityRessource data)

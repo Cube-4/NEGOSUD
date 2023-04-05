@@ -11,7 +11,8 @@ namespace nego.communs.Model
         public int Stock { get; set; }
         public float Price { get; set; }
         
-        public virtual List<ArticleOrder> Orders { get; set; } 
+        public virtual List<ArticleOrder> Orders { get; set; }
+        public virtual List<CartArticle> Carts { get; set; }
         public int UserId { get; set; }
         public virtual User User { get; set; }
 

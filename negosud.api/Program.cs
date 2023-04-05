@@ -19,6 +19,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IRoleService, RoleService>();
 builder.Services.AddScoped<IArticleService, ArticleService>();
+builder.Services.AddScoped<ICartService, CartService>();
 
 //builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -29,6 +30,18 @@ builder.Services.AddScoped<IJwtUtils, JwtUtils>();
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
 
 builder.Services.AddMvc();
+builder.Services.AddCors(option =>
+{
+    option.AddDefaultPolicy(
+        policy =>
+        {
+            policy.AllowAnyHeader()
+                  .AllowAnyMethod()
+                  .AllowCredentials();
+
+        });
+});
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: "Cors",
@@ -50,20 +63,14 @@ builder.Services.AddDbContext<NegoSudDbContext>(option =>
     option.UseSqlServer(builder.Configuration.GetConnectionString("negoSudDb"));
 });
 
-
-builder.Services.AddMvc();
-builder.Services.AddCors(option =>
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
 {
-    option.AddDefaultPolicy(
-        policy =>
-        {
-            policy.AllowAnyHeader()
-                  .AllowAnyMethod()
-                  .AllowCredentials();
-
-        });
+    options.Cookie.Name = "CartSession";
+    options.IdleTimeout = TimeSpan.FromMinutes(60);
+    options.Cookie.IsEssential = true;
 });
-builder.Services.AddAutoMapper(typeof(UserMapping));
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 var app = builder.Build();
 
@@ -73,7 +80,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+// Cors Policy
 app.UseCors("Cors");
+
+// Cart session middleware
+app.UseSession();
 
 // global error handler
 app.UseMiddleware<ErrorHandlerMiddleware>();

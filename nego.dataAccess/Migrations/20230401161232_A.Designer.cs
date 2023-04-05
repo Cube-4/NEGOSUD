@@ -12,8 +12,8 @@ using nego.DataAccess.dbContexte;
 namespace nego.dataAccess.Migrations
 {
     [DbContext(typeof(NegoSudDbContext))]
-    [Migration("20230216135232_Nego")]
-    partial class Nego
+    [Migration("20230401161232_A")]
+    partial class A
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -78,13 +78,61 @@ namespace nego.dataAccess.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
+                    b.Property<float>("TotalPrice")
+                        .HasColumnType("real");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ArticleId");
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("ArticleOrder");
+                    b.ToTable("ArticleOrders");
+                });
+
+            modelBuilder.Entity("nego.communs.Model.Cart", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<float>("TotalPrice")
+                        .HasColumnType("real");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Cart");
+                });
+
+            modelBuilder.Entity("nego.communs.Model.CartArticle", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ArticleId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CartId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<float>("TotalPrice")
+                        .HasColumnType("real");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ArticleId");
+
+                    b.HasIndex("CartId");
+
+                    b.ToTable("CartArticle");
                 });
 
             modelBuilder.Entity("nego.communs.Model.Order", b =>
@@ -100,6 +148,12 @@ namespace nego.dataAccess.Migrations
 
                     b.Property<string>("OrderName")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OrderStatus")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("OrderTotal")
+                        .HasColumnType("float");
 
                     b.Property<string>("ReferenceName")
                         .HasColumnType("nvarchar(max)");
@@ -161,9 +215,6 @@ namespace nego.dataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("ArticlesQuantity")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime2");
 
@@ -200,7 +251,7 @@ namespace nego.dataAccess.Migrations
                     b.HasOne("nego.communs.Model.Article", "Article")
                         .WithMany("Orders")
                         .HasForeignKey("ArticleId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("nego.communs.Model.Order", "Order")
@@ -212,6 +263,25 @@ namespace nego.dataAccess.Migrations
                     b.Navigation("Article");
 
                     b.Navigation("Order");
+                });
+
+            modelBuilder.Entity("nego.communs.Model.CartArticle", b =>
+                {
+                    b.HasOne("nego.communs.Model.Article", "Article")
+                        .WithMany("Carts")
+                        .HasForeignKey("ArticleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("nego.communs.Model.Cart", "Cart")
+                        .WithMany("Articles")
+                        .HasForeignKey("CartId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Article");
+
+                    b.Navigation("Cart");
                 });
 
             modelBuilder.Entity("nego.communs.Model.Order", b =>
@@ -246,7 +316,14 @@ namespace nego.dataAccess.Migrations
 
             modelBuilder.Entity("nego.communs.Model.Article", b =>
                 {
+                    b.Navigation("Carts");
+
                     b.Navigation("Orders");
+                });
+
+            modelBuilder.Entity("nego.communs.Model.Cart", b =>
+                {
+                    b.Navigation("Articles");
                 });
 
             modelBuilder.Entity("nego.communs.Model.Order", b =>
