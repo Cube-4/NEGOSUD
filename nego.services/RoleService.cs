@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using nego.business;
+using nego.communs.Global;
 using nego.communs.Model;
 using nego.communs.Resource;
 using nego.dataAccess.unitOfWork.Repository;
@@ -50,7 +51,7 @@ namespace nego.services
             return Task.FromResult<RoleRessource>(null);
         }
 
-        public async Task<RoleRessource> Add(EntityRessource data)
+        public async Task<bool> Add(EntityRessource data)
         {
             var roleRessource = (RoleRessource)data;
             if (roleRessource.Name != null)
@@ -59,9 +60,9 @@ namespace nego.services
                 var newRole = _mapper.Map<Role>(roleRessource);
                 _repository.Add(newRole);
                 await _unitOfWork.SaveIntoDbContextAsync();
-                return roleRessource;
+                return await Task.FromResult(true);
             }
-            return await Task.FromResult<RoleRessource>(null);
+            return await Task.FromResult(false);
         }
 
         public async Task<RoleRessource> Update(EntityRessource data)

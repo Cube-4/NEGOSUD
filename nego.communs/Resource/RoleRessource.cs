@@ -6,7 +6,6 @@ namespace nego.communs.Resource
     public class RoleRessource : EntityRessource
     {
         public string Name { get; set; }
-        public ICollection<User> Users { get; set; }
 
     }
 }

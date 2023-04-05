@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Azure;
+using Microsoft.AspNetCore.Mvc;
 using nego.business;
 using nego.communs.Resource;
+using nego.services.Authorization;
 
 namespace nego.api.Controllers
 {
+    [Authorize]
     [Produces("application/json")]
     [Route("api/role")]
     public class RoleController : Controller
@@ -15,6 +18,7 @@ namespace nego.api.Controllers
             _roleService = roleService;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -40,11 +44,12 @@ namespace nego.api.Controllers
             return BadRequest("Something wrong happened Deletion");
         }
 
+        [AllowAnonymous]
         [HttpPost]
-        public async Task<IActionResult> Create(RoleRessource data)
+        public async Task<IActionResult> Create([FromBody] RoleRessource data)
         {
-            var role = await _roleService.Add(data);
-            if (role != null)
+            var response = await _roleService.Add(data);
+            if (response == true)
             {
                 return Ok("Successfully Created role");
             }
@@ -52,7 +57,7 @@ namespace nego.api.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update(RoleRessource data)
+        public async Task<IActionResult> Update([FromBody] RoleRessource data)
         {
             var role = await _roleService.Update(data);
             if (role != null)

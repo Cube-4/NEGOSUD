@@ -1,4 +1,5 @@
-﻿using nego.DataAccess.dbContexte;
+﻿using Microsoft.EntityFrameworkCore;
+using nego.DataAccess.dbContexte;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,9 +28,23 @@ namespace nego.dataAccess.unitOfWork.Repository
             return context.Set<T>().AsQueryable();
         }
 
-        public T GetOne<T>(Expression<Func<T, bool>> filter) where T : class
+        public T GetOne<T>
+            (
+                Expression<Func<T, bool>> filter, 
+                params Expression<Func<T, object>>[] includes
+            ) where T : class
         {
-            return context.Set<T>().FirstOrDefault(filter);
+            var query = context.Set<T>().AsQueryable();
+
+            if (includes != null)
+            {
+                foreach (var include in includes)
+                {
+                    query = query.Include(include);
+                }
+            }
+
+            return query.FirstOrDefault(filter);
         }
 
         public void Remove<T>(T data) where T : class

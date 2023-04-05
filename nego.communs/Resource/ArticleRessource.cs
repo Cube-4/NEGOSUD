@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using nego.communs.resource;
+using System.ComponentModel.DataAnnotations;
 
 namespace nego.communs.Resource
 {
@@ -9,7 +10,21 @@ namespace nego.communs.Resource
         public string Reference { get; set; }
         public DateTime Date { get; set; }
         public string Origin { get; set; }
-        public int Quantity { get; set; }
+        public int Stock { get; set; }
+        
+        [Required]
+        public float Price { get; set; }
+        [Required]
+        public int UserId { get; set; }
+
+        public List<OrderRessource> Orders { get; set; }
+        public int OrderQuantity { get; set; }
+
+        public ArticleRessource()
+        {
+            Orders = new List<OrderRessource>();
+        }
+
     }
 
 }

@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Azure;
+using Microsoft.AspNetCore.Mvc;
 using nego.business;
 using nego.communs.Model;
 using nego.communs.resource;
 using nego.communs.Resource;
+using nego.communs.Resource.Other;
+using nego.services.Authorization;
 
 namespace nego.api.Controllers
 {
@@ -16,7 +19,6 @@ namespace nego.api.Controllers
         {
             _articleService = articleService;
         }
-
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -39,14 +41,14 @@ namespace nego.api.Controllers
             {
                 return Ok("Successfully deleted article");
             }
-            return BadRequest("Something wrong happened Deletion");
+            return BadRequest("Something wrong happened with Deletion");
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(ArticleRessource data)
+        public async Task<IActionResult> Create([FromBody] ArticleCreationDTO data)
         {
-            var article = await _articleService.Add(data);
-            if (article != null)
+            var response = await _articleService.Add(data);
+            if (response == true)
             {
                 return Ok("Successfully Created article");
             }
@@ -54,7 +56,7 @@ namespace nego.api.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update(ArticleRessource data)
+        public async Task<IActionResult> Update([FromBody] ArticleRessource data)
         {
             var article = await _articleService.Update(data);
             if (article != null)
@@ -64,13 +66,13 @@ namespace nego.api.Controllers
             return BadRequest("Something wrong happened with Update");
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> ChangeQuantity(int id, int quantity, string type)
+        [HttpPut("changeQuantity")]
+        public async Task<IActionResult> ChangeQuantity([FromBody] ChangeQuantityRequest data)
         {
-            var article = await _articleService.ChangeQuantity(id, quantity, type);
+            var article = await _articleService.ChangeQuantity(data);
             if (article == true)
             {
-                return Ok("Successfully Updated article quantity " + quantity);
+                return Ok("Successfully Updated article quantity " + data.Quantity);
 
             }
             return BadRequest("Something wrong happened with the article quantity update");
