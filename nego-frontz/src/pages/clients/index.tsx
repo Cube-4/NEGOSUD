@@ -5,6 +5,9 @@ import "@inovua/reactdatagrid-community/index.css";
 import { columns } from "./columns";
 import type TypeDataGridProps from "@inovua/reactdatagrid-community/types/TypeDataGridProps";
 import authHeader from "../../helpers/auth-headers";
+import { Button, Flex, Paper, Text, TextInput } from "@mantine/core";
+import { TextAndSelect } from "@/components/Orders/TextAndSelect";
+import { ClientsAdd } from "@/components/Clients";
 
 //---- import component as dynamic with un poco de bricolaje --
 const DynamicDataGrid = dynamic(
@@ -33,6 +36,7 @@ export default function Page() {
   return (
     <div>
       <h1>Liste de clients</h1>
+      <ClientsAdd />
       <DynamicDataGrid
         idProperty="id"
         columns={columns}
