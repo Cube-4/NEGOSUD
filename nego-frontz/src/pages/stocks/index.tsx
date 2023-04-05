@@ -9,6 +9,7 @@ import { UserContext } from "@/context/UserContext";
 import { UserStocks } from "@/components/Stocks";
 // Mantine
 import { Flex } from "@mantine/core";
+import { ArticlesAdd } from "@/components/Articles";
 
 const DynamicDataGrid = dynamic(
   (() => {
@@ -28,13 +29,16 @@ export default function Page({ data }: any) {
 
       {!isAdmin && <UserStocks products={data} />}
       {isAdmin && (
-        <DynamicDataGrid
-          idProperty="id"
-          columns={columns}
-          dataSource={data}
-          defaultLimit={10}
-          style={{ minHeight: 400 }}
-        />
+        <>
+          <ArticlesAdd />
+          <DynamicDataGrid
+            idProperty="id"
+            columns={columns}
+            dataSource={data}
+            defaultLimit={10}
+            style={{ minHeight: 400 }}
+          />
+        </>
       )}
     </div>
   );
