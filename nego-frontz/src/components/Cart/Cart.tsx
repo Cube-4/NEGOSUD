@@ -1,25 +1,27 @@
 import React from "react";
 import { useEffect } from "react";
 import { Paper, Text } from "@mantine/core";
+import axios from "axios";
 
 export default function Cart() {
   const [cartItems, setCartItems] = React.useState<any>([]);
 
+  //get cart items from api
+  const getCartItems = async () => {
+    const response = await axios.get("http://localhost:44312/api/cart");
+    setCartItems(response.data);
+    console.log(response);
+  };
+
   useEffect(() => {
-    let cart;
-
-    // Perform localStorage action
-
-    const cartData = localStorage.getItem("cart");
-    if (cartData) {
-      cart = JSON.parse(cartData);
-    }
-
-    setCartItems(cart);
+    getCartItems();
   }, []);
+
+
+
   return (
     <>
-      {cartItems.map((item: any) => {
+      {/* {cartItems.map((item: any) => {
         return (
           <Paper shadow="xs" p="md" key={item.product} mb="1vh">
             <Text>Nom du produit : {item.product}</Text>
@@ -27,7 +29,8 @@ export default function Cart() {
             <Text>Prix : {item.price}</Text>
           </Paper>
         );
-      })}
+      })} */}
+      <div>hey</div>
     </>
   );
 }

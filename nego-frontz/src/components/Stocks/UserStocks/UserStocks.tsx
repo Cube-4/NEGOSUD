@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-key */
 import React, { useState } from "react";
 import {
   Card,
@@ -14,6 +15,8 @@ import { QuantityInput } from "./quantityInput";
 import { useStyles } from "./styles";
 // Form handling
 import { useForm } from "react-hook-form";
+import { Console } from "console";
+import axios from "axios";
 
 const mockData = {
   image:
@@ -43,7 +46,7 @@ const mockData = {
   ],
 };
 
-export default function ({ products }: any) {
+export default function UserStocks ({ products }: any) {
   const { classes, theme } = useStyles();
 
   const features = mockData.badges?.map((badge) => (
@@ -65,23 +68,14 @@ export default function ({ products }: any) {
 
     let cards = products.map((product: any) => {
       async function onSubmit() {
-        if (localStorage.getItem("cart") !== null) {
-          let cart = JSON.parse(localStorage.getItem("cart") || "{}");
-          // Append the new product to the cart
-          cart.push({
-            product: product.name,
-            quantity: value,
-            price: product.price,
-          });
-          localStorage.setItem("cart", JSON.stringify(cart));
-        } else {
-          let cart = [];
-          cart.push({
-            product: product.name,
-            quantity: value,
-          });
-          localStorage.setItem("cart", JSON.stringify(cart));
-        }
+        const updatedProduct = { 
+          articleId: product.id, 
+          quantity: value 
+        };
+        const response = await axios.post('http://localhost:44312/api/cart', updatedProduct);
+        console.log(response.data);
+        console.log(updatedProduct);
+        console.log(response.status);
       }
 
       return (
