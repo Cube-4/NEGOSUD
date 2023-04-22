@@ -18,7 +18,7 @@ namespace nego.api.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             var cart = _cartService.GetCart();
             return Ok(cart);

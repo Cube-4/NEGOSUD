@@ -28,15 +28,14 @@ namespace nego.services
 
         public Cart GetCart()
         {
-            var cartData = _httpContextAccessor.HttpContext.Session.Get("Cart");
-            if (cartData == null)
+            var cartDataBytes = _httpContextAccessor.HttpContext.Session.Get("Cart");
+            if (cartDataBytes == null)
             {
                 var cart = new Cart() { Articles = new List<CartArticle>(), TotalPrice = 0 };
                 SetCart(cart);
-                // serialize the cart object to a byte array
                 return cart;
             }
-            return JsonConvert.DeserializeObject<Cart>(Encoding.UTF8.GetString(cartData));
+            return JsonConvert.DeserializeObject<Cart>(Encoding.UTF8.GetString(cartDataBytes));
         }
         
         public Task<bool> AddToCart(CartRequest data)

@@ -47,10 +47,12 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: "Cors",
         policy =>
         {
-            policy.AllowAnyHeader();
-            policy.AllowAnyOrigin();
-            policy.WithOrigins("http://localhost:3000");
-            policy.AllowAnyMethod();
+            policy.AllowAnyHeader()
+                  .AllowAnyOrigin()
+                  .WithOrigins("http://localhost:3000")
+                  .AllowAnyMethod()
+                  .AllowCredentials();
+
         });
 });
 builder.Services.AddAutoMapper(typeof(UserMapping));
