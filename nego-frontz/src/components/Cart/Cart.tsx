@@ -81,6 +81,7 @@ export default function Cart() {
           <Paper shadow="xs" p="md" key={item.article.id} mb="1vh">
             <Text>Nom du produit : {item.article.name}</Text>
             <Text>Quantité : {item.quantity}</Text>
+            <Text>Prix unitaire : {item.article.price}</Text>
             <Text>Prix : {item.totalPrice}</Text>
           </Paper>
         );
