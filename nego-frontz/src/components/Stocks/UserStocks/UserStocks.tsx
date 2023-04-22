@@ -18,6 +18,7 @@ import { useForm } from "react-hook-form";
 import { Console } from "console";
 import axios from "axios";
 import useNotification from "@/hooks/useNotification";
+import authHeader from "@/helpers/auth-headers";
 
 const mockData = {
   image:
@@ -65,17 +66,21 @@ export default function UserStocks ({ products }: any) {
   const { handleSubmit } = useForm();
 
   function Cards() {
-    const [value, setValue] = useState(0);
+
     const { showErrorNotification, showSuccessNotification } = useNotification();
 
     let cards = products.map((product: any) => {
+      const [value, setValue] = useState(0);
       async function onSubmit() {
         const updatedProduct = { 
           articleId: product.id, 
           quantity: value 
         };
         if (updatedProduct.quantity > 0) {
-          const response = await axios.post('http://localhost:44312/api/cart', updatedProduct);
+          const response = await axios.post('http://localhost:44312/api/cart', updatedProduct, {
+            withCredentials: true,
+            headers: authHeader(),
+          });
           showSuccessNotification("Produit ajouté au panier");
           console.log(product);
         } else {
@@ -84,7 +89,7 @@ export default function UserStocks ({ products }: any) {
       }
 
       return (
-        <Card withBorder radius="md" p="md" className={classes.card} w="40%">
+        <Card withBorder radius="md" p="md" className={classes.card} w="40%" key = {product.id}>
           <form onSubmit={handleSubmit(onSubmit)}>
             <Card.Section>
               <Image src={mockData.image} alt={product.name} height={180} />
