@@ -17,6 +17,7 @@ import { useStyles } from "./styles";
 import { useForm } from "react-hook-form";
 import { Console } from "console";
 import axios from "axios";
+import useNotification from "@/hooks/useNotification";
 
 const mockData = {
   image:
@@ -65,6 +66,7 @@ export default function UserStocks ({ products }: any) {
 
   function Cards() {
     const [value, setValue] = useState(0);
+    const { showErrorNotification, showSuccessNotification } = useNotification();
 
     let cards = products.map((product: any) => {
       async function onSubmit() {
@@ -72,10 +74,13 @@ export default function UserStocks ({ products }: any) {
           articleId: product.id, 
           quantity: value 
         };
-        const response = await axios.post('http://localhost:44312/api/cart', updatedProduct);
-        console.log(response.data);
-        console.log(updatedProduct);
-        console.log(response.status);
+        if (updatedProduct.quantity > 0) {
+          const response = await axios.post('http://localhost:44312/api/cart', updatedProduct);
+          showSuccessNotification("Produit ajouté au panier");
+          console.log(product);
+        } else {
+          showErrorNotification("Veuillez renseigner une quantité valide");
+        }
       }
 
       return (
@@ -108,7 +113,7 @@ export default function UserStocks ({ products }: any) {
                 weight={"bold"}
                 className={classes.quantityLabel}
               >
-                Quantité disponible : {product.quantity}
+                Quantité disponible : {product.stock}
               </Text>
             </Card.Section>
 
@@ -131,7 +136,8 @@ export default function UserStocks ({ products }: any) {
                   <NumberInput
                     value={value}
                     onChange={(val: number) => setValue(val)}
-                    max={product.quantity}
+                    max={product.stock}
+                    min={0}
                   />
                 </Box>
               </Flex>
