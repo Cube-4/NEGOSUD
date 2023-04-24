@@ -28,14 +28,13 @@ export default function Cart() {
     const { showErrorNotification, showSuccessNotification } =
       useNotification();
       
-    const orderName = "OrderOfUser " + localStorage.getItem("id");
     const orderDate = new Date();
     const orderType = "removeStock";
     const referenceName = localStorage.getItem("id") + " " + orderType;
     const userId = localStorage.getItem("id");
     const order = {
       id: 0,
-      orderName: orderName,
+      orderName: "",
       orderDate: orderDate,
       orderType: orderType,
       referenceName: referenceName,
