@@ -153,57 +153,6 @@ export default function UserStocks({ articles }: any) {
               </Button>
               <Badge size="sm">{product.origin}</Badge>
             </Group>
-            <Card.Section className={classes.section} mt="md">
-              <Text
-                mt="md"
-                className={classes.priceLabel}
-                color="dimmed"
-                weight={"bold"}
-              >
-                Prix unitaire : {product.price} €
-              </Text>
-              <Text
-                mt="md"
-                color="dimmed"
-                weight={"bold"}
-                className={classes.quantityLabel}
-              >
-                Quantité disponible : {product.quantity}
-              </Text>
-            </Card.Section>
-
-            <Card.Section className={classes.section}>
-              <Text mt="md" className={classes.label} color="dimmed">
-                Perfect for you, if you enjoy
-              </Text>
-              <Group spacing={7} mt={5}>
-                {features}
-              </Group>
-            </Card.Section>
-
-            <Group mt="xs">
-              <Flex gap="1vw" align="baseline">
-                <Text mt="md" color="dimmed" fz="md">
-                  {" "}
-                  Quantité souhaitée :{" "}
-                </Text>
-                <Box w="40%">
-                  <NumberInput
-                    value={value}
-                    onChange={(val: number) => setValue(val)}
-                    max={product.quantity}
-                  />
-                </Box>
-              </Flex>
-              <Button
-                radius="md"
-                style={{ flex: 1 }}
-                type="submit"
-                disabled={value === 0}
-              >
-                Ajouter au panier
-              </Button>
-            </Group>
           </form>
         </Card>
       );
