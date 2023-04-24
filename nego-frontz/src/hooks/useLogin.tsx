@@ -17,7 +17,6 @@ export default function useLogin() {
     password: string;
   }
   async function login({ email, password }: LoginData) {
-    console.log("enter function", email, password);
     const data = {
       email: email,
       password: password,

@@ -82,7 +82,6 @@ export default function UserStocks ({ products }: any) {
             headers: authHeader(),
           });
           showSuccessNotification("Produit ajouté au panier");
-          console.log(product);
         } else {
           showErrorNotification("Veuillez renseigner une quantité valide");
         }

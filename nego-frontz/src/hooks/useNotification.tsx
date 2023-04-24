@@ -4,7 +4,6 @@ import { Alert } from "@mantine/core";
 export default function useNotification() {
     function showErrorNotification(message: string) {
         const messageOutput = message ? message : "An error has occurred.";
-        console.log(messageOutput)
         showNotification({
         title: "Error",
         message: messageOutput,
@@ -15,7 +14,6 @@ export default function useNotification() {
 
     function showSuccessNotification(message: string) {
     const messageOutput = message ? message : "Operation success.";
-    console.log(messageOutput)
     showNotification({
       title: "Success",
       message: messageOutput,

@@ -22,7 +22,6 @@ export default function Cart() {
     });
     setCart(response.data);
     setCartItems(response.data.articles);
-    console.log(response.data);
   };
 
   const validateOrder = async () => {
@@ -46,7 +45,6 @@ export default function Cart() {
         headers: authHeader(),
       }
     );
-    console.log(response);
   };
 
   function Articles() {
