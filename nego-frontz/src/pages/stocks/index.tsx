@@ -39,7 +39,7 @@ function AdminContent({ articles }: any) {
 }
 
 function Page({ articles }: any) {
-  const { isAdmin, roles } = useAuth();
+  const { isAdmin } = useAuth();
 
   return (
     <div>

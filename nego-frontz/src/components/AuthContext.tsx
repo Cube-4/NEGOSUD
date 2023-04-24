@@ -4,6 +4,7 @@ interface AuthContextType {
   isAuthenticated: boolean;
   setIsAuthenticated: (value: boolean) => void;
   isAdmin: boolean;
+  setIsAdmin: (value: boolean) => void;
   roles: number;
 }
 
@@ -27,7 +28,7 @@ export function AuthProvider({ children }: any) {
     (localStorage && JSON.parse(localStorage.getItem("roles") || "[]")) || []
   );
 
-  const [isAdmin] = useState<boolean>(roles === 1);
+  const [isAdmin, setIsAdmin] = useState<boolean>(roles === 1);
 
   useEffect(() => {
     if (typeof localStorage !== "undefined") {
@@ -47,7 +48,13 @@ export function AuthProvider({ children }: any) {
 
   return (
     <AuthContext.Provider
-      value={{ isAuthenticated, setIsAuthenticated, roles, isAdmin }}
+      value={{
+        isAuthenticated,
+        setIsAuthenticated,
+        roles,
+        isAdmin,
+        setIsAdmin,
+      }}
     >
       {children}
     </AuthContext.Provider>
