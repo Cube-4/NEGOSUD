@@ -2,12 +2,12 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { Button, Group, Paper, Text } from "@mantine/core";
 import axios from "axios";
-import cookie from "js-cookie";
 import authHeader from "@/helpers/auth-headers";
 import { QuantityInput } from "../Stocks/UserStocks/quantityInput";
 import useNotification from "@/hooks/useNotification";
 
 export default function Cart() {
+  const [cart, setCart] = React.useState<any>([]);
   const [cartItems, setCartItems] = React.useState<any>([]);
 
   //get cart items from api
@@ -20,7 +20,33 @@ export default function Cart() {
       withCredentials: true,
       headers: authHeader(),
     });
+    setCart(response.data);
     setCartItems(response.data.articles);
+    console.log(response.data);
+  };
+
+  const validateOrder = async () => {
+    const orderName = localStorage.getItem("userMail");
+    const orderDate = new Date();
+    const orderType = "removeStock";
+    const referenceName = "commande de " + localStorage.getItem("userId") + " " + orderType;
+    const userId = localStorage.getItem("userId");
+    const order = {
+      orderName: orderName,
+      orderDate: orderDate,
+      orderType: orderType,
+      referenceName: referenceName,
+      userId: userId,
+    };
+    const response = await axios.post(
+      "http://localhost:44312/api/order",
+      order,
+      {
+        withCredentials: true,
+        headers: authHeader(),
+      }
+    );
+    console.log(response);
   };
 
   function Articles() {
@@ -28,6 +54,7 @@ export default function Cart() {
       useNotification();
 
     let articles = cartItems.map((item: any) => {
+      // eslint-disable-next-line react-hooks/rules-of-hooks
       const [value, setValue] = useState(0);
 
       async function onAddSubmit() {
@@ -110,7 +137,6 @@ export default function Cart() {
     return articles;
   }
 
-  console.log(cartItems);
   return (
     <>
       {Array.isArray(cartItems) && cartItems.length > 0 ? (
@@ -124,6 +150,14 @@ export default function Cart() {
                 0
               )}
             </Text>
+            <Button
+              radius="md"
+              style={{ flex: 1 }}
+              onClick={validateOrder}
+            >
+              {" "}
+              Passer la commande
+            </Button>
           </Paper>
         </>
       ) : (

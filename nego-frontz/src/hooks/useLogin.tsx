@@ -39,6 +39,8 @@ export default function useLogin() {
           localStorage.setItem("isAdmin", "false");
           setIsAdmin(false);
         }
+        localStorage.setItem("userMail", response.data.result.email);
+        localStorage.setItem("userId", response.data.result.id);
         setIsAuth(true);
         router.push("/stocks");
       }
