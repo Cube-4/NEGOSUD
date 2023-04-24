@@ -12,8 +12,8 @@ import { useRouter } from "next/router";
 import { useAuth } from "../AuthContext";
 
 export default function Sidebar() {
-  const { isAuthenticated } = useAuth();
-  const isAdmin = true;
+  const { isAuthenticated, isAdmin, roles } = useAuth();
+
   const logout = useLogout();
   const router = useRouter();
 

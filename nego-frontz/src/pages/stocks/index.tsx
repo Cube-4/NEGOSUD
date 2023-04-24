@@ -39,12 +39,11 @@ function AdminContent({ articles }: any) {
 }
 
 function Page({ articles }: any) {
-  const { isAdmin } = useAuth();
+  const { isAdmin, roles } = useAuth();
 
   return (
     <div>
       <h1>Liste des articles</h1>
-
       {!isAdmin && <UserStocks articles={articles} />}
 
       {isAdmin && <AdminContent articles={articles} />}
