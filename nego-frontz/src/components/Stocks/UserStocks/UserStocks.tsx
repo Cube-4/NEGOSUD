@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-key */
 import React, { useState } from "react";
 import {
   Card,
@@ -14,6 +15,10 @@ import { QuantityInput } from "./quantityInput";
 import { useStyles } from "./styles";
 // Form handling
 import { useForm } from "react-hook-form";
+import { Console } from "console";
+import axios from "axios";
+import useNotification from "@/hooks/useNotification";
+import authHeader from "@/helpers/auth-headers";
 
 const mockData = {
   image:
@@ -43,7 +48,7 @@ const mockData = {
   ],
 };
 
-export default function ({ products }: any) {
+export default function UserStocks ({ products }: any) {
   const { classes, theme } = useStyles();
 
   const features = mockData.badges?.map((badge) => (
@@ -61,31 +66,29 @@ export default function ({ products }: any) {
   const { handleSubmit } = useForm();
 
   function Cards() {
-    const [value, setValue] = useState(0);
+
+    const { showErrorNotification, showSuccessNotification } = useNotification();
 
     let cards = products.map((product: any) => {
+      const [value, setValue] = useState(0);
       async function onSubmit() {
-        if (localStorage.getItem("cart") !== null) {
-          let cart = JSON.parse(localStorage.getItem("cart") || "{}");
-          // Append the new product to the cart
-          cart.push({
-            product: product.name,
-            quantity: value,
-            price: product.price,
+        const updatedProduct = { 
+          articleId: product.id, 
+          quantity: value 
+        };
+        if (updatedProduct.quantity > 0) {
+          const response = await axios.post('http://localhost:44312/api/cart', updatedProduct, {
+            withCredentials: true,
+            headers: authHeader(),
           });
-          localStorage.setItem("cart", JSON.stringify(cart));
+          showSuccessNotification("Produit ajouté au panier");
         } else {
-          let cart = [];
-          cart.push({
-            product: product.name,
-            quantity: value,
-          });
-          localStorage.setItem("cart", JSON.stringify(cart));
+          showErrorNotification("Veuillez renseigner une quantité valide");
         }
       }
 
       return (
-        <Card withBorder radius="md" p="md" className={classes.card} w="40%">
+        <Card withBorder radius="md" p="md" className={classes.card} w="40%" key = {product.id}>
           <form onSubmit={handleSubmit(onSubmit)}>
             <Card.Section>
               <Image src={mockData.image} alt={product.name} height={180} />
@@ -114,7 +117,7 @@ export default function ({ products }: any) {
                 weight={"bold"}
                 className={classes.quantityLabel}
               >
-                Quantité disponible : {product.quantity}
+                Quantité disponible : {product.stock}
               </Text>
             </Card.Section>
 
@@ -137,7 +140,8 @@ export default function ({ products }: any) {
                   <NumberInput
                     value={value}
                     onChange={(val: number) => setValue(val)}
-                    max={product.quantity}
+                    max={product.stock}
+                    min={0}
                   />
                 </Box>
               </Flex>

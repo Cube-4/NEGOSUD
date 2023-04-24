@@ -16,7 +16,7 @@ import { showNotification } from "@mantine/notifications";
 // Loader
 import { Loader } from "@/components/Loader";
 
-export default function () {
+export default function Login () {
   const { mutate: login, isLoading } = useLogin();
   const { register, handleSubmit } = useForm();
 

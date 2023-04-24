@@ -20,8 +20,8 @@ export const columns = [
     defaultFlex: 1,
   },
   {
-    name: "quantity",
-    header: "Quantité de l'article",
+    name: "orderDate",
+    header: "Date de commande",
     defaultFlex: 1,
     filterEditor: NumberFilter,
   },

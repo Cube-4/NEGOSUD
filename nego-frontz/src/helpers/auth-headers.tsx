@@ -4,7 +4,9 @@ function authHeader() {
 
   if (token !== null) {
 
-    return { Authorization: "Bearer " + token.replace(/['"]+/g, '') };
+    return { 
+      Authorization: "Bearer " + token.replace(/['"]+/g, ''),
+    };
 
   } else {
 

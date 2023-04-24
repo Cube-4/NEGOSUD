@@ -1,9 +1,8 @@
 import { AppProps } from "next/app";
 import { useState, createContext, useMemo, useEffect } from "react";
 import Head from "next/head";
-import { MantineProvider } from "@mantine/core";
+import { MantineProvider, AppShell, Navbar  } from "@mantine/core";
 import { NotificationsProvider } from "@mantine/notifications";
-import { AppShell, Navbar } from "@mantine/core";
 import { Sidebar } from "@/components/Sidebar";
 import { QueryClientProvider, QueryClient } from "react-query";
 import { UserContext } from "@/context/UserContext";
