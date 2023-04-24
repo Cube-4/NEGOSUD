@@ -1,9 +1,9 @@
 import { useRouter } from "next/router";
-import { useAuth } from "../components/AuthContext";
 
 export default function authProtected(Component: any) {
   return function AuthenticatedComponent(props: any) {
-    const { isAuthenticated } = useAuth();
+    const isAuthenticated = localStorage.getItem("isAuthenticated");
+    const isAdmin = localStorage.getItem("isAdmin");
     const router = useRouter();
 
     if (!isAuthenticated) router.push("/");

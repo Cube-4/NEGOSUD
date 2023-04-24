@@ -9,10 +9,10 @@ import {
 import { IconLogout } from "@tabler/icons-react";
 import useLogout from "@/hooks/useLogout";
 import { useRouter } from "next/router";
-import { useAuth } from "../AuthContext";
 
 export default function Sidebar() {
-  const { isAuthenticated, isAdmin, roles } = useAuth();
+  const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
+  const isAdmin = localStorage.getItem("isAdmin") === "true";
 
   const logout = useLogout();
   const router = useRouter();

@@ -2,17 +2,17 @@ import { showNotification } from "@mantine/notifications";
 import { Alert } from "@mantine/core";
 
 export default function useNotification() {
-    function showErrorNotification(message: string) {
-        const messageOutput = message ? message : "An error has occurred.";
-        showNotification({
-        title: "Error",
-        message: messageOutput,
-        color: "red",
-        autoClose: 3000,
-        });
-    }
+  function showErrorNotification(message: string) {
+    const messageOutput = message ? message : "An error has occurred.";
+    showNotification({
+      title: "Error",
+      message: messageOutput,
+      color: "red",
+      autoClose: 3000,
+    });
+  }
 
-    function showSuccessNotification(message: string) {
+  function showSuccessNotification(message: string) {
     const messageOutput = message ? message : "Operation success.";
     showNotification({
       title: "Success",
@@ -20,17 +20,25 @@ export default function useNotification() {
       color: "green",
       autoClose: 3000,
     });
-    }
+  }
 
-    function showModulableNotification(title: string, message: string, color: string, autoClose: boolean|number) {
-      showNotification({
-        title: title,
-        message: message,
-        color: color,
-        autoClose: autoClose,
-      });
-    }
-  
+  function showModulableNotification(
+    title: string,
+    message: string,
+    color: string,
+    autoClose: boolean | number
+  ) {
+    showNotification({
+      title: title,
+      message: message,
+      color: color,
+      autoClose: autoClose,
+    });
+  }
 
-  return { showErrorNotification, showSuccessNotification, showModulableNotification };
+  return {
+    showErrorNotification,
+    showSuccessNotification,
+    showModulableNotification,
+  };
 }

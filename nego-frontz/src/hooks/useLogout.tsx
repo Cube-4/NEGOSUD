@@ -2,15 +2,14 @@ import { useRouter } from "next/router";
 import useNotification from "./useNotification";
 
 export default function useLogout() {
-  const { setIsAuthenticated, setIsAdmin } = useAuth();
   const router = useRouter();
   const { showSuccessNotification } = useNotification();
   function logout() {
     localStorage.removeItem("token");
     localStorage.removeItem("roles");
     localStorage.removeItem("id");
-    setIsAuthenticated(false);
-    setIsAdmin(false);
+    localStorage.removeItem("isAuthenticated");
+    localStorage.removeItem("isAdmin");
 
     router.push("/");
     showSuccessNotification("Vous êtes déconnecté");
