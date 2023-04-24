@@ -51,6 +51,8 @@ const mockData = {
 export default function UserStocks ({ products }: any) {
   const { classes, theme } = useStyles();
 
+  console.log(articles);
+
   const features = mockData.badges?.map((badge) => (
     <Badge
       color={theme.colorScheme === "dark" ? "dark" : "gray"}
@@ -62,8 +64,6 @@ export default function UserStocks ({ products }: any) {
   ));
 
   // Form handling
-
-  const { handleSubmit } = useForm();
 
   function Cards() {
 
@@ -94,22 +94,10 @@ export default function UserStocks ({ products }: any) {
               <Image src={mockData.image} alt={product.name} height={180} />
             </Card.Section>
 
-            <Card.Section className={classes.section} mt="md">
-              <Group position="apart">
-                <Text size="xl" weight={500}>
-                  {product.name}
-                </Text>
-                <Badge size="sm">{product.origin}</Badge>
-              </Group>
-            </Card.Section>
-            <Card.Section className={classes.section} mt="md">
-              <Text
-                mt="md"
-                className={classes.priceLabel}
-                color="dimmed"
-                weight={"bold"}
-              >
-                Prix unitaire : {product.price} €
+          <Card.Section className={classes.section} mt="md">
+            <Group position="apart">
+              <Text size="xl" weight={500}>
+                {product.name}
               </Text>
               <Text
                 mt="md"
@@ -154,16 +142,34 @@ export default function UserStocks ({ products }: any) {
                 Ajouter au panier
               </Button>
             </Group>
-          </form>
+          </Card.Section>
+
+          <Group mt="xs">
+            <Flex gap="1vw" align="baseline">
+              <Text mt="md" color="dimmed" fz="md">
+                {" "}
+                Quantité souhaitée :{" "}
+              </Text>
+              <Box w="40%">
+                <NumberInput
+                  value={value}
+                  onChange={(val: number) => setValue(val)}
+                  max={product.quantity}
+                />
+              </Box>
+            </Flex>
+            <Button
+              radius="md"
+              style={{ flex: 1 }}
+              type="submit"
+              disabled={value === 0}
+            >
+              Ajouter au panier
+            </Button>
+          </Group>
         </Card>
       );
     });
-    return cards;
-  }
 
-  return (
-    <Flex wrap={"wrap"} gap="2vw" justify={"center"}>
-      <Cards />
-    </Flex>
-  );
+ 
 }

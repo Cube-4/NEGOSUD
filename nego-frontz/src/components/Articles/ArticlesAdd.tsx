@@ -10,40 +10,51 @@ import {
 import { useStyles } from "./styles";
 // Form handling
 import { useForm } from "react-hook-form";
-import usearticle from "@/hooks/useArticle";
+import useArticle from "@/hooks/useArticle";
+import { useFormik } from "formik";
 
 export default function () {
   const { classes } = useStyles();
   // Form handling
-  const { mutate: article, isLoading, isError } = usearticle();
-  const { register, handleSubmit } = useForm();
-  async function onSubmit(data: any) {
-    article({
-      name: data.name,
-      reference: data.reference,
-      origin: data.origin,
-      stock: data.stock,
-      price: data.price,
-      id: data.id,
-    });
+
+  async function submitForm(values: any) {
+    const { name, reference, origin, stock, price, id } = values;
+    useArticle({ name, reference, origin, stock, price, id });
   }
+
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+      reference: "",
+      origin: "",
+      stock: "",
+      price: "",
+      id: "",
+    },
+    onSubmit: (values) => {
+      submitForm(values);
+    },
+  });
+
   return (
     <Paper shadow="xl" className={classes.paper}>
       <Text mb={{ base: "2vh" }}>Passer une commande au fournisseur</Text>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={formik.handleSubmit}>
         <Flex gap={{ base: "5vw" }} w="100%">
           <Flex gap={{ base: "1vh" }} className={classes.inputFlex}>
             <TextInput
               label="Nom de l'article"
               placeholder="Exemple : Grand cru de bordeaux"
               classNames={classes}
-              {...register("name")}
+              onChange={(e) => formik.setFieldValue("name", e.target.value)}
             />
             <TextInput
               label="Référence de l'article"
               placeholder="Exemple : 23413x24"
               classNames={classes}
-              {...register("reference")}
+              onChange={(e) =>
+                formik.setFieldValue("reference", e.target.value)
+              }
             />
           </Flex>
           <Flex gap={{ base: "1vh" }} className={classes.inputFlex}>
@@ -51,12 +62,12 @@ export default function () {
               label="Origine de l'article"
               placeholder="Exemple : Médoc"
               classNames={classes}
-              {...register("origin")}
+              onChange={(e) => formik.setFieldValue("origin", e.target.value)}
             />
             <TextInput
               label="Stock de l'article"
               classNames={classes}
-              {...register("stock")}
+              onChange={(e) => formik.setFieldValue("stock", e.target.value)}
             />
           </Flex>
           <Flex gap={{ base: "1vh" }} className={classes.inputFlex}>
@@ -64,54 +75,20 @@ export default function () {
               label="Prix de l'article"
               placeholder="Exemple : 100"
               classNames={classes}
-              {...register("role")}
+              onChange={(e) => formik.setFieldValue("price", e.target.value)}
             />
             <TextInput
               label="Id de l'utilisateur"
               placeholder="Exemple : 1"
               classNames={classes}
-              {...register("id")}
+              onChange={(e) => formik.setFieldValue("id", e.target.value)}
             />
-            <Button fullWidth mt="xl" disabled={isLoading} type="submit">
-              {isLoading ? "Loading..." : "Ajouter l'article"}
+            <Button fullWidth mt="xl" /* disabled={isLoading} */ type="submit">
+              {/* isLoading ? "Loading..." : */ "Ajouter l'article"}
             </Button>
           </Flex>
         </Flex>
       </form>
     </Paper>
-  );
-}
-
-export function TextAndSelect({
-  classes,
-  textLabel,
-  selectLabel,
-  textPlaceholder,
-  selectPlaceholder,
-  selectData,
-  textInputType,
-  register,
-}: any) {
-  return (
-    <>
-      <Box>
-        <Select
-          data={selectData}
-          placeholder={selectPlaceholder}
-          label={selectLabel}
-          classNames={classes}
-          //   {...register("article")}
-        />
-      </Box>
-      <Box w="100%">
-        <TextInput
-          type={textInputType}
-          label={textLabel}
-          placeholder={textPlaceholder}
-          classNames={classes}
-          {...register("quantity")}
-        />
-      </Box>
-    </>
   );
 }
