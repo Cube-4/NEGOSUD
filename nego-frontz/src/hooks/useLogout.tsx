@@ -9,6 +9,7 @@ export default function useLogout() {
   function logout() {
     localStorage.removeItem("token");
     localStorage.removeItem("roles");
+    localStorage.removeItem("id");
     setIsAuthenticated(false);
     router.push("/");
   }
