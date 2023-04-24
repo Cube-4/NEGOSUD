@@ -77,10 +77,11 @@ namespace nego.services
             {
                 var orderData = (OrderCreationDTO)data;
                 var cart = _cartService.GetCart();
-                
+                var orderUser = _repository.GetOne<User>(src => src.Id == orderData.UserId);
+
                 var order = new Order
                 {
-                    OrderName = orderData.OrderName,
+                    OrderName = "Order of " + orderUser.FirstName + " " + orderUser.LastName,
                     ReferenceName = orderData.ReferenceName,
                     UserId = orderData.UserId,
                     OrderDate = DateTime.Now,
@@ -104,7 +105,6 @@ namespace nego.services
 
                     _repository.Add(articleOrder);
                 }
-                var orderUser = _repository.GetOne<User>(src => src.Id == orderData.UserId);
                 orderUser.Orders.Add(order);
 
                 await _unitOfWork.SaveIntoDbContextAsync();
