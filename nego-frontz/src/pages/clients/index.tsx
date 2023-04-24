@@ -5,6 +5,8 @@ import "@inovua/reactdatagrid-community/index.css";
 import { columns } from "./columns";
 import type TypeDataGridProps from "@inovua/reactdatagrid-community/types/TypeDataGridProps";
 import authHeader from "../../helpers/auth-headers";
+import { ClientsAdd } from "@/components/Clients";
+import authProtected from "@/components/authProtected";
 
 //---- import component as dynamic with un poco de bricolaje --
 const DynamicDataGrid = dynamic(
@@ -17,7 +19,7 @@ const DynamicDataGrid = dynamic(
 );
 
 //---- Create your page using the dynamic component ------------
-export default function Page() {
+function Page() {
   const [clients, setClients] = useState([]);
 
   useEffect(() => {
@@ -33,6 +35,7 @@ export default function Page() {
   return (
     <div>
       <h1>Liste de clients</h1>
+      <ClientsAdd />
       <DynamicDataGrid
         idProperty="id"
         columns={columns}
@@ -43,3 +46,5 @@ export default function Page() {
     </div>
   );
 }
+
+export default authProtected(Page);
