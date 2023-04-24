@@ -19,6 +19,7 @@ import { Console } from "console";
 import axios from "axios";
 import useNotification from "@/hooks/useNotification";
 import authHeader from "@/helpers/auth-headers";
+import { useFormik } from "formik";
 
 const mockData = {
   image:
@@ -48,10 +49,8 @@ const mockData = {
   ],
 };
 
-export default function UserStocks ({ products }: any) {
+export default function UserStocks({ articles }: any) {
   const { classes, theme } = useStyles();
-
-  console.log(articles);
 
   const features = mockData.badges?.map((badge) => (
     <Badge
@@ -63,41 +62,69 @@ export default function UserStocks ({ products }: any) {
     </Badge>
   ));
 
+  const { showErrorNotification, showSuccessNotification } = useNotification();
+
   // Form handling
+  async function onSubmit(product: any, value: number) {
+    const updatedProduct = {
+      articleId: product.id,
+      quantity: value,
+    };
+
+    if (updatedProduct.quantity > 0) {
+      await axios.post("http://localhost:44312/api/cart", updatedProduct, {
+        withCredentials: true,
+        headers: authHeader(),
+      });
+      showSuccessNotification("Produit ajouté au panier");
+    } else {
+      showErrorNotification("Veuillez renseigner une quantité valide");
+    }
+  }
 
   function Cards() {
-
-    const { showErrorNotification, showSuccessNotification } = useNotification();
-
-    let cards = products.map((product: any) => {
+    let cards = articles.map((product: any) => {
       const [value, setValue] = useState(0);
-      async function onSubmit() {
-        const updatedProduct = { 
-          articleId: product.id, 
-          quantity: value 
-        };
-        if (updatedProduct.quantity > 0) {
-          const response = await axios.post('http://localhost:44312/api/cart', updatedProduct, {
-            withCredentials: true,
-            headers: authHeader(),
-          });
-          showSuccessNotification("Produit ajouté au panier");
-        } else {
-          showErrorNotification("Veuillez renseigner une quantité valide");
-        }
-      }
+
+      const formik = useFormik({
+        initialValues: {
+          quantity: "",
+        },
+        onSubmit: (values) => {
+          onSubmit(product, value);
+        },
+      });
 
       return (
-        <Card withBorder radius="md" p="md" className={classes.card} w="40%" key = {product.id}>
-          <form onSubmit={handleSubmit(onSubmit)}>
+        <Card
+          withBorder
+          radius="md"
+          p="md"
+          className={classes.card}
+          w="40%"
+          key={product.id}
+        >
+          <form onSubmit={formik.handleSubmit}>
             <Card.Section>
               <Image src={mockData.image} alt={product.name} height={180} />
             </Card.Section>
 
-          <Card.Section className={classes.section} mt="md">
-            <Group position="apart">
-              <Text size="xl" weight={500}>
-                {product.name}
+            <Card.Section className={classes.section} mt="md">
+              <Group position="apart">
+                <Text size="xl" weight={500}>
+                  {product.name}
+                </Text>
+                <Badge size="sm">{product.origin}</Badge>
+              </Group>
+            </Card.Section>
+            <Card.Section className={classes.section} mt="md">
+              <Text
+                mt="md"
+                className={classes.priceLabel}
+                color="dimmed"
+                weight={"bold"}
+              >
+                Prix unitaire : {product.price} €
               </Text>
               <Text
                 mt="md"
@@ -124,52 +151,29 @@ export default function UserStocks ({ products }: any) {
                   {" "}
                   Quantité souhaitée :{" "}
                 </Text>
+
                 <Box w="40%">
                   <NumberInput
-                    value={value}
-                    onChange={(val: number) => setValue(val)}
-                    max={product.stock}
-                    min={0}
+                    hideControls
+                    onChange={(value) => setValue(value as number)}
+                    name="quantity"
                   />
                 </Box>
               </Flex>
-              <Button
-                radius="md"
-                style={{ flex: 1 }}
-                type="submit"
-                disabled={value === 0}
-              >
+              <Button radius="md" style={{ flex: 1 }} type="submit">
                 Ajouter au panier
               </Button>
             </Group>
-          </Card.Section>
-
-          <Group mt="xs">
-            <Flex gap="1vw" align="baseline">
-              <Text mt="md" color="dimmed" fz="md">
-                {" "}
-                Quantité souhaitée :{" "}
-              </Text>
-              <Box w="40%">
-                <NumberInput
-                  value={value}
-                  onChange={(val: number) => setValue(val)}
-                  max={product.quantity}
-                />
-              </Box>
-            </Flex>
-            <Button
-              radius="md"
-              style={{ flex: 1 }}
-              type="submit"
-              disabled={value === 0}
-            >
-              Ajouter au panier
-            </Button>
-          </Group>
+          </form>
         </Card>
       );
     });
+    return cards;
+  }
 
- 
+  return (
+    <Flex wrap={"wrap"} gap="2vw" justify={"center"}>
+      <Cards />
+    </Flex>
+  );
 }
