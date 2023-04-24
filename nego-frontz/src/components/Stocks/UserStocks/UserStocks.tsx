@@ -117,6 +117,14 @@ export default function UserStocks({ articles }: any) {
               </Text>
               <Text
                 mt="md"
+                className={classes.priceLabel}
+                color="dimmed"
+                weight={"bold"}
+              >
+                Prix unitaire : {product.price} €
+              </Text>
+              <Text
+                mt="md"
                 color="dimmed"
                 weight={"bold"}
                 className={classes.quantityLabel}
