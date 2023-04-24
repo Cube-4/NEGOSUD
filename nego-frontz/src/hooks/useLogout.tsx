@@ -1,16 +1,17 @@
-import { useState, useContext } from "react";
+import { useContext } from "react";
 import { useRouter } from "next/router";
-import { UserContext } from "@/context/UserContext";
+import { useAuth } from "@/components/AuthContext";
 
 export default function useLogout() {
-  const { setIsAuth, setIsAdmin } = useContext(UserContext);
+  const { setIsAuthenticated } = useAuth();
   const router = useRouter();
+
   function logout() {
     localStorage.removeItem("token");
-    localStorage.removeItem("isAdmin");
-    setIsAuth(false);
-    setIsAdmin(false);
+    localStorage.removeItem("roles");
+    setIsAuthenticated(false);
     router.push("/");
   }
+
   return logout;
 }

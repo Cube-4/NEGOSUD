@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { authProtected } from "@/components/authProtected";
+import authProtected from "@/components/authProtected";
 import { UserCart } from "@/components/Cart";
 
 function Cart() {

@@ -4,7 +4,8 @@ import "@inovua/reactdatagrid-community/index.css";
 import { columns } from "./columns";
 import type TypeDataGridProps from "@inovua/reactdatagrid-community/types/TypeDataGridProps";
 // Components
-import { OrderPass } from "@/components/Orders";
+import { OrderAdd } from "@/components/Orders";
+import authProtected from "@/components/authProtected";
 //---- import component as dynamic -----//
 const DynamicDataGrid = dynamic(
   (() => {
@@ -16,11 +17,11 @@ const DynamicDataGrid = dynamic(
 );
 
 //---- Create your page using the dynamic component -----//
-export default function Page({ data }: any) {
+function Page({ data }: any) {
   return (
     <div>
       <h1>Liste des commandes fournisseur</h1>
-      <OrderPass />
+      <OrderAdd />
       <DynamicDataGrid
         idProperty="id"
         columns={columns}
@@ -31,6 +32,8 @@ export default function Page({ data }: any) {
     </div>
   );
 }
+
+export default authProtected(Page);
 
 export async function getServerSideProps() {
   const orders = await fetch("http://localhost:44312/api/order").then((res) =>
