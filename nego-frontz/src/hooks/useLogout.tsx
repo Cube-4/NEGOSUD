@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { useAuth } from "@/components/AuthContext";
 
 export default function useLogout() {
-  const { setIsAuthenticated } = useAuth();
+  const { setIsAuthenticated, setIsAdmin } = useAuth();
   const router = useRouter();
 
   function logout() {
@@ -11,6 +11,8 @@ export default function useLogout() {
     localStorage.removeItem("roles");
     localStorage.removeItem("id");
     setIsAuthenticated(false);
+    setIsAdmin(false);
+
     router.push("/");
   }
 
