@@ -1,7 +1,7 @@
 import axios from "axios";
 import authHeader from "@/helpers/auth-headers";
 
-export default function useUser(userData: any) {
+export default function useOrder(userData: any) {
   const data = {
     orderName: userData.orderName,
     orderDate: userData.orderDate,

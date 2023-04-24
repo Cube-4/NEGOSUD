@@ -32,9 +32,10 @@ export default function () {
 
   async function submitForm(values: any) {
     const { firstName, lastName, email, password, roles } = values;
-    const rolesArray = [];
+    const rolesArray: number[] = [];
     rolesArray.push(values.roles);
-    useUser({ firstName, lastName, email, password, roles });
+    console.log(rolesArray, "type", typeof rolesArray);
+    useUser({ firstName, lastName, email, password, roles: rolesArray });
   }
 
   return (

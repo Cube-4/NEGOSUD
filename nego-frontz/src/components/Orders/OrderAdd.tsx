@@ -9,9 +9,8 @@ import {
 } from "@mantine/core";
 import { useStyles } from "./styles";
 // Form handling
-import useUser from "@/hooks/useUser";
-import { useState } from "react";
 import { useFormik } from "formik";
+import useOrder from "@/hooks/useOrder";
 
 export default function () {
   const { classes } = useStyles();
@@ -24,17 +23,16 @@ export default function () {
       userId: "",
     },
     onSubmit: (values) => {
-      // alert(JSON.stringify(values, null, 2));
       submitForm(values);
     },
   });
 
   async function submitForm(values: any) {
-    const { orderName, orderType, referenceName, userId } = values;
+    const { orderName, orderType, referenceName } = values;
     const orderDateFormated = new Date();
     const id = localStorage.getItem("id");
 
-    useUser({
+    useOrder({
       orderName,
       orderDate: orderDateFormated,
       orderType,

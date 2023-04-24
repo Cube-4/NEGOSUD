@@ -13,17 +13,19 @@ import {
 import useLogin from "../../hooks/useLogin";
 import { useFormik } from "formik";
 // Loader
-import { useAuth } from "../AuthContext";
 import { useRouter } from "next/router";
 
 export default function () {
-  const { isAuthenticated, setIsAuthenticated } = useAuth();
   const router = useRouter();
 
-  async function submitForm(values: any) {
+  const submitForm = async (values: any) => {
     const { email, password } = values;
-    useLogin({ email, password, setIsAuthenticated });
-  }
+
+    await useLogin({
+      email: email,
+      password: password,
+    }).then(() => router.push("/stocks"));
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -31,14 +33,9 @@ export default function () {
       password: "",
     },
     onSubmit: (values) => {
-      // alert(JSON.stringify(values, null, 2));
-      submitForm(values);
+      submitForm(values).then(() => router.push("/stocks"));
     },
   });
-
-  if (isAuthenticated) {
-    router.push("/stocks");
-  }
 
   return (
     <>

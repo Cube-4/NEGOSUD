@@ -12,7 +12,6 @@ import { ArticlesAdd } from "@/components/Articles";
 import authProtected from "@/components/authProtected";
 import axios from "axios";
 import authHeader from "@/helpers/auth-headers";
-import { useAuth } from "@/components/AuthContext";
 
 const DynamicDataGrid = dynamic(
   (() => {
@@ -39,14 +38,16 @@ function AdminContent({ articles }: any) {
 }
 
 function Page({ articles }: any) {
-  const { isAdmin } = useAuth();
+  const isAdmin = localStorage.getItem("isAdmin") || "";
 
   return (
     <div>
       <h1>Liste des articles</h1>
-      {!isAdmin && <UserStocks articles={articles} />}
-
-      {isAdmin && <AdminContent articles={articles} />}
+      {isAdmin === "false" ? (
+        <UserStocks articles={articles} />
+      ) : (
+        <AdminContent articles={articles} />
+      )}
     </div>
   );
 }

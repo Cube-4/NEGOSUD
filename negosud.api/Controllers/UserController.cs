@@ -45,7 +45,8 @@ namespace nego.api.Controllers
             return Ok(user);
         }
 
-        [Authorize(1)]
+        [AllowAnonymous]
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteById(int id)
         {
@@ -77,6 +78,7 @@ namespace nego.api.Controllers
             return Ok(response);
         }
 
+        [AllowAnonymous]
 
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] UserRessource data)
