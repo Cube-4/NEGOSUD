@@ -10,6 +10,8 @@ import {
   Flex,
   Box,
   NumberInput,
+  TextInput,
+  Select,
 } from "@mantine/core";
 import { QuantityInput } from "./quantityInput";
 import { useStyles } from "./styles";
@@ -51,8 +53,20 @@ const mockData = {
 
 export default function UserStocks({ articles }: any) {
   const { classes, theme } = useStyles();
+  const [searchValue, setSearchValue] = useState("");
+  const { showErrorNotification, showSuccessNotification } = useNotification();
+  const [articlesToRender, setArticlesToRender] = useState(articles);
+  const [sortOption, setSortOption] = useState<string>("");
 
-  console.log(articles);
+  const SearchHandler = (value: string) => {
+    setSearchValue(value);
+    searchItems(articles, value);
+  };
+
+  const SortHandler = (value: string) => {
+    setSortOption(value);
+    sortItems(articlesToRender, value);
+  };
 
   const features = mockData.badges?.map((badge) => (
     <Badge
@@ -63,8 +77,6 @@ export default function UserStocks({ articles }: any) {
       {badge.label}
     </Badge>
   ));
-
-  const { showErrorNotification, showSuccessNotification } = useNotification();
 
   // Form handling
   async function onSubmit(product: any, value: number) {
@@ -84,8 +96,58 @@ export default function UserStocks({ articles }: any) {
     }
   }
 
+  interface Item {
+    id: number;
+    name: string;
+  }
+
+  function searchItems(items: Item[], searchQuery: string) {
+    const results: Item[] = [];
+    const query = searchQuery.toLowerCase();
+
+    for (const item of items) {
+      const name = item.name.toLowerCase();
+
+      if (name.includes(query)) {
+        results.push(item);
+      }
+    }
+    setArticlesToRender(results);
+  }
+
+  function sortItems(items: Item[], sortOption: string) {
+    switch (sortOption) {
+      case "PriceSort":
+        setArticlesToRender(
+          articlesToRender.sort(
+            (a: { price: number }, b: { price: number }) => a.price - b.price
+          )
+        );
+        console.log(articlesToRender);
+        break;
+      case "QuantitySort":
+        setArticlesToRender(
+          articlesToRender.sort(
+            (a: { stock: number }, b: { stock: number }) => a.stock - b.stock
+          )
+        );
+        console.log(articlesToRender);
+        break;
+      case "NameSort":
+        setArticlesToRender(
+          articlesToRender.sort((a: { name: string }, b: { name: string }) =>
+            a.name.localeCompare(b.name)
+          )
+        );
+        console.log(articlesToRender);
+        break;
+      default:
+        return items;
+    }
+  }
+
   function Cards() {
-    let cards = articles.map((product: any) => {
+    let cards = articlesToRender.map((product: any) => {
       const [value, setValue] = useState(0);
 
       const formik = useFormik({
@@ -150,9 +212,11 @@ export default function UserStocks({ articles }: any) {
 
                 <Box w="40%">
                   <NumberInput
-                    hideControls
+                    value={value}
                     onChange={(value) => setValue(value as number)}
                     name="quantity"
+                    max={product.stock}
+                    min={0}
                   />
                 </Box>
               </Flex>
@@ -169,8 +233,32 @@ export default function UserStocks({ articles }: any) {
   }
 
   return (
-    <Flex wrap={"wrap"} gap="2vw" justify={"center"}>
-      <Cards />
-    </Flex>
+    <>
+      <Flex gap={{ base: "5vw" }} w="100%" mb={"3vh"}>
+        <TextInput
+          placeholder="Your name"
+          label="Search"
+          value={searchValue}
+          onChange={(e) => SearchHandler(e.currentTarget.value)}
+        />
+        <Select
+          label="Sort by"
+          placeholder="Pick one"
+          data={[
+            { value: "PriceSort", label: "Price" },
+            { value: "QuantitySort", label: "Quantity" },
+            { value: "NameSort", label: "Name" },
+          ]}
+          onChange={(selectedOption: string) => {
+            SortHandler(selectedOption);
+          }}
+          value={sortOption}
+        />
+      </Flex>
+
+      <Flex wrap={"wrap"} gap="2vw" justify={"center"}>
+        {articlesToRender && <Cards />}
+      </Flex>
+    </>
   );
 }

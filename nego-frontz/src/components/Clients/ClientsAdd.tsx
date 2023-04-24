@@ -13,7 +13,7 @@ import useUser from "@/hooks/useUser";
 import { useState } from "react";
 import { useFormik } from "formik";
 
-export default function () {
+export default function (props) {
   const { classes } = useStyles();
 
   const formik = useFormik({
@@ -35,7 +35,11 @@ export default function () {
     const rolesArray: number[] = [];
     rolesArray.push(values.roles);
     console.log(rolesArray, "type", typeof rolesArray);
-    useUser({ firstName, lastName, email, password, roles: rolesArray });
+    useUser({ firstName, lastName, email, password, roles: rolesArray }).then(
+      () => {
+        props.router.replace(props.router.asPath);
+      }
+    );
   }
 
   return (

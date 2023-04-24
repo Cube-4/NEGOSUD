@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import dynamic, { type DynamicOptions } from "next/dynamic";
 import axios from "axios";
 import "@inovua/reactdatagrid-community/index.css";
@@ -7,6 +7,8 @@ import type TypeDataGridProps from "@inovua/reactdatagrid-community/types/TypeDa
 import authHeader from "../../helpers/auth-headers";
 import { ClientsAdd } from "@/components/Clients";
 import authProtected from "@/components/authProtected";
+import { useRouter } from "next/router";
+import { Button, Group } from "@mantine/core";
 
 //---- import component as dynamic with un poco de bricolaje --
 const DynamicDataGrid = dynamic(
@@ -19,32 +21,84 @@ const DynamicDataGrid = dynamic(
 );
 
 //---- Create your page using the dynamic component ------------
-function Page() {
-  const [clients, setClients] = useState([]);
+function Page({ data }: any) {
+  // const [clients, setClients] = useState([]);
+  const [selected, setSelected] = useState({});
+  const router = useRouter();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await axios.get("http://localhost:44312/api/user", {
+  const onSelectionChange = useCallback(({ selected: selectedMap }: any) => {
+    setSelected(selectedMap);
+  }, []);
+
+  console.log(data);
+  console.log(selected);
+
+  const deleteId = async (selected: object) => {
+    for (let id in selected) {
+      await axios.delete(`http://localhost:44312/api/user/${id}`, {
         headers: authHeader(),
       });
-      setClients(response.data);
-    };
-    fetchData();
-  }, []);
+    }
+    router.replace(router.asPath);
+  };
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const response = await axios.get("http://localhost:44312/api/user", {
+  //       headers: authHeader(),
+  //     });
+  //     setClients(response.data);
+  //   };
+  //   fetchData();
+  // }, []);
 
   return (
     <div>
       <h1>Liste de clients</h1>
-      <ClientsAdd />
+      <ClientsAdd router={router}/>
       <DynamicDataGrid
         idProperty="id"
         columns={columns}
-        dataSource={clients}
+        dataSource={data}
+        checkboxColumn={true}
+        sortable={true}
+        multiSelect={true}
+        selected={selected}
+        onSelectionChange={onSelectionChange}
         defaultLimit={10}
         style={{ minHeight: 400 }}
       />
+      <Buttons selected={selected} deleteId={deleteId} setSelected={setSelected}/>
     </div>
   );
 }
 
 export default authProtected(Page);
+
+const Buttons = (props: any) => {
+  return (
+    <Group my={"3vh"}>
+      <Button
+        radius="md"
+        style={{ flex: 1 }}
+        disabled={props.selected && Object.keys(props.selected).length === 0}
+        onClick={() => {props.deleteId(props.selected); props.setSelected({})}}
+      >
+        Delete
+      </Button>
+    </Group>
+  );
+};
+
+export async function getServerSideProps() {
+  // const orders = await fetch("http://localhost:44312/api/order").then((res) =>
+  //   res.json()
+  // );
+    const response = await axios.get("http://localhost:44312/api/user", {
+      headers: authHeader(),
+    });
+
+  return {
+    props: { data: response.data },
+  };
+}
