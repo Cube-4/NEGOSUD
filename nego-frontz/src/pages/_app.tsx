@@ -1,6 +1,4 @@
 import { AppProps } from "next/app";
-import { useState, createContext, useMemo, useEffect } from "react";
-import Head from "next/head";
 import { MantineProvider, AppShell, Navbar } from "@mantine/core";
 import { NotificationsProvider } from "@mantine/notifications";
 import { Sidebar } from "@/components/Sidebar";
