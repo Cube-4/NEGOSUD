@@ -1,33 +1,175 @@
 import React from "react";
-import { useEffect } from "react";
-import { Paper, Text } from "@mantine/core";
+import { useEffect, useState } from "react";
+import { Button, Group, Paper, Text } from "@mantine/core";
+import axios from "axios";
+import authHeader from "@/helpers/auth-headers";
+import { QuantityInput } from "../Stocks/UserStocks/quantityInput";
+import useNotification from "@/hooks/useNotification";
 
 export default function Cart() {
+  const [cart, setCart] = React.useState<any>([]);
   const [cartItems, setCartItems] = React.useState<any>([]);
 
+  //get cart items from api
   useEffect(() => {
-    let cart;
-
-    // Perform localStorage action
-
-    const cartData = localStorage.getItem("cart");
-    if (cartData) {
-      cart = JSON.parse(cartData);
-    }
-
-    setCartItems(cart);
+    getCartItems();
   }, []);
+
+  const getCartItems = async () => {
+    const response = await axios.get("http://localhost:44312/api/cart", {
+      withCredentials: true,
+      headers: authHeader(),
+    });
+    setCart(response.data);
+    setCartItems(response.data.articles);
+  };
+
+  const validateOrder = async () => {
+    const { showErrorNotification, showSuccessNotification } =
+      useNotification();
+      
+    const orderName = "OrderOfUser " + localStorage.getItem("id");
+    const orderDate = new Date();
+    const orderType = "removeStock";
+    const referenceName = localStorage.getItem("id") + " " + orderType;
+    const userId = localStorage.getItem("id");
+    const order = {
+      id: 0,
+      orderName: orderName,
+      orderDate: orderDate,
+      orderType: orderType,
+      referenceName: referenceName,
+      userId: userId,
+    };
+    try {
+      const response = await axios.post(
+        "http://localhost:44312/api/order",
+        order,
+        {
+          withCredentials: true,
+          headers: authHeader(),
+        }
+      );
+      showSuccessNotification("Commande validée avec succes");
+      getCartItems();
+    } catch (error) {
+      showErrorNotification("Veuillez renseigner une quantité valide");
+      console.log(error);
+    }
+  };
+
+  function Articles() {
+    const { showErrorNotification, showSuccessNotification } =
+      useNotification();
+
+    let articles = cartItems.map((item: any) => {
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      const [value, setValue] = useState(0);
+
+      async function onAddSubmit() {
+        const updatedProduct = {
+          articleId: item.article.id,
+          quantity: value,
+        };
+        if (updatedProduct.quantity > 0) {
+          const response = await axios.post(
+            "http://localhost:44312/api/cart",
+            updatedProduct,
+            {
+              withCredentials: true,
+              headers: authHeader(),
+            }
+          );
+          showSuccessNotification("Produit ajouté au panier");
+          getCartItems();
+        } else {
+          showErrorNotification("Veuillez renseigner une quantité valide");
+        }
+      }
+
+      async function onRemoveSubmit() {
+        const updatedProduct = {
+          articleId: item.article.id,
+          quantity: value,
+        };
+        if (updatedProduct.quantity > 0) {
+          const response = await axios.delete(
+            "http://localhost:44312/api/cart",
+            {
+              withCredentials: true,
+              headers: authHeader(),
+              data: updatedProduct,
+            }
+          );
+          showSuccessNotification("Produit supprimé du panier");
+          getCartItems();
+        } else {
+          showErrorNotification("Veuillez renseigner une quantité valide");
+        }
+      }
+
+      return (
+        <Paper shadow="xs" p="md" key={item.article.id} mb="1vh">
+          <Text>Nom du produit : {item.article.name}</Text>
+          <Text>Quantité : {item.quantity}</Text>
+          <Text>Prix unitaire : {item.article.price}</Text>
+          <Text>Prix : {item.totalPrice}</Text>
+          <Group position="center">
+            <QuantityInput
+              min={0}
+              max={item.quantity}
+              value={value}
+              setValue={setValue}
+            ></QuantityInput>
+            <Button
+              radius="md"
+              style={{ flex: 1 }}
+              onClick={onAddSubmit}
+              disabled={value === 0}
+            >
+              {" "}
+              Ajouter au panier
+            </Button>
+            <Button
+              radius="md"
+              style={{ flex: 1 }}
+              onClick={onRemoveSubmit}
+              disabled={value === 0}
+            >
+              {" "}
+              Supprimer du panier
+            </Button>
+          </Group>
+        </Paper>
+      );
+    });
+    return articles;
+  }
+
   return (
     <>
-      {cartItems.map((item: any) => {
-        return (
-          <Paper shadow="xs" p="md" key={item.product} mb="1vh">
-            <Text>Nom du produit : {item.product}</Text>
-            <Text>Quantité : {item.quantity}</Text>
-            <Text>Prix : {item.price}</Text>
+      {Array.isArray(cartItems) && cartItems.length > 0 ? (
+        <>
+          <Articles></Articles>
+          <Paper shadow="xs" p="md" mb="1vh">
+            <Text>
+              Total :{" "}
+              {cartItems.reduce(
+                (acc: any, item: any) => acc + item.totalPrice,
+                0
+              )}
+            </Text>
+            <Button radius="md" style={{ flex: 1 }} onClick={validateOrder}>
+              {" "}
+              Passer la commande
+            </Button>
           </Paper>
-        );
-      })}
+        </>
+      ) : (
+        <Paper shadow="xs" p="md" mb="1vh">
+          <Text>Votre panier est vide.</Text>
+        </Paper>
+      )}
     </>
   );
 }

@@ -11,7 +11,7 @@ import { IconLogout } from "@tabler/icons-react";
 import useLogout from "@/hooks/useLogout";
 import { useRouter } from "next/router";
 
-export default function () {
+export default function Sidebar () {
   const { isAuth, isAdmin } = useContext(UserContext);
   const logout = useLogout();
   const router = useRouter();

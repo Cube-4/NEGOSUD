@@ -17,7 +17,6 @@ export default function useLogin() {
       referenceName: referenceName,
       quantity: quantity,
     };
-    console.log(data);
     try {
       const response = await axios.post(
         "http://localhost:44312/api/order",
@@ -26,7 +25,6 @@ export default function useLogin() {
           headers: authHeader(),
         }
       );
-      console.log("Hello IS " + response.data);
     } catch (error: any) {
       alert(error);
     }
