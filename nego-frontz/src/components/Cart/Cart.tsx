@@ -25,26 +25,37 @@ export default function Cart() {
   };
 
   const validateOrder = async () => {
-    const orderName = localStorage.getItem("userMail");
+    const { showErrorNotification, showSuccessNotification } =
+      useNotification();
+      
+    const orderName = "OrderOfUser " + localStorage.getItem("id");
     const orderDate = new Date();
     const orderType = "removeStock";
-    const referenceName = "commande de " + localStorage.getItem("userId") + " " + orderType;
-    const userId = localStorage.getItem("userId");
+    const referenceName = localStorage.getItem("id") + " " + orderType;
+    const userId = localStorage.getItem("id");
     const order = {
+      id: 0,
       orderName: orderName,
       orderDate: orderDate,
       orderType: orderType,
       referenceName: referenceName,
       userId: userId,
     };
-    const response = await axios.post(
-      "http://localhost:44312/api/order",
-      order,
-      {
-        withCredentials: true,
-        headers: authHeader(),
-      }
-    );
+    try {
+      const response = await axios.post(
+        "http://localhost:44312/api/order",
+        order,
+        {
+          withCredentials: true,
+          headers: authHeader(),
+        }
+      );
+      showSuccessNotification("Commande validée avec succes");
+      getCartItems();
+    } catch (error) {
+      showErrorNotification("Veuillez renseigner une quantité valide");
+      console.log(error);
+    }
   };
 
   function Articles() {
@@ -148,11 +159,7 @@ export default function Cart() {
                 0
               )}
             </Text>
-            <Button
-              radius="md"
-              style={{ flex: 1 }}
-              onClick={validateOrder}
-            >
+            <Button radius="md" style={{ flex: 1 }} onClick={validateOrder}>
               {" "}
               Passer la commande
             </Button>
