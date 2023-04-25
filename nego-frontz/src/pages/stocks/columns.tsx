@@ -28,7 +28,7 @@ export const columns = [
     defaultFlex: 1,
   },
   {
-    name: "quantity",
+    name: "stock",
     header: "Quantité",
     defaultFlex: 1,
   },

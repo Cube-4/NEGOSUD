@@ -40,6 +40,7 @@ function Page({ orders }: any) {
         }
       );
       setUserOrder(response.data.orders);
+      console.log(response.data);
     };
     fetchData(userId);
   }, []);
@@ -85,7 +86,6 @@ function Page({ orders }: any) {
       <h1>Liste des commandes</h1>
       {isAdmin && (
         <>
-          <OrderAdd />
           <DynamicDataGrid
             idProperty="id"
             columns={adminColumns}

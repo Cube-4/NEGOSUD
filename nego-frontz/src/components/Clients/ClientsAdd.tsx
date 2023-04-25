@@ -13,7 +13,7 @@ import useUser from "@/hooks/useUser";
 import { useState } from "react";
 import { useFormik } from "formik";
 
-export default function (props) {
+export default function (props: any) {
   const { classes } = useStyles();
 
   const formik = useFormik({
@@ -46,7 +46,7 @@ export default function (props) {
     <Paper shadow="xl" className={classes.paper}>
       <form onSubmit={formik.handleSubmit}>
         {" "}
-        <Text mb={{ base: "2vh" }}>Passer une commande au fournisseur</Text>
+        <Text mb={{ base: "2vh" }}>Ajouter un client</Text>
         <Flex gap={{ base: "5vw" }} w="100%">
           <Flex gap={{ base: "1vh" }} className={classes.inputFlex}>
             <TextInput

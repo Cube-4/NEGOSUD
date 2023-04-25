@@ -59,7 +59,7 @@ export default function () {
 
   return (
     <Paper shadow="xl" className={classes.paper}>
-      <Text mb={{ base: "2vh" }}>Passer une commande au fournisseur</Text>
+      <Text mb={{ base: "2vh" }}>Ajouter un article</Text>
       <form onSubmit={formik.handleSubmit}>
         <Flex gap={{ base: "5vw" }} w="100%">
           <Flex gap={{ base: "1vh" }} className={classes.inputFlex}>
