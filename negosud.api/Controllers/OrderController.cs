@@ -55,7 +55,7 @@ namespace nego.api.Controllers
             return BadRequest("Something wrong happened with Creation");
         }
 
-        [HttpPost("confirmOrder")]
+        [HttpPost("confirmOrder/{id}")]
         public async Task<IActionResult> ConfirmOrder(int id)
         {
             var response = await _orderService.ConfirmOrder(id);

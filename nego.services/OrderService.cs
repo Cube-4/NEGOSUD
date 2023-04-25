@@ -92,7 +92,6 @@ namespace nego.services
                 _repository.Add(order);
                 await _unitOfWork.SaveIntoDbContextAsync();
 
-
                 foreach (var item in cart.Articles)
                 {
                     var articleOrder = new ArticleOrder
@@ -110,6 +109,7 @@ namespace nego.services
                 await _unitOfWork.SaveIntoDbContextAsync();
                 _cartService.ClearCart();
                 return await Task.FromResult(true);
+        
             }
             catch
             {

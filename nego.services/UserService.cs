@@ -45,6 +45,7 @@ namespace nego.services
             var user = _repository.GetAll<User>()
                 .Include(u => u.Roles).ThenInclude(r => r.Role)
                 .Include(c => c.Articles)
+                .Include(c => c.Orders)
                 .FirstOrDefault(u => u.Id == id);
             if (user != null)
             {

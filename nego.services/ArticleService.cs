@@ -110,18 +110,50 @@ namespace nego.services
 
         public async Task<bool> ChangeQuantity(ChangeQuantityRequest data)
         {
-            var articles = _repository.GetOne<Article>(Article => Article.Id == data.Id);
-            if (articles != null)
+            var article = _repository.GetOne<Article>(Article => Article.Id == data.Id);
+            if (article != null)
             {
                 if (data.Type == "add")
                 {
-                    articles.Stock += data.Quantity;
+                    article.Stock += data.Quantity;
                 }
                 else if (data.Type == "substract")
                 {
-                    articles.Stock -= data.Quantity;
+                    article.Stock -= data.Quantity;
+                    if (article.Stock <= 10)
+                    {
+                        var totalPrice = article.Price * 100;
+                        var orderUser = _repository.GetOne<User>(src => src.Id == article.UserId);
+
+                        var order = new Order
+                        {
+                            OrderName = "AutomaticOrder for " + article.Name,
+                            ReferenceName = article.Name + " addStock",
+                            UserId = article.UserId,
+                            OrderDate = DateTime.Now,
+                            OrderTotal = totalPrice,
+                            OrderType = "addStock",
+                            OrderStatus = "Pending"
+                        };
+                        _repository.Add(order);
+                        await _unitOfWork.SaveIntoDbContextAsync();
+
+                        var articleOrder = new ArticleOrder
+                        {
+                            OrderId = order.Id,
+                            ArticleId = article.Id,
+                            Quantity = 100,
+                            TotalPrice = totalPrice
+                        };
+
+                        _repository.Add(articleOrder);
+                        
+                        orderUser.Orders.Add(order);
+
+                        await _unitOfWork.SaveIntoDbContextAsync();
+                    }
                 }
-                _repository.Update(articles);
+                _repository.Update(article);
                 await _unitOfWork.SaveIntoDbContextAsync();
                 return await Task.FromResult(true);
             }
