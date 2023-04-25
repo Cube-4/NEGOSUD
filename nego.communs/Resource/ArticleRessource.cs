@@ -15,6 +15,10 @@ namespace nego.communs.Resource
         [Required]
         public float Price { get; set; }
         [Required]
+
+        public string StripePriceId { get; set; }
+
+        public string StripeProductId { get; set; }
         public int UserId { get; set; }
 
         public List<OrderRessource> Orders { get; set; }
