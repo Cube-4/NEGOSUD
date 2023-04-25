@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using nego.DataAccess.dbContexte;
 
@@ -11,9 +12,11 @@ using nego.DataAccess.dbContexte;
 namespace nego.dataAccess.Migrations
 {
     [DbContext(typeof(NegoSudDbContext))]
-    partial class NegoSudDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230424183332_article-update")]
+    partial class articleupdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -61,7 +64,7 @@ namespace nego.dataAccess.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Articles", (string)null);
+                    b.ToTable("Articles");
                 });
 
             modelBuilder.Entity("nego.communs.Model.ArticleOrder", b =>
@@ -90,7 +93,7 @@ namespace nego.dataAccess.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("ArticleOrders", (string)null);
+                    b.ToTable("ArticleOrders");
                 });
 
             modelBuilder.Entity("nego.communs.Model.Cart", b =>
@@ -106,7 +109,7 @@ namespace nego.dataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Cart", (string)null);
+                    b.ToTable("Cart");
                 });
 
             modelBuilder.Entity("nego.communs.Model.CartArticle", b =>
@@ -135,7 +138,7 @@ namespace nego.dataAccess.Migrations
 
                     b.HasIndex("CartId");
 
-                    b.ToTable("CartArticle", (string)null);
+                    b.ToTable("CartArticle");
                 });
 
             modelBuilder.Entity("nego.communs.Model.Order", b =>
@@ -171,7 +174,7 @@ namespace nego.dataAccess.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Orders", (string)null);
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("nego.communs.Model.Role", b =>
@@ -187,7 +190,7 @@ namespace nego.dataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Roles", (string)null);
+                    b.ToTable("Roles");
                 });
 
             modelBuilder.Entity("nego.communs.Model.RoleUser", b =>
@@ -210,7 +213,7 @@ namespace nego.dataAccess.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("RoleUsers", (string)null);
+                    b.ToTable("RoleUsers");
                 });
 
             modelBuilder.Entity("nego.communs.Model.User", b =>

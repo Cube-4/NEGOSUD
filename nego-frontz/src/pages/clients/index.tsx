@@ -55,7 +55,7 @@ function Page({ data }: any) {
   return (
     <div>
       <h1>Liste de clients</h1>
-      <ClientsAdd router={router}/>
+      <ClientsAdd router={router} />
       <DynamicDataGrid
         idProperty="id"
         columns={columns}
@@ -68,7 +68,11 @@ function Page({ data }: any) {
         defaultLimit={10}
         style={{ minHeight: 400 }}
       />
-      <Buttons selected={selected} deleteId={deleteId} setSelected={setSelected}/>
+      <Buttons
+        selected={selected}
+        deleteId={deleteId}
+        setSelected={setSelected}
+      />
     </div>
   );
 }
@@ -82,9 +86,12 @@ const Buttons = (props: any) => {
         radius="md"
         style={{ flex: 1 }}
         disabled={props.selected && Object.keys(props.selected).length === 0}
-        onClick={() => {props.deleteId(props.selected); props.setSelected({})}}
+        onClick={() => {
+          props.deleteId(props.selected);
+          props.setSelected({});
+        }}
       >
-        Delete
+        Supprimer les clients
       </Button>
     </Group>
   );
@@ -94,9 +101,9 @@ export async function getServerSideProps() {
   // const orders = await fetch("http://localhost:44312/api/order").then((res) =>
   //   res.json()
   // );
-    const response = await axios.get("http://localhost:44312/api/user", {
-      headers: authHeader(),
-    });
+  const response = await axios.get("http://localhost:44312/api/user", {
+    headers: authHeader(),
+  });
 
   return {
     props: { data: response.data },

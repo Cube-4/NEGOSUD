@@ -10,7 +10,11 @@ namespace nego.communs.Model
         public string Origin { get; set; }
         public int Stock { get; set; }
         public float Price { get; set; }
-        
+
+        public string StripePriceId { get; set; }
+
+        public string StripeProductId { get; set; }
+
         public virtual List<ArticleOrder> Orders { get; set; }
         public virtual List<CartArticle> Carts { get; set; }
         public int UserId { get; set; }

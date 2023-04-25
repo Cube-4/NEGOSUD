@@ -82,6 +82,8 @@ export default function UserStocks({ articles }: any) {
   async function onSubmit(product: any, value: number) {
     const updatedProduct = {
       articleId: product.id,
+      stripeProductId: product.stripeProductId,
+      stripePriceId: product.stripePriceId,
       quantity: value,
     };
 
