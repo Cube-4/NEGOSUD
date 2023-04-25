@@ -104,6 +104,7 @@ function Page({ orders }: any) {
             confirmOrder={confirmOrder}
             test={isSelectedConfirmed}
             setSelected={setSelected}
+            isLoading={isLoading}
           />
         </>
       )}
@@ -113,6 +114,7 @@ function Page({ orders }: any) {
             idProperty="id"
             columns={columns}
             dataSource={userOrder}
+            checkboxColumn={true}
             sortable={true}
             defaultLimit={10}
             style={{ minHeight: 400 }}
