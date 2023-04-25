@@ -71,6 +71,7 @@ function Page({ data }: any) {
   const confirmOrder = async (selected: object) => {
     for (let id in selected) {
       await axios.post(`http://localhost:44312/api/order/confirmOrder/${id}`, {
+        withCredentials: true,
         headers: authHeader(),
       });
     }
@@ -157,6 +158,11 @@ const Buttons = (props: any) => {
 };
 
 export async function getServerSideProps() {
+  await axios.get(`http://localhost:44312/api/cart`, {
+    withCredentials: true,
+    headers: authHeader(),
+  });
+
   const orders = await fetch("http://localhost:44312/api/order").then((res) =>
     res.json()
   );
