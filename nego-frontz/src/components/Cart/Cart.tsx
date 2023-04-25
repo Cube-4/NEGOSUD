@@ -22,7 +22,6 @@ export default function Cart() {
       withCredentials: true,
       headers: authHeader(),
     });
-    console.log(response.data, "mthis is the cart");
     setCartItems(response.data.articles);
   };
   const articlesForStripeApi = cartItems.map((item: any) => {

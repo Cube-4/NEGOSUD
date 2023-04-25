@@ -3,7 +3,6 @@ import dynamic, { type DynamicOptions } from "next/dynamic";
 import "@inovua/reactdatagrid-community/index.css";
 import { adminColumns, columns } from "./columns";
 import type TypeDataGridProps from "@inovua/reactdatagrid-community/types/TypeDataGridProps";
-import CheckBox from "@inovua/reactdatagrid-community/packages/CheckBox";
 
 // Components
 import { OrderAdd } from "@/components/Orders";
@@ -23,10 +22,11 @@ const DynamicDataGrid = dynamic(
   }
 );
 
-function Page({ data }: any) {
+function Page({ orders }: any) {
   const isAdmin = localStorage.getItem("isAdmin") === "true";
   const userId = localStorage.getItem("id");
   const [userOrder, setUserOrder] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [selected, setSelected] = useState({});
   const [isSelectedConfirmed, setIsSelectedConfirmed] = useState(false);
   const router = useRouter();
@@ -60,12 +60,14 @@ function Page({ data }: any) {
   }, []);
 
   const deleteId = async (selected: object) => {
+    setIsLoading(true);
     for (let id in selected) {
       await axios.delete(`http://localhost:44312/api/order/${id}`, {
         headers: authHeader(),
       });
     }
     router.replace(router.asPath);
+    setIsLoading(false);
   };
 
   const confirmOrder = async (selected: object) => {
@@ -84,11 +86,11 @@ function Page({ data }: any) {
       {isAdmin && (
         <>
           <OrderAdd />
-          <ReactDataGrid
+          <DynamicDataGrid
             idProperty="id"
             columns={adminColumns}
             checkboxColumn={true}
-            dataSource={data}
+            dataSource={orders}
             sortable={true}
             multiSelect={true}
             selected={selected}
@@ -129,18 +131,6 @@ const Buttons = (props: any) => {
       <Button
         radius="md"
         style={{ flex: 1 }}
-        color="red"
-        disabled={props.selected && Object.keys(props.selected).length === 0}
-        onClick={() => {
-          props.deleteId(props.selected);
-          props.setSelected({});
-        }}
-      >
-        Delete
-      </Button>
-      <Button
-        radius="md"
-        style={{ flex: 1 }}
         disabled={
           (props.selected && Object.keys(props.selected).length === 0) ||
           (props.selected && props.test === true) ||
@@ -152,6 +142,18 @@ const Buttons = (props: any) => {
         }}
       >
         Confirm order
+      </Button>
+      <Button
+        radius="md"
+        style={{ flex: 1 }}
+        disabled={props.selected && Object.keys(props.selected).length === 0}
+        onClick={() => {
+          props.deleteId(props.selected);
+          props.setSelected({});
+        }}
+        loading={props.isLoading}
+      >
+        Supprimer les commandes
       </Button>
     </Group>
   );
@@ -168,6 +170,6 @@ export async function getServerSideProps() {
   );
 
   return {
-    props: { data: orders },
+    props: { orders: orders },
   };
 }

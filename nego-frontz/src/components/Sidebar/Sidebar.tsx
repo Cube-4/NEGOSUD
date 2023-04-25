@@ -69,14 +69,9 @@ export default function Sidebar() {
   return (
     <Navbar width={{ sm: 300 }} p="md">
       <Navbar.Section grow>
-        <Button
-          onClick={() => {
-            console.log(isAdmin);
-          }}
-        ></Button>
         <Group className={classes.header} position="apart">
           <Text weight={"bold"}>NegoSud</Text>{" "}
-          <Code sx={{ fontWeight: 700 }}>v1.0.0</Code>
+          <Code sx={{ fontWeight: 700 }}>v1.1.0</Code>
         </Group>
         {links}
       </Navbar.Section>
