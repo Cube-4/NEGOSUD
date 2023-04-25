@@ -61,7 +61,7 @@ namespace nego.dataAccess.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Articles");
+                    b.ToTable("Articles", (string)null);
                 });
 
             modelBuilder.Entity("nego.communs.Model.ArticleOrder", b =>
@@ -90,7 +90,7 @@ namespace nego.dataAccess.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("ArticleOrders");
+                    b.ToTable("ArticleOrders", (string)null);
                 });
 
             modelBuilder.Entity("nego.communs.Model.Cart", b =>
@@ -106,7 +106,7 @@ namespace nego.dataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Cart");
+                    b.ToTable("Cart", (string)null);
                 });
 
             modelBuilder.Entity("nego.communs.Model.CartArticle", b =>
@@ -135,7 +135,7 @@ namespace nego.dataAccess.Migrations
 
                     b.HasIndex("CartId");
 
-                    b.ToTable("CartArticle");
+                    b.ToTable("CartArticle", (string)null);
                 });
 
             modelBuilder.Entity("nego.communs.Model.Order", b =>
@@ -171,7 +171,7 @@ namespace nego.dataAccess.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Orders", (string)null);
                 });
 
             modelBuilder.Entity("nego.communs.Model.Role", b =>
@@ -187,7 +187,7 @@ namespace nego.dataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Roles");
+                    b.ToTable("Roles", (string)null);
                 });
 
             modelBuilder.Entity("nego.communs.Model.RoleUser", b =>
@@ -210,7 +210,7 @@ namespace nego.dataAccess.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("RoleUsers");
+                    b.ToTable("RoleUsers", (string)null);
                 });
 
             modelBuilder.Entity("nego.communs.Model.User", b =>

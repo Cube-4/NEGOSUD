@@ -1,24 +1,22 @@
-import {
-  Paper,
-  Text,
-  Flex,
-  Button,
-  Select,
-  TextInput,
-  Box,
-} from "@mantine/core";
+import { Paper, Text, Flex, Button, TextInput } from "@mantine/core";
 import { useStyles } from "./styles";
 // Form handling
 import { useForm } from "react-hook-form";
 import useArticle from "@/hooks/useArticle";
 import { useFormik } from "formik";
 import axios from "axios";
+import { useState } from "react";
+import { useRouter } from "next/router";
 
 export default function () {
   const { classes } = useStyles();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const router = useRouter();
   // Form handling
 
   async function submitForm(values: any) {
+    setIsLoading(true);
     const { name, reference, origin, stock, price, id } = values;
     await axios
       .post("http://localhost:3000/api/create_article", {
@@ -40,7 +38,9 @@ export default function () {
           stripePriceId: res.data.price.id,
           stripeProductId: res.data.product.id,
         });
+        setIsLoading(false);
       });
+    router.replace(router.asPath);
   }
 
   const formik = useFormik({
@@ -104,7 +104,7 @@ export default function () {
               classNames={classes}
               onChange={(e) => formik.setFieldValue("id", e.target.value)}
             />
-            <Button fullWidth mt="xl" /* disabled={isLoading} */ type="submit">
+            <Button fullWidth mt="xl" loading={isLoading} type="submit">
               {/* isLoading ? "Loading..." : */ "Ajouter l'article"}
             </Button>
           </Flex>

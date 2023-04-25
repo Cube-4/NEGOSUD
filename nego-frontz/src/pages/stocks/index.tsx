@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useCallback, useState } from "react";
 import dynamic, { DynamicOptions } from "next/dynamic";
 import "@inovua/reactdatagrid-community/index.css";
 import { columns } from "./columns";
@@ -7,11 +7,12 @@ import type TypeDataGridProps from "@inovua/reactdatagrid-community/types/TypeDa
 // Components
 import { UserStocks } from "@/components/Stocks";
 // Mantine
-import { Flex } from "@mantine/core";
+import { Button, Flex } from "@mantine/core";
 import { ArticlesAdd } from "@/components/Articles";
 import authProtected from "@/components/authProtected";
 import axios from "axios";
 import authHeader from "@/helpers/auth-headers";
+import { useRouter } from "next/router";
 
 const DynamicDataGrid = dynamic(
   (() => {
@@ -23,15 +24,57 @@ const DynamicDataGrid = dynamic(
 );
 
 function AdminContent({ articles }: any) {
+  const router = useRouter();
+  const [selected, setSelected] = useState({});
+  const onSelectionChange = useCallback(({ selected: selectedMap }: any) => {
+    setSelected(selectedMap);
+  }, []);
+
+  const deleteId = async (selected: object) => {
+    console.log(selected);
+    for (let id in selected) {
+      await axios.delete(`http://localhost:44312/api/article/${id}`, {
+        headers: authHeader(),
+      });
+    }
+    router.replace(router.asPath);
+  };
+
+  const Buttons = (props: any) => {
+    return (
+      <Button
+        mt="3vh"
+        style={{ flex: 1 }}
+        disabled={props.selected && Object.keys(props.selected).length === 0}
+        onClick={() => {
+          props.deleteId(props.selected);
+          props.setSelected({});
+        }}
+      >
+        Supprimer les articles
+      </Button>
+    );
+  };
+
   return (
     <>
       <ArticlesAdd />
       <DynamicDataGrid
         idProperty="id"
         columns={columns}
+        checkboxColumn={true}
+        sortable={true}
+        multiSelect={true}
+        selected={selected}
+        onSelectionChange={onSelectionChange}
         dataSource={articles}
         defaultLimit={10}
         style={{ minHeight: 400 }}
+      />
+      <Buttons
+        selected={selected}
+        deleteId={deleteId}
+        setSelected={setSelected}
       />
     </>
   );
@@ -55,10 +98,9 @@ function Page({ articles }: any) {
 export default authProtected(Page);
 
 export async function getServerSideProps() {
-  const response = await axios.get("http://localhost:44312/api/article", {
-    headers: authHeader(),
-  });
-  const articles = response.data;
+  const articles = await fetch("http://localhost:44312/api/article").then(
+    (res) => res.json()
+  );
 
-  return { props: { articles } };
+  return { props: { articles: articles } };
 }

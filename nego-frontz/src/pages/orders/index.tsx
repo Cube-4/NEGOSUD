@@ -1,9 +1,8 @@
-import React, { useCallback, useContext, useState } from "react";
+import React, { useCallback, useState } from "react";
 import dynamic, { type DynamicOptions } from "next/dynamic";
 import "@inovua/reactdatagrid-community/index.css";
 import { columns } from "./columns";
 import type TypeDataGridProps from "@inovua/reactdatagrid-community/types/TypeDataGridProps";
-import CheckBox from "@inovua/reactdatagrid-community/packages/CheckBox";
 
 // Components
 import { OrderAdd } from "@/components/Orders";
@@ -27,8 +26,9 @@ const DynamicDataGrid = dynamic(
   }
 );
 
-function Page({ data }: any) {
+function Page({ orders }: any) {
   const isAdmin = localStorage.getItem("isAdmin") === "true";
+  const [isLoading, setIsLoading] = useState(false);
   const [selected, setSelected] = useState({});
   const router = useRouter();
 
@@ -37,12 +37,14 @@ function Page({ data }: any) {
   }, []);
 
   const deleteId = async (selected: object) => {
+    setIsLoading(true);
     for (let id in selected) {
       await axios.delete(`http://localhost:44312/api/order/${id}`, {
         headers: authHeader(),
       });
     }
     router.replace(router.asPath);
+    setIsLoading(false);
   };
 
   return (
@@ -51,11 +53,11 @@ function Page({ data }: any) {
       {isAdmin && (
         <>
           <OrderAdd />
-          <ReactDataGrid
+          <DynamicDataGrid
             idProperty="id"
             columns={columns}
             checkboxColumn={true}
-            dataSource={data}
+            dataSource={orders}
             sortable={true}
             multiSelect={true}
             selected={selected}
@@ -63,7 +65,12 @@ function Page({ data }: any) {
             defaultLimit={10}
             style={{ minHeight: 400 }}
           />
-          <Buttons selected={selected} deleteId={deleteId} setSelected={setSelected}/>
+          <Buttons
+            selected={selected}
+            deleteId={deleteId}
+            setSelected={setSelected}
+            isLoading={isLoading}
+          />
         </>
       )}
       {!isAdmin && (
@@ -72,7 +79,7 @@ function Page({ data }: any) {
             idProperty="id"
             columns={columns}
             checkboxColumn={true}
-            dataSource={data}
+            dataSource={orders}
             sortable={true}
             multiSelect={true}
             selected={selected}
@@ -90,16 +97,18 @@ export default authProtected(Page);
 
 const Buttons = (props: any) => {
   return (
-    <Group my={"3vh"}>
-      <Button
-        radius="md"
-        style={{ flex: 1 }}
-        disabled={props.selected && Object.keys(props.selected).length === 0}
-        onClick={() => {props.deleteId(props.selected); props.setSelected({})}}
-      >
-        Delete
-      </Button>
-    </Group>
+    <Button
+      radius="md"
+      style={{ flex: 1 }}
+      disabled={props.selected && Object.keys(props.selected).length === 0}
+      onClick={() => {
+        props.deleteId(props.selected);
+        props.setSelected({});
+      }}
+      loading={props.isLoading}
+    >
+      Supprimer les commandes
+    </Button>
   );
 };
 
@@ -109,6 +118,6 @@ export async function getServerSideProps() {
   );
 
   return {
-    props: { data: orders },
+    props: { orders: orders },
   };
 }

@@ -15,7 +15,6 @@ export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
   if (req.method === "POST") {
-    console.log(req.body);
     const product = await stripe.products.create({
       name: req.body.name,
     });
