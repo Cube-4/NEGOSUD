@@ -7,6 +7,8 @@ interface articleData {
   stock: string;
   price: string;
   id: string;
+  stripePriceId: string;
+  stripeProductId: string;
 }
 export default function useArticle({
   name,
@@ -15,6 +17,8 @@ export default function useArticle({
   stock,
   price,
   id,
+  stripePriceId,
+  stripeProductId,
 }: articleData) {
   const data = {
     name: name,
@@ -23,6 +27,8 @@ export default function useArticle({
     stock: stock,
     price: price,
     userId: id,
+    stripeProductId: stripeProductId,
+    stripePriceId: stripePriceId,
   };
 
   axios.post("http://localhost:44312/api/article", data, {

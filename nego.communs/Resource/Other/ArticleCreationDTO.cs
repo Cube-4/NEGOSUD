@@ -16,6 +16,11 @@ namespace nego.communs.Resource.Other
         public float Price { get; set; }
         [Required]
         public int UserId { get; set; }
+
+        public string StripePriceId { get; set; }
+
+        public string StripeProductId { get; set; }
+
     }
 
 }

@@ -12,6 +12,7 @@ import { useStyles } from "./styles";
 import { useForm } from "react-hook-form";
 import useArticle from "@/hooks/useArticle";
 import { useFormik } from "formik";
+import axios from "axios";
 
 export default function () {
   const { classes } = useStyles();
@@ -19,7 +20,27 @@ export default function () {
 
   async function submitForm(values: any) {
     const { name, reference, origin, stock, price, id } = values;
-    useArticle({ name, reference, origin, stock, price, id });
+    await axios
+      .post("http://localhost:3000/api/create_article", {
+        name,
+        reference,
+        origin,
+        stock,
+        price,
+        id,
+      })
+      .then((res) => {
+        useArticle({
+          name,
+          reference,
+          origin,
+          stock,
+          price,
+          id,
+          stripePriceId: res.data.price.id,
+          stripeProductId: res.data.product.id,
+        });
+      });
   }
 
   const formik = useFormik({

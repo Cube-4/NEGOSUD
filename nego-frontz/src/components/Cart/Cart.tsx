@@ -1,14 +1,15 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import { Button, Flex, Paper, Text } from "@mantine/core";
+import { Box, Button, Flex, Paper, Text } from "@mantine/core";
 import axios from "axios";
 import authHeader from "@/helpers/auth-headers";
 import { QuantityInput } from "../Stocks/UserStocks/quantityInput";
 import useNotification from "@/hooks/useNotification";
 import { IconCheck } from "@tabler/icons-react";
+import { useRouter } from "next/router";
 
 export default function Cart() {
-  const [cart, setCart] = React.useState<any>([]);
+  const router = useRouter();
   const [cartItems, setCartItems] = React.useState<any>([]);
 
   //get cart items from api
@@ -22,8 +23,25 @@ export default function Cart() {
       headers: authHeader(),
     });
     console.log(response.data, "mthis is the cart");
-    setCart(response.data);
     setCartItems(response.data.articles);
+  };
+  const articlesForStripeApi = cartItems.map((item: any) => {
+    return {
+      price: item.article.stripePriceId,
+      quantity: item.quantity,
+    };
+  });
+
+  const checkoutToStripe = async () => {
+    try {
+      await axios
+        .post("/api/checkout_sessions", articlesForStripeApi)
+        .then((response) => {
+          router.push(response.data.url);
+        });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const validateOrder = async () => {
@@ -42,16 +60,19 @@ export default function Cart() {
       referenceName: referenceName,
       userId: userId,
     };
+
     try {
-      await axios.post("http://localhost:44312/api/order", order, {
-        withCredentials: true,
-        headers: authHeader(),
-      });
-      showSuccessNotification("Commande validée avec succes");
-      getCartItems();
+      await axios
+        .post("http://localhost:44312/api/order", order, {
+          withCredentials: true,
+          headers: authHeader(),
+        })
+        .then((response) => {
+          showSuccessNotification("Commande validée avec succes");
+          getCartItems();
+        });
     } catch (error) {
       showErrorNotification("Veuillez renseigner une quantité valide");
-      console.log(error);
     }
   };
 
@@ -105,15 +126,15 @@ export default function Cart() {
               <Text weight={"bold"}>Nom du produit :</Text>
               <Text>{item.article.name}</Text>
             </Flex>
-            <Flex gap="1vw">
-              <Text weight={"bold"}>Quantité :</Text>
-              <Text>{item.quantity}</Text>
-            </Flex>
+
             <Flex gap="1vw">
               <Text weight={"bold"}>Prix unitaire :</Text>
               <Text> {item.article.price} €</Text>
             </Flex>
-
+            <Flex gap="1vw">
+              <Text weight={"bold"}>Quantité :</Text>
+              <Text>{item.quantity}</Text>
+            </Flex>
             <Flex gap="2vh" align="center">
               <QuantityInput
                 min={0}
@@ -147,6 +168,21 @@ export default function Cart() {
     return articles;
   }
 
+  useEffect(() => {
+    // Check to see if this is a redirect back from Checkout
+    const query = new URLSearchParams(window.location.search);
+    if (query.get("success")) {
+      validateOrder().then(() => {
+        console.log("Order placed! You will receive an email confirmation.");
+      });
+    }
+
+    if (query.get("canceled")) {
+      console.log(
+        "Order canceled -- continue to shop around and checkout when you’re ready."
+      );
+    }
+  }, []);
   return (
     <>
       {Array.isArray(cartItems) && cartItems.length > 0 ? (
@@ -171,7 +207,7 @@ export default function Cart() {
                   €
                 </Text>
 
-                <Button radius="md" onClick={validateOrder} w="30%">
+                <Button radius="md" onClick={checkoutToStripe} w="30%">
                   {" "}
                   Passer la commande
                 </Button>
